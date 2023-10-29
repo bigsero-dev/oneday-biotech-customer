@@ -4,7 +4,7 @@ import icons from "configs/icons";
 import { useState } from "react";
 import {Image, Platform, SafeAreaView, ScrollView, TouchableOpacity, View, useWindowDimensions} from "react-native"
 import { heightPercentage, scaledHorizontal, scaledVertical } from "utils/ScaledService";
-import { Config } from "./config";
+import { Config } from "./Config";
 
 const HomeScreen = () => {
     const [dataTeeth, setDataTeeth] = useState(Config);
