@@ -2,7 +2,8 @@ import Space from "components/Space";
 import Text from "components/Text";
 import icons from "configs/icons";
 import { useState } from "react";
-import { Image, SafeAreaView, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 
 const DetailTreatmentScreen = () => {
@@ -11,6 +12,7 @@ const DetailTreatmentScreen = () => {
     return (
         <SafeAreaView style={{
             flex:1,
+            backgroundColor: "#fff"
         }}>
             <View style={{
                 height: 55,
@@ -23,11 +25,14 @@ const DetailTreatmentScreen = () => {
                 <View style={{
                     flexDirection: "row",
                 }}>
-                    <TouchableOpacity style={{
-                        width: 10, 
-                        height: 18,
-                        marginRight: 16
-                    }}>
+                    <TouchableOpacity 
+                        onPress={() => NavigationService.back()}
+                        style={{
+                            width: 10, 
+                            height: 18,
+                            marginRight: 16
+                        }}
+                    >
                         <Image source={icons.arrowLeft} style={{width: 10, height: 18}} resizeMode="cover"  />
                     </TouchableOpacity>
                     <Text>진료상세</Text>
@@ -41,6 +46,7 @@ const DetailTreatmentScreen = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <ScrollView>
             <View style={{
                 paddingHorizontal: scaledHorizontal(20), 
                 paddingTop: scaledVertical(12), 
@@ -263,16 +269,39 @@ const DetailTreatmentScreen = () => {
                 <Space height={10} />
                 <Text color="#999">※ 예약일정 변경은 병원에 문의해주세요.</Text>
             </View>
+            
+            </ScrollView>
             <View
                 style={{
-                    backgroundColor: "blue",
                     position: "absolute",
                     bottom: 0,
                     height: 50,
-                    width: '100%'
+                    width: '100%',
+                    flexDirection: "row"
                 }}
             >
-
+                <TouchableOpacity
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#0f1e3d",
+                        height: 50,
+                        width: '50%'
+                    }}
+                >
+                    <Text color="#fff">보증서 보기</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#f2dca8",
+                        height: 50,
+                        width: '50%'
+                    }}
+                >
+                    <Text color="#000">엑스레이 보기</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
