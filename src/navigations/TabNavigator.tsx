@@ -54,7 +54,7 @@ const TabNavigator = () => {
                     shadowRadius: 11.95,
 
                     elevation: 11,
-                    height: Platform.OS === "android" ? 45 : 65,
+                    height: 65,
                     paddingTop: 15,
                     paddingBottom: 9,
                     paddingRight: scaledHorizontal(15),

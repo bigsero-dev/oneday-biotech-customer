@@ -55,7 +55,8 @@ const icons = {
   plusRectangle: require("../assets/icons/plus-rectangle.png"),
   info: require("../assets/icons/info.png"),
   profile: require("../assets/icons/profile.png"),
-  markYellow: require("../assets/icons/mark-yellow.png")
+  markYellow: require("../assets/icons/mark-yellow.png"),
+  clipBoard: require("../assets/icons/clipboard.png")
 };
 
 export default icons;

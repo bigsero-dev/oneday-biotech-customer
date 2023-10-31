@@ -30,7 +30,7 @@ const HomeScreen = () => {
                         paddingVertical: 3,
                         borderRadius: 10
                     }}>
-                        <Text size={12} color="#fff">진료내역</Text>
+                        <Text size={12} color="#fff">이용 가이드</Text>
                     </View>
                     <TouchableOpacity
                         style={{width: 18, height: 20, justifyContent: "center", alignItems: "center"}}
@@ -46,9 +46,9 @@ const HomeScreen = () => {
                 <View style={{
                     paddingHorizontal: scaledHorizontal(20)
                 }}>
-                    <Text>안녕하세요, 김하루님</Text>
+                    <Text size={14}>안녕하세요, 김하루님</Text>
                     <Space height={7} />
-                    <Text size={22}>여의도 베스트1234 임플란트 병원 입니다.</Text>
+                    <Text size={22} style={{fontWeight: "bold"}} type="extrabold">여의도 베스트1234 임플란트 병원 입니다.</Text>
                     <View
                         style={{
                             width: 110,
@@ -81,7 +81,7 @@ const HomeScreen = () => {
                                 // backgroundColor: "#0f1e3d"
                             }}
                         >
-                            <Text color="#0f1e3d" size={13}>치료중</Text>
+                            <Text color="#0f1e3d" style={{opacity: 0.5}} size={13}>치료중</Text>
                         </TouchableOpacity>
                     </View>
                     <View
@@ -106,7 +106,7 @@ const HomeScreen = () => {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 position: "absolute", 
-                                top:240,
+                                top: scaledVertical(440),
                                 width: 100,
                             }}
                         >
@@ -152,11 +152,13 @@ const HomeScreen = () => {
                         ))}
                     </View>
                 </View>
-                <Space height={scaledVertical(820)}/>
+                {/* <Space height={scaledVertical(820)}/> */}
                 <View style={{
-                    paddingHorizontal: scaledHorizontal(20)
+                    paddingHorizontal: scaledHorizontal(20),
+                    position: "absolute",
+                    top: scaledVertical(1100)
                 }}>
-                    <Text>이번 진료일정</Text>
+                    <Text style={{fontWeight: "bold"}} type="extrabold">이번 진료일정</Text>
                     <Space height={10} />
                     <View 
                         style={{
@@ -166,7 +168,7 @@ const HomeScreen = () => {
                             shadowOffset: { width: 0, height: 1 },
                             shadowOpacity: 0.2,
                             shadowRadius: 2,  
-                            elevation: 5,
+                            elevation: 2,
                             height: 92
                         }}
                     >
@@ -184,7 +186,7 @@ const HomeScreen = () => {
                             alignItems: "center",
                             marginRight: scaledHorizontal(18)
                         }}>
-                            <Text color="#555">등록된 일정이 없습니다.</Text>
+                            <Text color="#555" style={{opacity: 0.8}}>등록된 일정이 없습니다.</Text>
                         </View>
                         <Space width={98} />
                         <View
@@ -197,18 +199,17 @@ const HomeScreen = () => {
                                 style={{
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    width: 40,
-                                    height: 40,
-                                    backgroundColor: "#f2f2f4",
-                                    borderRadius: 40/2
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 50/2
                                 }}
                             >
-                                <Image source={icons.calendar} style={{width: 20, height: 20}} />
+                                <Image source={icons.clipBoard} style={{width: 50, height: 50}} />
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-                <Space height={120} />
+                <Space height={650} />
             </ScrollView>
         </SafeAreaView>
     );

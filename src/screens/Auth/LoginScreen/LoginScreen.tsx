@@ -97,31 +97,32 @@ const LoginScreen = () => {
                                 defaultValue=""
                                 render={({ field:{ onChange, value }}) => (
                                     <Input
-                                    onChange={text => {
-                                        onChange(text);
-                                        setForm({ ...form, password: text });
-                                      }}
-                                      value={value}
-                                      isRequired
-                                      borderLess={true}
-                                      placeholder={"휴대전화 번호"}
-                                      error={errors.password && errors?.password?.message}
-                                      onClearButton={value ? true : false}
-                                      onFocus={() =>
-                                        setFocusInput({ ...focusInput, password: true })
-                                      }
-                                      onBlur={() =>
-                                        setFocusInput({ ...focusInput, password: false })
-                                      }
-                                      onClear={() => {
-                                        reset((formValues: any) => ({
-                                          ...formValues,
-                                          password: "",
-                                        }));
-                                        setForm({ ...form, password: "" });
-                                      }}
-                                      //label={i18n.t("login.formEmail")}
-                                      focusInput={focusInput.password}
+                                        onChange={text => {
+                                            onChange(text);
+                                            setForm({ ...form, password: text });
+                                        }}
+                                        keyboardType="numeric"
+                                        value={value}
+                                        isRequired
+                                        borderLess={true}
+                                        placeholder={"휴대전화 번호"}
+                                        error={errors.password && errors?.password?.message}
+                                        onClearButton={value ? true : false}
+                                        onFocus={() =>
+                                            setFocusInput({ ...focusInput, password: true })
+                                        }
+                                        onBlur={() =>
+                                            setFocusInput({ ...focusInput, password: false })
+                                        }
+                                        onClear={() => {
+                                            reset((formValues: any) => ({
+                                            ...formValues,
+                                            password: "",
+                                            }));
+                                            setForm({ ...form, password: "" });
+                                        }}
+                                        //label={i18n.t("login.formEmail")}
+                                        focusInput={focusInput.password}
                                     />
                                 )}
                                 name="password"

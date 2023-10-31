@@ -190,13 +190,13 @@ const DetailTreatmentScreen = () => {
                             style={{
                                 justifyContent: "center",
                                 alignItems: "center",
-                                width: 40,
-                                height: 40,
-                                backgroundColor: "#f2f2f4",
-                                borderRadius: 40/2
+                                width: 50,
+                                height: 50,
+                                // backgroundColor: "#f2f2f4",
+                                borderRadius: 50/2
                             }}
                         >
-                            <Image source={icons.calendar} style={{width: 20, height: 20}} />
+                            <Image source={icons.clipBoard} style={{width: 50, height: 50}} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -256,13 +256,13 @@ const DetailTreatmentScreen = () => {
                             style={{
                                 justifyContent: "center",
                                 alignItems: "center",
-                                width: 40,
-                                height: 40,
-                                backgroundColor: "#f2f2f4",
-                                borderRadius: 40/2
+                                width: 50,
+                                height: 50,
+                                // backgroundColor: "#f2f2f4",
+                                borderRadius: 50/2
                             }}
                         >
-                            <Image source={icons.calendar} style={{width: 20, height: 20}} />
+                            <Image source={icons.clipBoard} style={{width: 50, height: 50}} />
                         </TouchableOpacity>
                     </View>
                 </View>
