@@ -81,16 +81,7 @@ const LoginScreen = () => {
                                     />
                                 )}
                                 name="username"
-                                rules={{
-                                    required: {
-                                        value: true,
-                                        message: "이메일이 필요합니다",
-                                    },
-                                    minLength: {
-                                        value: 4,
-                                        message: "최소 이메일은 4자입니다",
-                                    },
-                                }}
+                                rules={{}}
                             />
                             <Controller
                                 control={control}
@@ -126,16 +117,7 @@ const LoginScreen = () => {
                                     />
                                 )}
                                 name="password"
-                                rules={{
-                                    required: {
-                                        value: true,
-                                        message: "이메일이 필요합니다",
-                                    },
-                                    minLength: {
-                                        value: 4,
-                                        message: "최소 이메일은 4자입니다",
-                                    },
-                                }}
+                                rules={{}}
                             />
                             <View
                                 style={{
@@ -155,17 +137,17 @@ const LoginScreen = () => {
                                         marginLeft: scaledHorizontal(3),
                                         justifyContent: "center",
                                         alignItems: "center"
-                                    }, isCheck ? {backgroundColor: colors.white} : {}]}
+                                    }]}
                                     onPress={() => setIsCheck(!isCheck)}
                                 >
                                     {isCheck && (
                                         <Image
-                                            source={icons.check}
+                                            source={icons.check2}
                                             resizeMode="contain"
                                             style={{
-                                                height: 10,
-                                                width: 10,
-                                                tintColor: isCheck ? colors.black : colors.spanishGray,
+                                                height: 16,
+                                                width: 16,
+                                                // tintColor: isCheck ? colors.black : colors.spanishGray,
                                             }}
                                         />
                                     )}
@@ -184,7 +166,7 @@ const LoginScreen = () => {
                             onPress={handleSubmit(_onSubmit)}
                             type="light"
                             title="로그인"
-                            disabled={form?.password === "" && form?.username === ""}
+                            disabled={!form?.password || !form?.username}
                             style={{
                                 backgroundColor: colors.mediumChampagne,
                                 paddingVertical: scaledVertical(25),

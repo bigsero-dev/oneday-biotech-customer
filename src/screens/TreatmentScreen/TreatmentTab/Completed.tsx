@@ -23,7 +23,7 @@ const Completed = () => {
                     shadowOffset: { width: 0, height: 1 },
                     shadowOpacity: 0.2,
                     shadowRadius: 2,  
-                    elevation: 5,
+                    elevation: 2,
                     backgroundColor: "#fff",
                     marginBottom: scaledHorizontal(16)
                 }}
@@ -35,7 +35,7 @@ const Completed = () => {
                         height: 49,
                         alignItems: "center",
                         paddingHorizontal: scaledHorizontal(20),
-                        backgroundColor: "fff"
+                        backgroundColor: "fff",
                     }}
                 >
                     <Text>2022.08.13 10:00</Text>
@@ -60,7 +60,7 @@ const Completed = () => {
                     shadowOffset: { width: 0, height: 1 },
                     shadowOpacity: 0.2,
                     shadowRadius: 2,  
-                    elevation: 5,
+                    elevation: 2,
                     backgroundColor: "#fff"
                 }}
             >

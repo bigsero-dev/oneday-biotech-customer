@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableOpacity, View, Image, Platform } from "react-native";
 import icons from "configs/icons";
-import { scaledHorizontal } from "utils/ScaledService";
+import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import NavigationService from "utils/NavigationService";
 
 import {IconTooth, IconCalendar, IconChange} from "./TabsIcon/TabsIcon"
@@ -55,8 +55,8 @@ const TabNavigator = () => {
 
                     elevation: 11,
                     height: 65,
-                    paddingTop: 15,
-                    paddingBottom: 9,
+                    paddingTop: scaledVertical(20),
+                    paddingBottom: scaledVertical(20),
                     paddingRight: scaledHorizontal(15),
                     backgroundColor: "white",
                     position: "absolute",

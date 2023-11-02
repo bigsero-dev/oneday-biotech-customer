@@ -5,10 +5,12 @@ import { useState } from "react";
 import {Image, Platform, SafeAreaView, ScrollView, TouchableOpacity, View, useWindowDimensions} from "react-native"
 import { heightPercentage, scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import { Config } from "./Config";
+import images from "configs/images";
 
 const HomeScreen = () => {
     const [dataTeeth, setDataTeeth] = useState(Config);
-  const { height } = useWindowDimensions();
+    const [tab, setTab] = useState("완료");
+    const { height } = useWindowDimensions();
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: "#fff"}}>
@@ -21,7 +23,7 @@ const HomeScreen = () => {
                     alignItems: "center",
                     height: 55,
                 }}>
-                    <View style={{
+                    <TouchableOpacity style={{
                         marginRight: scaledHorizontal(18),
                         backgroundColor: "#568dff",
                         justifyContent: "center",
@@ -31,7 +33,7 @@ const HomeScreen = () => {
                         borderRadius: 10
                     }}>
                         <Text size={12} color="#fff">이용 가이드</Text>
-                    </View>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         style={{width: 18, height: 20, justifyContent: "center", alignItems: "center"}}
                     >
@@ -66,10 +68,17 @@ const HomeScreen = () => {
                                 borderRadius: 16,
                                 justifyContent: "center",
                                 alignItems: "center",
-                                backgroundColor: "#0f1e3d"
+                                backgroundColor: tab === "완료" ? "#0f1e3d" : "#ececec"
                             }}
+                            onPress={() => setTab("완료")}
                         >
-                            <Text color="#fff" size={13}>완료</Text>
+                            <Text 
+                                color={tab === "완료" ? "#fff" : "#0f1e3d"}
+                                style={{opacity: tab === "완료" ? 1 : 0.5}} 
+                                size={13}
+                            >
+                                완료
+                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -78,13 +87,32 @@ const HomeScreen = () => {
                                 borderRadius: 16,
                                 justifyContent: "center",
                                 alignItems: "center",
-                                // backgroundColor: "#0f1e3d"
+                                backgroundColor: tab === "치료중" ? "#0f1e3d" : "#ececec"
                             }}
+                            onPress={() => setTab("치료중")}
                         >
-                            <Text color="#0f1e3d" style={{opacity: 0.5}} size={13}>치료중</Text>
+                            <Text 
+                                color={tab === "치료중" ? "#fff" : "#0f1e3d"} 
+                                style={{opacity: tab === "치료중" ? 1 : 0.5}} 
+                                size={13}
+                            >
+                                치료중
+                            </Text>
                         </TouchableOpacity>
                     </View>
+                    <Space height={19} />
                     <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <Image source={images.teethImplant} style={{width: 210, height: 327}} resizeMode="cover" />
+                        <View style={{position: "absolute", width: 100}}>
+                            <Text textAlign="center" style={{opacity: 0.8}} size={13} color="#555">병원에 예약일정을 문의해주세요.</Text>
+                        </View>
+                    </View>
+                    {/* <View
                         style={{
                         //position: "absolute",
                         marginTop:
@@ -150,15 +178,15 @@ const HomeScreen = () => {
                                 }
                             </View>
                         ))}
-                    </View>
+                    </View> */}
                 </View>
-                {/* <Space height={scaledVertical(820)}/> */}
+                <Space height={scaledVertical(30)}/>
                 <View style={{
                     paddingHorizontal: scaledHorizontal(20),
-                    position: "absolute",
-                    top: scaledVertical(1100)
+                    // position: "absolute",
+                    // top: scaledVertical(1100)
                 }}>
-                    <Text style={{fontWeight: "bold"}} type="extrabold">이번 진료일정</Text>
+                    <Text style={{fontWeight: "bold"}} type="extrabold">예약 현황</Text>
                     <Space height={10} />
                     <View 
                         style={{
@@ -209,7 +237,7 @@ const HomeScreen = () => {
                         </View>
                     </View>
                 </View>
-                <Space height={650} />
+                <Space height={100} />
             </ScrollView>
         </SafeAreaView>
     );
