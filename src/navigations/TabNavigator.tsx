@@ -55,8 +55,9 @@ const TabNavigator = () => {
 
                     elevation: 11,
                     height: 65,
-                    paddingTop: scaledVertical(20),
-                    paddingBottom: scaledVertical(20),
+                    // paddingVertical: scaledVertical(40),
+                    paddingTop: 28,
+                    paddingBottom: 8,
                     paddingRight: scaledHorizontal(15),
                     backgroundColor: "white",
                     position: "absolute",

@@ -191,6 +191,7 @@ const HomeScreen = () => {
                     <View 
                         style={{
                             flexDirection: "row",
+                            justifyContent: "space-between",
                             backgroundColor: "#fff",
                             shadowColor: '#000',
                             shadowOffset: { width: 0, height: 1 },
@@ -202,25 +203,32 @@ const HomeScreen = () => {
                     >
                         <View
                             style={{
-                                width: 8,
-                                backgroundColor: "#dddddd",
-                                height: 92,
-                                marginRight: scaledHorizontal(18)
+                                flexDirection: "row",
+                                // justifyContent: "space-between"
                             }}
                         >
+                            <View
+                                style={{
+                                    width: 8,
+                                    backgroundColor: "#dddddd",
+                                    height: 92,
+                                    marginRight: scaledHorizontal(18)
+                                }}
+                            >
+                            </View>
+                            <View style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginRight: scaledHorizontal(18)
+                            }}>
+                                <Text color="#555" size={13} style={{opacity: 0.8}}>등록된 일정이 없습니다.</Text>
+                            </View> 
                         </View>
-                        <View style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginRight: scaledHorizontal(18)
-                        }}>
-                            <Text color="#555" style={{opacity: 0.8}}>등록된 일정이 없습니다.</Text>
-                        </View>
-                        <Space width={98} />
                         <View
                             style={{
                                 justifyContent: "center",
                                 alignItems: "center",
+                                marginRight: scaledVertical(18)
                             }}
                         >
                             <TouchableOpacity

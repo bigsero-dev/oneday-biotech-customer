@@ -168,7 +168,7 @@ const LoginScreen = () => {
                             title="로그인"
                             disabled={!form?.password || !form?.username}
                             style={{
-                                backgroundColor: colors.mediumChampagne,
+                                backgroundColor: !form?.password || !form?.username ? "#ececec" : colors.mediumChampagne,
                                 paddingVertical: scaledVertical(25),
                                 marginHorizontal: scaledVertical(70),
                                 width: "83%",

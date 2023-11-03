@@ -6,7 +6,8 @@ const images = {
   placeholderImage: require("../assets/images/placeholder-image.png"),
   construction: require("../assets/images/construction.jpg"),
   logoWhite: require("../assets/images/logo-white.jpeg"),
-  teethImplant: require("../assets/images/teeth-implant.png")
+  teethImplant: require("../assets/images/teeth-implant.png"),
+  labelGrey: require("../assets/images/label-grey.png")
 };
 
 export default images;

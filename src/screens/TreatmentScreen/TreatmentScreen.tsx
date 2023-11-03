@@ -22,7 +22,7 @@ const TreatmentScreen = () => {
                     height: 55,
                 }}>
                     <View>
-                        <Text>진료내역</Text>
+                        <Text style={{fontWeight: "bold"}}>진료내역</Text>
                     </View>
                     <TouchableOpacity
                         style={{width: 18, height: 20, justifyContent: "center", alignItems: "center"}}
@@ -40,8 +40,8 @@ const TreatmentScreen = () => {
                 height: 100,
                 justifyContent: "center",
             }}>
-                <Text color="#fff">Antony Santos</Text>
-                <Text color="#fff">910926-2******</Text>
+                <Text color="#fff" size={18} style={{fontWeight: "bold"}}>Antony Santos</Text>
+                <Text color="#fff" size={16}>910926-2******</Text>
             </View>
             <Space height={20} />
             <View style={{
@@ -57,13 +57,13 @@ const TreatmentScreen = () => {
                     borderBottomWidth: tab === "치료중" ? 1 : 0,
                     marginRight: scaledHorizontal(30)
                 }}>
-                    <Text color={tab === "치료중" ? "#000" : "#767676"}>치료중</Text>
+                    <Text color={tab === "치료중" ? "#000" : "#767676"} style={{fontWeight: tab === "치료중" ? "bold" : "500"}} >치료중</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setTab("완료")} style={{
                     borderBottomColor: "#000",
                     borderBottomWidth: tab === "완료" ? 1 : 0
                 }}>
-                    <Text color={tab === "완료" ? "#000" : "#767676"}>완료</Text>
+                    <Text color={tab === "완료" ? "#000" : "#767676"} style={{fontWeight: tab === "완료" ? "bold" : "500"}}>완료</Text>
                 </TouchableOpacity>
             </View>
             <Space height={scaledVertical(23)} />

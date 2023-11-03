@@ -35,13 +35,16 @@ const DetailTreatmentScreen = () => {
                     >
                         <Image source={icons.arrowLeft} style={{width: 10, height: 18}} resizeMode="cover"  />
                     </TouchableOpacity>
-                    <Text>진료상세</Text>
+                    <Text style={{fontWeight: "bold"}}>진료상세</Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={{
-                        width: 25, 
-                        height: 22
-                    }}>
+                    <TouchableOpacity 
+                        onPress={() => NavigationService.navigate("TabNavigator", { screen: "Home" })}
+                        style={{
+                            width: 25, 
+                            height: 22
+                        }}
+                    >
                         <Image source={icons.home} style={{width: 25, height: 22}} resizeMode="cover"  />
                     </TouchableOpacity>
                 </View>
@@ -60,13 +63,14 @@ const DetailTreatmentScreen = () => {
                     borderBottomWidth: tab === "예약관리" ? 1 : 0,
                     marginRight: scaledHorizontal(30)
                 }}>
-                    <Text color={tab === "치료중" ? "#000" : "#767676"}>예약관리</Text>
+                    <Text color={tab === "예약관리" ? "#000" : "#767676"} style={{fontWeight: tab === "예약관리" ? "bold" : "500"}} >예약관리</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setTab("상세내역")} style={{
+                <TouchableOpacity onPress={() => setTab("상세내역")} 
+                style={{
                     borderBottomColor: "#000",
                     borderBottomWidth: tab === "상세내역" ? 1 : 0
                 }}>
-                    <Text color={tab === "상세내역" ? "#000" : "#767676"}>상세내역</Text>
+                    <Text color={tab === "상세내역" ? "#000" : "#767676"} style={{fontWeight: tab === "상세내역" ? "bold" : "500"}}>상세내역</Text>
                 </TouchableOpacity>
             </View>
             <Space height={24} />
@@ -92,7 +96,7 @@ const DetailTreatmentScreen = () => {
                     }}
                 >
                     <Text size={13}>수술예정 치아 수량</Text>
-                    <Text size={13}>총 0개</Text>
+                    <Text size={13} style={{fontWeight: "bold"}}>총 <Text color="#ec524f">0</Text>개</Text>
                 </View>
                 <Space width={10} />
                 <View
@@ -110,7 +114,7 @@ const DetailTreatmentScreen = () => {
                     }}
                 >
                     <Text size={13}>주치의</Text>
-                    <Text size={13}>김평강</Text>
+                    <Text size={13} style={{fontWeight: "bold"}}>김평강</Text>
                 </View>
             </View>
             <Space height={12} />
@@ -135,7 +139,7 @@ const DetailTreatmentScreen = () => {
                     marginHorizontal: scaledHorizontal(20),
                 }}
             >
-                <Text>이번 진료일정</Text>
+                <Text style={{fontWeight: "bold"}}>이번 진료일정</Text>
                 <Space height={10} />
                 <View 
                     style={{
@@ -146,44 +150,47 @@ const DetailTreatmentScreen = () => {
                         shadowOpacity: 0.2,
                         shadowRadius: 2,  
                         elevation: 5,
-                        height: 92
+                        height: 92,
+                        justifyContent: "space-between"
                     }}
                 >
-                    <View
-                        style={{
-                            width: 8,
-                            backgroundColor: "#83abff",
-                            height: 92,
+                    <View style={{flexDirection: "row"}}>
+                        <View
+                            style={{
+                                width: 8,
+                                backgroundColor: "#83abff",
+                                height: 92,
+                                marginRight: scaledHorizontal(18)
+                            }}
+                        >
+                        </View>
+                        <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
                             marginRight: scaledHorizontal(18)
-                        }}
-                    >
+                        }}>
+                            <Text color="#555" size={13}>예약일시</Text>
+                            <Space height={8} />
+                            <Text color="#555" size={13}>수술과정</Text>
+                            <Space height={8} />
+                            <Text color="#555" size={13}>진행상황</Text>
+                        </View>
+                        <View style={{
+                            justifyContent: "center",
+                            marginRight: scaledHorizontal(18)
+                        }}>
+                            <Text color="#000" size={13}>2022.11.14 10:30</Text>
+                            <Space height={8} />
+                            <Text color="#000" size={13}>초진검진</Text>
+                            <Space height={8} />
+                            <Text color="#000" size={13}>초진검진</Text>
+                        </View>
                     </View>
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginRight: scaledHorizontal(18)
-                    }}>
-                        <Text color="#555">예약일시</Text>
-                        <Space height={8} />
-                        <Text color="#555">수술과정</Text>
-                        <Space height={8} />
-                        <Text color="#555">진행상황</Text>
-                    </View>
-                    <View style={{
-                        justifyContent: "center",
-                        marginRight: scaledHorizontal(18)
-                    }}>
-                        <Text color="#000">2022.11.14 10:30</Text>
-                        <Space height={8} />
-                        <Text color="#000">초진검진</Text>
-                        <Space height={8} />
-                        <Text color="#000">초진검진</Text>
-                    </View>
-                    <Space width={56} />
                     <View
                         style={{
                             justifyContent: "center",
                             alignItems: "center",
+                            paddingRight: scaledHorizontal(18)
                         }}
                     >
                         <TouchableOpacity
@@ -201,7 +208,7 @@ const DetailTreatmentScreen = () => {
                     </View>
                 </View>
                 <Space height={36} />
-                <Text>이번 진료일정</Text>
+                <Text style={{fontWeight: "bold"}}>이번 진료일정</Text>
                 <Space height={10} />
                 <View 
                     style={{
@@ -212,44 +219,48 @@ const DetailTreatmentScreen = () => {
                         shadowOpacity: 0.2,
                         shadowRadius: 2,  
                         elevation: 5,
-                        height: 92
+                        height: 92,
+                        justifyContent: "space-between",
                     }}
                 >
-                    <View
-                        style={{
-                            width: 8,
-                            backgroundColor: "#dddddd",
-                            height: 92,
+                    <View style={{flexDirection: "row"}}>
+                        <View
+                            style={{
+                                width: 8,
+                                backgroundColor: "#dddddd",
+                                height: 92,
+                                marginRight: scaledHorizontal(18)
+                            }}
+                        >
+                        </View>
+                        <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
                             marginRight: scaledHorizontal(18)
-                        }}
-                    >
+                        }}>
+                            <Text color="#555" size={13}>예약일시</Text>
+                            <Space height={8} />
+                            <Text color="#555" size={13}>수술과정</Text>
+                            <Space height={8} />
+                            <Text color="#555" size={13}>진행상황</Text>
+                        </View>
+                        <View style={{
+                            justifyContent: "center",
+                            marginRight: scaledHorizontal(18)
+                        }}>
+                            <Text color="#000" size={13}>(미등록)</Text>
+                            <Space height={8} />
+                            <Text color="#000" size={13}>(미등록)</Text>
+                            <Space height={8} />
+                            <Text color="#000" size={13}>(미등록)</Text>
+                        </View>
                     </View>
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginRight: scaledHorizontal(18)
-                    }}>
-                        <Text color="#555">예약일시</Text>
-                        <Space height={8} />
-                        <Text color="#555">수술과정</Text>
-                        <Space height={8} />
-                        <Text color="#555">진행상황</Text>
-                    </View>
-                    <View style={{
-                        justifyContent: "center",
-                        marginRight: scaledHorizontal(18)
-                    }}>
-                        <Text color="#000">2022.11.14 10:30</Text>
-                        <Space height={8} />
-                        <Text color="#000">초진검진</Text>
-                        <Space height={8} />
-                        <Text color="#000">초진검진</Text>
-                    </View>
-                    <Space width={56} />
+                    
                     <View
                         style={{
                             justifyContent: "center",
                             alignItems: "center",
+                            paddingRight: scaledHorizontal(18)
                         }}
                     >
                         <TouchableOpacity
@@ -267,7 +278,7 @@ const DetailTreatmentScreen = () => {
                     </View>
                 </View>
                 <Space height={10} />
-                <Text color="#999">※ 예약일정 변경은 병원에 문의해주세요.</Text>
+                <Text color="#999" size={12}>※ 예약일정 변경은 병원에 문의해주세요.</Text>
             </View>
             
             </ScrollView>
@@ -289,7 +300,7 @@ const DetailTreatmentScreen = () => {
                         width: '50%'
                     }}
                 >
-                    <Text color="#fff">보증서 보기</Text>
+                    <Text color="#fff" style={{fontWeight: "bold"}}>보증서 보기</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={{
@@ -300,7 +311,7 @@ const DetailTreatmentScreen = () => {
                         width: '50%'
                     }}
                 >
-                    <Text color="#000">엑스레이 보기</Text>
+                    <Text color="#000" style={{fontWeight: "bold"}}>엑스레이 보기</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

@@ -1,22 +1,23 @@
 import Space from "components/Space";
 import Text from "components/Text";
 import icons from "configs/icons";
-import {ImageBackground, TouchableOpacity, View} from "react-native"
+import images from "configs/images";
+import {Image, ImageBackground, TouchableOpacity, View} from "react-native"
 import NavigationService from "utils/NavigationService";
-import { scaledHorizontal } from "utils/ScaledService";
+import { scaledHorizontal, widthPercentage } from "utils/ScaledService";
 
 const Completed = () => {
     return (
         <View>
             <View style={{paddingHorizontal: scaledHorizontal(20)}}>
-            <Text>총 2건</Text>
+            <Text>총 <Text style={{fontWeight: "bold"}}>2</Text>건</Text>
             </View>
             <Space height={12} />
             <TouchableOpacity
                 onPress={() => NavigationService.navigate("DetailTreatmentScreen")}
                 style={{
                     height: 49,
-                    width: 372,
+                    width: widthPercentage(98),
                     justifyContent: "space-between",
                     flexDirection: "row",
                     shadowColor: '#000',
@@ -44,16 +45,17 @@ const Completed = () => {
                     <Text>총 <Text color="#ec524f">18</Text>개</Text>
                 </View>
                 <View style={{position: "absolute", right: -6, top: 10}}>
-                    <ImageBackground source={icons.markYellow} style={{flex: 1,justifyContent: 'center', alignItems: "center", width: 90, height: 28}} resizeMode="cover">
+                    <Image source={images.labelGrey} style={{width: 90, height: 28}} resizeMode="cover" />
+                    {/* <ImageBackground source={icons.markYellow} style={{flex: 1,justifyContent: 'center', alignItems: "center", width: 90, height: 28}} resizeMode="cover">
                         <Text size={13}>검진</Text>
-                    </ImageBackground>
+                    </ImageBackground> */}
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => NavigationService.navigate("DetailTreatmentScreen")}
                 style={{
                     height: 49,
-                    width: 372,
+                    width: widthPercentage(98),
                     justifyContent: "space-between",
                     flexDirection: "row",
                     shadowColor: '#000',
@@ -80,9 +82,7 @@ const Completed = () => {
                     <Text>총 <Text color="#ec524f">18</Text>개</Text>
                 </View>
                 <View style={{position: "absolute", right: -6, top: 10}}>
-                    <ImageBackground source={icons.markYellow} style={{flex: 1,justifyContent: 'center', alignItems: "center", width: 90, height: 28}} resizeMode="cover">
-                        <Text size={13}>검진</Text>
-                    </ImageBackground>
+                    <Image source={images.labelGrey} style={{width: 90, height: 28}} resizeMode="cover" />
                 </View>
             </TouchableOpacity>
         </View>

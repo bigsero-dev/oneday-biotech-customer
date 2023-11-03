@@ -3,27 +3,27 @@ import Text from "components/Text";
 import icons from "configs/icons";
 import {ImageBackground, TouchableOpacity, View} from "react-native"
 import NavigationService from "utils/NavigationService";
-import { scaledHorizontal } from "utils/ScaledService";
+import { scaledHorizontal, widthPercentage } from "utils/ScaledService";
 
 const Ongoing = () => {
     return (
         <View>
             <View style={{paddingHorizontal: scaledHorizontal(20)}}>
-            <Text>총 1건</Text>
+            <Text>총 <Text style={{fontWeight: "bold"}}>1</Text>건</Text>
             </View>
             <Space height={12} />
             <TouchableOpacity
                 onPress={() => NavigationService.navigate("DetailTreatmentScreen")}
                 style={{
                     height: 49,
-                    width: 372,
+                    width: widthPercentage(98),
                     justifyContent: "space-between",
                     flexDirection: "row",
                     shadowColor: '#000',
                     shadowOffset: { width: 0, height: 1 },
                     shadowOpacity: 0.2,
                     shadowRadius: 2,  
-                    elevation: 5,
+                    elevation: 3,
                     backgroundColor: "#fff"
                 }}
             >
