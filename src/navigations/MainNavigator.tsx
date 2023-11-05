@@ -12,6 +12,7 @@ import ProfileScreen from "screens/ProfileScreen/ProfileScreen";
 import TreatmentScreen from "screens/TreatmentScreen/TreatmentScreen";
 import TabNavigator from "./TabNavigator";
 import DetailTreatmentScreen from "screens/DetailTreatmentScreen/DetailTreatmentScreen";
+import WarrantyListScreen from "screens/WarrantyListScreen/WarrantyListScreen";
 
 const Main = createStackNavigator<RootStackParamList>();
 
@@ -77,6 +78,14 @@ const AppStackNavigator = () => {
             <Main.Screen
                 name="DetailTreatmentScreen"
                 component={DetailTreatmentScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="WarrantyListScreen"
+                component={WarrantyListScreen}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,

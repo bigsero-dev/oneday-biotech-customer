@@ -7,6 +7,7 @@ export type RootStackParamList = {
     TreatmentScreen: undefined;
     ProfileScreen: undefined;
     DetailTreatmentScreen: undefined;
+    WarrantyListScreen: undefined;
 }
 
 export type RootType =
@@ -17,4 +18,5 @@ export type RootType =
   | "LoginScreen"
   | "TreatmentScreen"
   | "ProfileScreen"
-  | "DetailTreatmentScreen";
+  | "DetailTreatmentScreen"
+  | "WarrantyListScreen";
