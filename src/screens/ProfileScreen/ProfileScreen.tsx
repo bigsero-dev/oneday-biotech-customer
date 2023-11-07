@@ -161,7 +161,7 @@ const ProfileScreen = () => {
                 borderRadius: 2,
                 // borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
                 borderColor: colors.gainsboro,
-                marginBottom: scaledVertical(16),
+                marginBottom: 16,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.2,
@@ -172,7 +172,7 @@ const ProfileScreen = () => {
             >
               <Section
                 leftText={item?.title}
-                isBold={false}
+                isBold={true}
                 textSize={14}
                 arrowRight={item?.rightIcon}
                 withRadio={item?.type === "radio" ? true : false}
@@ -186,6 +186,7 @@ const ProfileScreen = () => {
                 isVersion={item?.type === "version"}
                 textRightSize={item?.type === "version" ? 14 : 13}
                 withLeftTextBlue={item?.type === "version" ? true : false}
+                withLeftTextBlueBold={false}
                 leftTextBlue={
                   item?.type === "version" ? "(업데이트 필요)" : ""
                 }

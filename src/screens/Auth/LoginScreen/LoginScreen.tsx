@@ -27,7 +27,7 @@ const LoginScreen = () => {
         //formState: { errors, isDirty, isValid },
         formState: { errors },
         reset,
-      } = useForm({ mode: "onChange" });
+    } = useForm({ mode: "onChange" });
 
     const _onSubmit = (data: any) => {
         setIsLoading(true);
@@ -37,7 +37,7 @@ const LoginScreen = () => {
     }
 
     return (
-        <View style={{flex:1, justifyContent: "center", alignItems: "center", backgroundColor: "#0f1e3d"}}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#0f1e3d" }}>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={"height"}
@@ -45,39 +45,39 @@ const LoginScreen = () => {
             >
                 <ScrollView style={{ flex: 1 }}>
                     <View style={{ alignItems: "center" }}>
-                        <Image source={icons.logo} style={{width: 140, height: 180, marginTop: scaledVertical(180),}} resizeMode="contain" />
+                        <Image source={icons.logo} style={{ width: 140, height: 180, marginTop: scaledVertical(180), }} resizeMode="contain" />
                         <Space height={scaledVertical(120)} />
-                        <View style={{flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start", marginHorizontal: scaledHorizontal(40)}}>
+                        <View style={{ flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start", marginHorizontal: scaledHorizontal(40) }}>
                             <Controller
                                 control={control}
                                 defaultValue=""
-                                render={({ field:{ onChange, value }}) => (
+                                render={({ field: { onChange, value } }) => (
                                     <Input
-                                    onChange={text => {
-                                        onChange(text);
-                                        setForm({ ...form, username: text });
-                                      }}
-                                      value={value}
-                                      isRequired
-                                      borderLess={true}
-                                      placeholder={"이름"}
-                                      error={errors.username && errors?.username?.message}
-                                      onClearButton={value ? true : false}
-                                      onFocus={() =>
-                                        setFocusInput({ ...focusInput, username: true })
-                                      }
-                                      onBlur={() =>
-                                        setFocusInput({ ...focusInput, username: false })
-                                      }
-                                      onClear={() => {
-                                        reset((formValues: any) => ({
-                                          ...formValues,
-                                          username: "",
-                                        }));
-                                        setForm({ ...form, username: "" });
-                                      }}
-                                      //label={i18n.t("login.formEmail")}
-                                      focusInput={focusInput.username}
+                                        onChange={text => {
+                                            onChange(text);
+                                            setForm({ ...form, username: text });
+                                        }}
+                                        value={value}
+                                        isRequired
+                                        borderLess={true}
+                                        placeholder={"이름"}
+                                        error={errors.username && errors?.username?.message}
+                                        onClearButton={value ? true : false}
+                                        onFocus={() =>
+                                            setFocusInput({ ...focusInput, username: true })
+                                        }
+                                        onBlur={() =>
+                                            setFocusInput({ ...focusInput, username: false })
+                                        }
+                                        onClear={() => {
+                                            reset((formValues: any) => ({
+                                                ...formValues,
+                                                username: "",
+                                            }));
+                                            setForm({ ...form, username: "" });
+                                        }}
+                                        //label={i18n.t("login.formEmail")}
+                                        focusInput={focusInput.username}
                                     />
                                 )}
                                 name="username"
@@ -86,7 +86,7 @@ const LoginScreen = () => {
                             <Controller
                                 control={control}
                                 defaultValue=""
-                                render={({ field:{ onChange, value }}) => (
+                                render={({ field: { onChange, value } }) => (
                                     <Input
                                         onChange={text => {
                                             onChange(text);
@@ -107,8 +107,8 @@ const LoginScreen = () => {
                                         }
                                         onClear={() => {
                                             reset((formValues: any) => ({
-                                            ...formValues,
-                                            password: "",
+                                                ...formValues,
+                                                password: "",
                                             }));
                                             setForm({ ...form, password: "" });
                                         }}
@@ -125,7 +125,7 @@ const LoginScreen = () => {
                                     alignSelf: "flex-start",
                                     alignItems: "center",
                                 }}
-                                >
+                            >
                                 <TouchableOpacity
                                     style={[{
                                         width: 16,
@@ -175,7 +175,7 @@ const LoginScreen = () => {
                                 borderRadius: 2,
                             }}
                             textStyle={{
-                                color: colors.black,
+                                color: !form?.password || !form?.username ? "#767676" : colors.black,
                                 flex: 1,
                                 textAlign: "center",
                                 fontSize: 17,
@@ -186,7 +186,7 @@ const LoginScreen = () => {
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-            
+
         </View>
     );
 }

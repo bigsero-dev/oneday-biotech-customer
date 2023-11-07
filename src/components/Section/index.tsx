@@ -18,6 +18,7 @@ interface SectionProps {
   isVersion?: boolean;
   textRightSize?: number;
   withLeftTextBlue?: boolean;
+  withLeftTextBlueBold?: boolean;
   leftTextBlue?: string;
 }
 
@@ -34,6 +35,7 @@ const Section = ({
   isVersion,
   textRightSize = 13,
   withLeftTextBlue,
+  withLeftTextBlueBold,
   leftTextBlue,
 }: SectionProps) => {
   return (
@@ -56,7 +58,7 @@ const Section = ({
             size={textSize ? textSize : 18}
             type="bold"
             color={colors.brandBlue}
-            style={{ fontWeight: isBold ? "900" : "normal" }}
+            style={{ fontWeight: withLeftTextBlueBold ? "900" : "normal" }}
           >
             {leftTextBlue}
           </Text>
