@@ -169,7 +169,15 @@ const WarrantyListScreen = () => {
                 </ScrollView>
             </View>
             <BaseModal
-                contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 140 }}
+                contentStyle={{
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingHorizontal: 0,
+                    borderRadius: 2,
+                    height: 75,
+                    width: 225,
+                    alignSelf: "center"
+                }}
                 showModal={openModalSort}
                 animation="slide"
                 onBackdropPress={() => SetOpenModalSort(false)}
@@ -178,7 +186,7 @@ const WarrantyListScreen = () => {
                 <View
                     style={{
                         backgroundColor: colors.white,
-                        flex: 1
+                        // flex: 1
                     }}
                 >
                     <TouchableOpacity
@@ -190,13 +198,13 @@ const WarrantyListScreen = () => {
                             justifyContent: "space-between",
                             flexDirection: "row",
                             paddingHorizontal: 15,
-                            paddingBottom: 20,
-                            // paddingVertical: 11,
+                            // paddingBottom: 20,
+                            paddingVertical: 8,
                             alignItems: "center"
                         }}
                     >
-                        <Text>최신순</Text>
-                        <Image source={searchInfo.sortBy === "최신순" ? icons.radioSelect : icons.radioUnselect} style={{ width: 24, height: 24 }} />
+                        <Text size={13}>최신순</Text>
+                        <Image source={searchInfo.sortBy === "최신순" ? icons.radioSelect : icons.radioUnselect} style={{ width: 16, height: 16 }} />
                     </TouchableOpacity>
                     <View style={{ height: 1, borderWidth: 0.5, borderColor: "#ddd" }}></View>
                     <TouchableOpacity
@@ -208,13 +216,13 @@ const WarrantyListScreen = () => {
                             justifyContent: "space-between",
                             flexDirection: "row",
                             paddingHorizontal: 15,
-                            paddingTop: 20,
-                            // paddingVertical: 11,
+                            // paddingTop: 20,
+                            paddingVertical: 8,
                             alignItems: "center"
                         }}
                     >
-                        <Text>오래된순</Text>
-                        <Image source={searchInfo.sortBy === "오래된순" ? icons.radioSelect : icons.radioUnselect} style={{ width: 24, height: 24 }} />
+                        <Text size={13}>오래된순</Text>
+                        <Image source={searchInfo.sortBy === "오래된순" ? icons.radioSelect : icons.radioUnselect} style={{ width: 16, height: 16 }} />
                     </TouchableOpacity>
                 </View>
             </BaseModal>
