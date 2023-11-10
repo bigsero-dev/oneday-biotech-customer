@@ -19,7 +19,9 @@ const ProfileScreen = () => {
   const menuInformation = [
     {
       title: "병원 목록",
-      onPress: () => { },
+      onPress: () => {
+        NavigationService.navigate("HospitalListScreen")
+      },
       type: "",
       rightIcon: true,
     },

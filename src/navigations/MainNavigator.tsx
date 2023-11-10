@@ -1,8 +1,8 @@
 import React from "react";
 import type { StackNavigationOptions } from "@react-navigation/stack";
 import {
-  CardStyleInterpolators,
-  createStackNavigator,
+    CardStyleInterpolators,
+    createStackNavigator,
 } from "@react-navigation/stack";
 import type { RootStackParamList } from "types/NavigatorTypes";
 import HomeScreen from "screens/HomeScreen/HomeScreen";
@@ -13,6 +13,7 @@ import TreatmentScreen from "screens/TreatmentScreen/TreatmentScreen";
 import TabNavigator from "./TabNavigator";
 import DetailTreatmentScreen from "screens/DetailTreatmentScreen/DetailTreatmentScreen";
 import WarrantyListScreen from "screens/WarrantyListScreen/WarrantyListScreen";
+import HospitalListScreen from "screens/HospitalListScreen/HospitalListScreen";
 
 const Main = createStackNavigator<RootStackParamList>();
 
@@ -86,6 +87,14 @@ const AppStackNavigator = () => {
             <Main.Screen
                 name="WarrantyListScreen"
                 component={WarrantyListScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="HospitalListScreen"
+                component={HospitalListScreen}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,

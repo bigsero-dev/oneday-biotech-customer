@@ -1,13 +1,14 @@
 export type RootStackParamList = {
-    SplashScreen: undefined;
-    HomeScreen: undefined;
-    TabNavigator: any;
-    MainNavigator: undefined;
-    LoginScreen: undefined;
-    TreatmentScreen: undefined;
-    ProfileScreen: undefined;
-    DetailTreatmentScreen: undefined;
-    WarrantyListScreen: undefined;
+  SplashScreen: undefined;
+  HomeScreen: undefined;
+  TabNavigator: any;
+  MainNavigator: undefined;
+  LoginScreen: undefined;
+  TreatmentScreen: undefined;
+  ProfileScreen: undefined;
+  DetailTreatmentScreen: undefined;
+  WarrantyListScreen: undefined;
+  HospitalListScreen: undefined;
 }
 
 export type RootType =
@@ -19,4 +20,5 @@ export type RootType =
   | "TreatmentScreen"
   | "ProfileScreen"
   | "DetailTreatmentScreen"
-  | "WarrantyListScreen";
+  | "WarrantyListScreen"
+  | "HospitalListScreen";
