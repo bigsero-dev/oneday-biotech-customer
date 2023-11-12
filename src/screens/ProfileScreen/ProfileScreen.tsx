@@ -37,7 +37,6 @@ const ProfileScreen = () => {
       title: "알림설정",
       onPress: () => {
         setIsRadioOn(!isRadioOn)
-        setOpenModal(true)
       },
       type: "radio",
       rightIcon: false,
@@ -50,7 +49,9 @@ const ProfileScreen = () => {
     },
     {
       title: "로그아웃",
-      onPress: () => { },
+      onPress: () => {
+        setOpenModal(true)
+      },
       type: "",
       rightIcon: true,
     },
@@ -68,7 +69,8 @@ const ProfileScreen = () => {
         <View
           style={{
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            flex: 1
           }}
         >
           <Text size={18} style={{ fontWeight: "bold" }}>로그아웃</Text>
@@ -106,7 +108,7 @@ const ProfileScreen = () => {
                 color: colors.black,
                 fontWeight: "bold"
               }}
-              title="취소"
+              title="로그아웃"
               style={{
                 width: 125,
                 height: 45,
@@ -132,6 +134,7 @@ const ProfileScreen = () => {
           <Text style={{ fontWeight: "bold" }}>마이페이지</Text>
         </View>
         <TouchableOpacity
+          onPress={() => NavigationService.navigate("NotificationScreen")}
           style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
         >
           <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />

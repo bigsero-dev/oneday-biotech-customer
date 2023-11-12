@@ -14,6 +14,9 @@ import TabNavigator from "./TabNavigator";
 import DetailTreatmentScreen from "screens/DetailTreatmentScreen/DetailTreatmentScreen";
 import WarrantyListScreen from "screens/WarrantyListScreen/WarrantyListScreen";
 import HospitalListScreen from "screens/HospitalListScreen/HospitalListScreen";
+import ImplantListScreen from "screens/ImplantListScreen/ImplantListScreen";
+import ChangeHospitalScreen from "screens/ChangeHospitalScreen/ChangeHospitalScreen";
+import NotificationScreen from "screens/NotificationScreen/NotificationScreen";
 
 const Main = createStackNavigator<RootStackParamList>();
 
@@ -95,6 +98,30 @@ const AppStackNavigator = () => {
             <Main.Screen
                 name="HospitalListScreen"
                 component={HospitalListScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="ImplantListScreen"
+                component={ImplantListScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="ChangeHospitalScreen"
+                component={ChangeHospitalScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="NotificationScreen"
+                component={NotificationScreen}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,

@@ -13,7 +13,9 @@ const Ongoing = () => {
             </View>
             <Space height={12} />
             <TouchableOpacity
-                onPress={() => NavigationService.navigate("DetailTreatmentScreen")}
+                onPress={() => NavigationService.navigate("DetailTreatmentScreen", {
+                    type: "ongoing"
+                })}
                 style={{
                     height: 49,
                     width: widthPercentage(98),

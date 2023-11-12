@@ -6,6 +6,7 @@ import { Image, SafeAreaView, TouchableOpacity, View } from "react-native"
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import Ongoing from "./TreatmentTab/Ongoing";
 import Completed from "./TreatmentTab/Completed";
+import NavigationService from "utils/NavigationService";
 
 const TreatmentScreen = () => {
     const [tab, setTab] = useState("치료중");
@@ -25,6 +26,7 @@ const TreatmentScreen = () => {
                     <Text style={{ fontWeight: "bold" }}>진료내역</Text>
                 </View>
                 <TouchableOpacity
+                    onPress={() => NavigationService.navigate("NotificationScreen")}
                     style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
                 >
                     <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />

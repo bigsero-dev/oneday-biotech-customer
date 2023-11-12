@@ -1,9 +1,7 @@
 import Space from "components/Space";
 import Text from "components/Text";
-import icons from "configs/icons";
-import images from "configs/images";
 import { schedule } from "configs/schedule";
-import { Image, ImageBackground, TouchableOpacity, View } from "react-native"
+import { Image, TouchableOpacity, View } from "react-native"
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, widthPercentage } from "utils/ScaledService";
 
@@ -15,7 +13,9 @@ const Completed = () => {
             </View>
             <Space height={12} />
             <TouchableOpacity
-                onPress={() => NavigationService.navigate("DetailTreatmentScreen")}
+                onPress={() => NavigationService.navigate("DetailTreatmentScreen", {
+                    type: "completed"
+                })}
                 style={{
                     height: 49,
                     width: widthPercentage(98),
@@ -53,7 +53,9 @@ const Completed = () => {
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => NavigationService.navigate("DetailTreatmentScreen")}
+                onPress={() => NavigationService.navigate("DetailTreatmentScreen", {
+                    type: "completed"
+                })}
                 style={{
                     height: 49,
                     width: widthPercentage(98),

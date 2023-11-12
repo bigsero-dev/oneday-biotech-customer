@@ -56,11 +56,12 @@ const WarrantyListScreen = () => {
                     alignItems: "center",
                     flexDirection: "row",
                 }}>
-                    <View style={{
-                        flexDirection: "row",
-                    }}>
-                        <TouchableOpacity
-                            onPress={() => NavigationService.back()}
+                    <TouchableOpacity
+                        onPress={() => NavigationService.back()}
+                        style={{
+                            flexDirection: "row",
+                        }}>
+                        <View
                             style={{
                                 width: 10,
                                 height: 18,
@@ -68,9 +69,9 @@ const WarrantyListScreen = () => {
                             }}
                         >
                             <Image source={icons.arrowLeft} style={{ width: 10, height: 18 }} resizeMode="cover" />
-                        </TouchableOpacity>
+                        </View>
                         <Text style={{ fontWeight: "bold" }}>보증서 목록</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <Space height={20} />
                 <ScrollView

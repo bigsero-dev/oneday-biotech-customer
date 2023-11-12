@@ -16,16 +16,16 @@ const mockData = [
     },
     {
         id: 2,
-        title: "원데이 치과"
+        title: "여의도 베스트1234병원"
     },
 ];
-const HospitalListScreen = () => {
+const ChangeHospitalScreen = () => {
     const [openModal, setOpenModel] = useState(false);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
             <BaseModal
-                contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 280 }}
+                contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 250 }}
                 showModal={openModal}
                 animation="slide"
                 onBackdropPress={() => setOpenModel(false)}
@@ -33,32 +33,60 @@ const HospitalListScreen = () => {
             >
                 <View
                     style={{
-                        backgroundColor: colors.white,
-                        flex: 1,
                         justifyContent: "center",
-                        alignItems: "center",
-                        paddingHorizontal: 41
+                        alignItems: "center"
                     }}
                 >
-                    <Text size={18} style={{ fontWeight: "bold" }}>병원 정보 확인</Text>
+                    <Text size={18} style={{ fontWeight: "bold" }}>병원 변경하기 취소</Text>
                     <Space height={25} />
-                    <Text size={14} color="#616161">변경할 병원 정보가 없습니다.</Text>
-                    <Space height={25} />
-                    <Text size={14} textAlign="center" color="#c91b17">※ 이용 중인 병원이 1곳인 경우에는 다른 병원으로 변경하기가 불가능합니다.</Text>
+                    <Text textAlign="center" size={14} style={{ lineHeight: 21 }}>
+                        이전 화면으로 돌아가시겠습니까?{"\n"}
+                        변경사항은 저장되지 않습니다.
+                    </Text>
+                    <Space height={32} />
+                    <View
+                        style={{
+                            flexDirection: "row"
+                        }}
+                    >
+                        <Button
+                            onPress={() => setOpenModel(false)}
+                            title="취소"
+                            textStyle={{
+                                color: colors.black,
+                                fontWeight: "bold"
+                            }}
+                            style={{
+                                width: 125,
+                                height: 45,
+                                borderRadius: 5,
+                                backgroundColor: colors.white,
+                                borderWidth: 1,
+                                borderColor: "#767676"
+                            }}
+                        />
+                        <Space width={12} />
+                        <Button
+                            onPress={() => {
+                                setOpenModel(false)
+                                NavigationService.back()
+                            }}
+                            textStyle={{
+                                color: colors.black,
+                                fontWeight: "bold"
+                            }}
+                            title="확인"
+                            style={{
+                                width: 125,
+                                height: 45,
+                                borderRadius: 5,
+                                backgroundColor: "#f2dca8",
+                                borderWidth: 1,
+                                borderColor: "#e9ce8f"
+                            }}
+                        />
+                    </View>
                 </View>
-                <Button
-                    onPress={() => setOpenModel(false)}
-                    title="확인"
-                    textStyle={{
-                        color: "#000",
-                        fontWeight: "bold"
-                    }}
-                    style={{
-                        borderRadius: 2,
-                        height: 55,
-                        backgroundColor: "#f2dca8"
-                    }}
-                />
             </BaseModal>
             <View style={{
                 height: 55,
@@ -74,8 +102,9 @@ const HospitalListScreen = () => {
                     alignItems: "center",
                     width: "100%"
                 }}>
-                    <TouchableOpacity onPress={() => NavigationService.back()} style={{ flexDirection: "row", }}>
-                        <TouchableOpacity
+                    <View style={{ flexDirection: "row", }}>
+                        {/* <TouchableOpacity
+                            onPress={() => NavigationService.back()}
                             style={{
                                 width: 10,
                                 height: 18,
@@ -83,27 +112,23 @@ const HospitalListScreen = () => {
                             }}
                         >
                             <Image source={icons.arrowLeft} style={{ width: 10, height: 18 }} resizeMode="cover" />
-                        </TouchableOpacity>
-                        <Text style={{ fontWeight: "bold" }}>병원 목록</Text>
-                    </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <Text style={{ fontWeight: "bold" }}>{`병원 목록 > 병원 변경하기`}</Text>
+                    </View>
                     <TouchableOpacity
-                        onPress={() => {
-                            if (mockData.length > 1) {
-                                NavigationService.navigate("ChangeHospitalScreen")
-                            } else {
-                                setOpenModel(true)
-                            }
-                        }}
+                        onPress={() => setOpenModel(true)}
                         style={{
-                            width: 139,
+                            width: 80,
                             height: 29,
                             justifyContent: "center",
                             alignItems: "center",
                             borderRadius: 5,
-                            backgroundColor: "#4471c4"
+                            backgroundColor: "#fff",
+                            borderWidth: 1,
+                            borderColor: "#767676"
                         }}
                     >
-                        <Text size={12} color="#fff">임플란트 병원 변경하기</Text>
+                        <Text size={12} color="#000">취소하기</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -113,7 +138,7 @@ const HospitalListScreen = () => {
                     paddingHorizontal: 20
                 }}
             >
-                <Text size={13} color="#555">더보기를 누르면, 병원 상세정보를 볼 수 있습니다.</Text>
+                <Text size={13} color="#555">HOME에 연결하기 위한 병원을 선택해주세요.</Text>
                 <Space height={18} />
                 <ScrollView>
                     {mockData && mockData.map((item, idx) => (
@@ -143,9 +168,24 @@ const HospitalListScreen = () => {
                     ))}
                 </ScrollView>
             </View>
+            <Button
+                style={{
+                    height: 55,
+                    backgroundColor: "#f2dca8",
+                    borderRadius: 2,
+                    bottom: 0,
+                    position: "absolute",
+                    width: "100%"
+                }}
+                title="병원 변경완료"
+                textStyle={{
+                    color: "#000",
+                    fontWeight: "bold"
+                }}
+            />
         </SafeAreaView>
     )
         ;
 }
 
-export default HospitalListScreen;
+export default ChangeHospitalScreen;

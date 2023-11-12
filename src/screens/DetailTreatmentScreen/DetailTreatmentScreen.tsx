@@ -1,12 +1,28 @@
+import { RouteProp } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import Space from "components/Space";
 import Text from "components/Text";
 import icons from "configs/icons";
 import { useState } from "react";
 import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { RootStackParamList } from "types/NavigatorTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 
-const DetailTreatmentScreen = () => {
+type DetailTreatmentScreenRouteType = RouteProp<RootStackParamList, "DetailTreatmentScreen">;
+
+type DetailTreatmentScreenNavigationProps = StackNavigationProp<
+    RootStackParamList,
+    "DetailTreatmentScreen"
+>;
+
+type Prop = {
+    route: DetailTreatmentScreenRouteType;
+    navigation: DetailTreatmentScreenNavigationProps;
+};
+
+const DetailTreatmentScreen = ({ route }: Prop) => {
+    const { type } = route?.params;
     const [tab, setTab] = useState("예약관리");
 
     return (
@@ -22,11 +38,12 @@ const DetailTreatmentScreen = () => {
                 alignItems: "center",
                 flexDirection: "row",
             }}>
-                <View style={{
-                    flexDirection: "row",
-                }}>
-                    <TouchableOpacity
-                        onPress={() => NavigationService.back()}
+                <TouchableOpacity
+                    onPress={() => NavigationService.back()}
+                    style={{
+                        flexDirection: "row",
+                    }}>
+                    <View
                         style={{
                             width: 10,
                             height: 18,
@@ -34,9 +51,9 @@ const DetailTreatmentScreen = () => {
                         }}
                     >
                         <Image source={icons.arrowLeft} style={{ width: 10, height: 18 }} resizeMode="cover" />
-                    </TouchableOpacity>
+                    </View>
                     <Text style={{ fontWeight: "bold" }}>진료상세</Text>
-                </View>
+                </TouchableOpacity>
                 <View>
                     <TouchableOpacity
                         onPress={() => NavigationService.navigate("TabNavigator", { screen: "Home" })}
@@ -117,169 +134,209 @@ const DetailTreatmentScreen = () => {
                         <Text size={13} style={{ fontWeight: "bold" }}>김평강</Text>
                     </View>
                 </View>
-                <Space height={12} />
-                <View
-                    style={{
-                        height: 35,
-                        backgroundColor: "#dddddd",
-                        borderWidth: 1,
-                        borderColor: "#cccccc",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: 320,
-                        marginHorizontal: scaledHorizontal(20),
-                        alignSelf: "center"
-                    }}
-                >
-                    <Text size={13} color="#707070">임플란트 목록 확인</Text>
-                </View>
-                <Space height={40} />
-                <View
-                    style={{
-                        marginHorizontal: scaledHorizontal(20),
-                    }}
-                >
-                    <Text style={{ fontWeight: "bold" }}>이번 진료일정</Text>
-                    <Space height={10} />
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            backgroundColor: "#fff",
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 1 },
-                            shadowOpacity: 0.2,
-                            shadowRadius: 2,
-                            elevation: 5,
-                            height: 92,
-                            justifyContent: "space-between"
-                        }}
-                    >
-                        <View style={{ flexDirection: "row" }}>
-                            <View
-                                style={{
-                                    width: 8,
-                                    backgroundColor: "#83abff",
-                                    height: 92,
-                                    marginRight: scaledHorizontal(18)
-                                }}
-                            >
-                            </View>
-                            <View style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginRight: scaledHorizontal(18)
-                            }}>
-                                <Text color="#555" size={13}>예약일시</Text>
-                                <Space height={8} />
-                                <Text color="#555" size={13}>수술과정</Text>
-                                <Space height={8} />
-                                <Text color="#555" size={13}>진행상황</Text>
-                            </View>
-                            <View style={{
-                                justifyContent: "center",
-                                marginRight: scaledHorizontal(18)
-                            }}>
-                                <Text color="#000" size={13}>2022.11.14 10:30</Text>
-                                <Space height={8} />
-                                <Text color="#000" size={13}>초진검진</Text>
-                                <Space height={8} />
-                                <Text color="#000" size={13}>초진검진</Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                paddingRight: scaledHorizontal(18)
-                            }}
-                        >
-                            <TouchableOpacity
-                                style={{
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    width: 50,
-                                    height: 50,
-                                    // backgroundColor: "#f2f2f4",
-                                    borderRadius: 50 / 2
-                                }}
-                            >
-                                <Image source={icons.clipBoard} style={{ width: 50, height: 50 }} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <Space height={36} />
-                    <Text style={{ fontWeight: "bold" }}>다음 진료일정</Text>
-                    <Space height={10} />
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            backgroundColor: "#fff",
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 1 },
-                            shadowOpacity: 0.2,
-                            shadowRadius: 2,
-                            elevation: 5,
-                            height: 92,
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <View style={{ flexDirection: "row" }}>
-                            <View
-                                style={{
-                                    width: 8,
-                                    backgroundColor: "#dddddd",
-                                    height: 92,
-                                    marginRight: scaledHorizontal(18)
-                                }}
-                            >
-                            </View>
-                            <View style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginRight: scaledHorizontal(18)
-                            }}>
-                                <Text color="#555" size={13}>예약일시</Text>
-                                <Space height={8} />
-                                <Text color="#555" size={13}>수술과정</Text>
-                                <Space height={8} />
-                                <Text color="#555" size={13}>진행상황</Text>
-                            </View>
-                            <View style={{
-                                justifyContent: "center",
-                                marginRight: scaledHorizontal(18)
-                            }}>
-                                <Text color="#000" size={13}>(미등록)</Text>
-                                <Space height={8} />
-                                <Text color="#000" size={13}>(미등록)</Text>
-                                <Space height={8} />
-                                <Text color="#000" size={13}>(미등록)</Text>
-                            </View>
-                        </View>
 
+                <Space height={12} />
+
+                {type === "completed" ? (
+                    <TouchableOpacity
+                        onPress={() => NavigationService.navigate("ImplantListScreen")}
+                        style={{
+                            height: 35,
+                            backgroundColor: "#fff",
+                            borderWidth: 1,
+                            borderColor: "#0070ef",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: 320,
+                            marginHorizontal: scaledHorizontal(20),
+                            alignSelf: "center"
+                        }}
+                    >
+                        <Text size={13} color="#0070ef">임플란트 목록 확인</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <View
+                        style={{
+                            height: 35,
+                            backgroundColor: "#dddddd",
+                            borderWidth: 1,
+                            borderColor: "#cccccc",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: 320,
+                            marginHorizontal: scaledHorizontal(20),
+                            alignSelf: "center"
+                        }}
+                    >
+                        <Text size={13} color="#707070">임플란트 목록 확인</Text>
+                    </View>
+                )}
+
+                <Space height={40} />
+
+                {type === "completed" ? (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginTop: 30
+                        }}
+                    >
+                        <Image source={icons.check2} style={{ height: 75, width: 75 }} />
+                        <Space height={22} />
+                        <Text size={22} style={{ fontWeight: "bold" }}>완료되었습니다.</Text>
+                        <Space height={10} />
+                        <Text size={14} color="#555" textAlign="center">해당 임플란트 수술이 모두 완료되었습니다. {"\n"}자세한 사항은 병원에 문의해주세요!</Text>
+                    </View>
+                ) : (
+                    <View
+                        style={{
+                            marginHorizontal: scaledHorizontal(20),
+                        }}
+                    >
+                        <Text style={{ fontWeight: "bold" }}>이번 진료일정</Text>
+                        <Space height={10} />
                         <View
                             style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                paddingRight: scaledHorizontal(18)
+                                flexDirection: "row",
+                                backgroundColor: "#fff",
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 1 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                                elevation: 5,
+                                height: 92,
+                                justifyContent: "space-between"
                             }}
                         >
-                            <TouchableOpacity
+                            <View style={{ flexDirection: "row" }}>
+                                <View
+                                    style={{
+                                        width: 8,
+                                        backgroundColor: "#83abff",
+                                        height: 92,
+                                        marginRight: scaledHorizontal(18)
+                                    }}
+                                >
+                                </View>
+                                <View style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginRight: scaledHorizontal(18)
+                                }}>
+                                    <Text color="#555" size={13}>예약일시</Text>
+                                    <Space height={8} />
+                                    <Text color="#555" size={13}>수술과정</Text>
+                                    <Space height={8} />
+                                    <Text color="#555" size={13}>진행상황</Text>
+                                </View>
+                                <View style={{
+                                    justifyContent: "center",
+                                    marginRight: scaledHorizontal(18)
+                                }}>
+                                    <Text color="#000" size={13}>2022.11.14 10:30</Text>
+                                    <Space height={8} />
+                                    <Text color="#000" size={13}>초진검진</Text>
+                                    <Space height={8} />
+                                    <Text color="#000" size={13}>초진검진</Text>
+                                </View>
+                            </View>
+                            <View
                                 style={{
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    width: 50,
-                                    height: 50,
-                                    // backgroundColor: "#f2f2f4",
-                                    borderRadius: 50 / 2
+                                    paddingRight: scaledHorizontal(18)
                                 }}
                             >
-                                <Image source={icons.clipBoard} style={{ width: 50, height: 50 }} />
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        width: 50,
+                                        height: 50,
+                                        // backgroundColor: "#f2f2f4",
+                                        borderRadius: 50 / 2
+                                    }}
+                                >
+                                    <Image source={icons.clipBoard} style={{ width: 50, height: 50 }} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
+                        <Space height={36} />
+                        <Text style={{ fontWeight: "bold" }}>다음 진료일정</Text>
+                        <Space height={10} />
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                backgroundColor: "#fff",
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 1 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                                elevation: 5,
+                                height: 92,
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <View style={{ flexDirection: "row" }}>
+                                <View
+                                    style={{
+                                        width: 8,
+                                        backgroundColor: "#dddddd",
+                                        height: 92,
+                                        marginRight: scaledHorizontal(18)
+                                    }}
+                                >
+                                </View>
+                                <View style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginRight: scaledHorizontal(18)
+                                }}>
+                                    <Text color="#555" size={13}>예약일시</Text>
+                                    <Space height={8} />
+                                    <Text color="#555" size={13}>수술과정</Text>
+                                    <Space height={8} />
+                                    <Text color="#555" size={13}>진행상황</Text>
+                                </View>
+                                <View style={{
+                                    justifyContent: "center",
+                                    marginRight: scaledHorizontal(18)
+                                }}>
+                                    <Text color="#000" size={13}>(미등록)</Text>
+                                    <Space height={8} />
+                                    <Text color="#000" size={13}>(미등록)</Text>
+                                    <Space height={8} />
+                                    <Text color="#000" size={13}>(미등록)</Text>
+                                </View>
+                            </View>
+
+                            <View
+                                style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    paddingRight: scaledHorizontal(18)
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        width: 50,
+                                        height: 50,
+                                        // backgroundColor: "#f2f2f4",
+                                        borderRadius: 50 / 2
+                                    }}
+                                >
+                                    <Image source={icons.clipBoard} style={{ width: 50, height: 50 }} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <Space height={10} />
+                        <Text color="#999" size={12}>※ 예약일정 변경은 병원에 문의해주세요.</Text>
                     </View>
-                    <Space height={10} />
-                    <Text color="#999" size={12}>※ 예약일정 변경은 병원에 문의해주세요.</Text>
-                </View>
+                )}
+
 
             </ScrollView>
             <View
