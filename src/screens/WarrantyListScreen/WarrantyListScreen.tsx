@@ -126,6 +126,7 @@ const WarrantyListScreen = () => {
                     <Space height={12} />
                     {mockData?.map((item, idx) => (
                         <TouchableOpacity
+                            onPress={() => NavigationService.navigate("WarrantyDetailScreen")}
                             key={idx}
                             style={{
                                 paddingHorizontal: 16,

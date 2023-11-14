@@ -3,9 +3,8 @@ import Button from "components/Button";
 import Space from "components/Space";
 import Text from "components/Text";
 import colors from "configs/colors";
-import icons from "configs/icons";
 import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 
@@ -34,7 +33,8 @@ const ChangeHospitalScreen = () => {
                 <View
                     style={{
                         justifyContent: "center",
-                        alignItems: "center"
+                        alignItems: "center",
+                        flex: 1
                     }}
                 >
                     <Text size={18} style={{ fontWeight: "bold" }}>병원 변경하기 취소</Text>
@@ -163,7 +163,7 @@ const ChangeHospitalScreen = () => {
                             }}
                         >
                             <Text style={{ fontWeight: "bold" }} size={15} color={idx === 0 ? "#f2dca8" : "#000"}>{item?.title}</Text>
-                            <Image tintColor={idx === 0 ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" />
+                            {/* <Image tintColor={idx === 0 ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" /> */}
                         </TouchableOpacity>
                     ))}
                 </ScrollView>

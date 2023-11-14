@@ -118,6 +118,7 @@ const HospitalListScreen = () => {
                 <ScrollView>
                     {mockData && mockData.map((item, idx) => (
                         <TouchableOpacity
+                            onPress={() => NavigationService.navigate("HospitalDetailScreen")}
                             key={idx}
                             style={{
                                 height: 70,

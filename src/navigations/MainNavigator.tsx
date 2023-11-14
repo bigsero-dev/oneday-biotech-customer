@@ -17,6 +17,10 @@ import HospitalListScreen from "screens/HospitalListScreen/HospitalListScreen";
 import ImplantListScreen from "screens/ImplantListScreen/ImplantListScreen";
 import ChangeHospitalScreen from "screens/ChangeHospitalScreen/ChangeHospitalScreen";
 import NotificationScreen from "screens/NotificationScreen/NotificationScreen";
+import WarrantyScreen from "screens/WarrantyScreen/WarrantyScreen";
+import ScheduleXrayScreen from "screens/ScheduleXrayScreen/ScheduleXrayScreen";
+import HospitalDetailScreen from "screens/HospitalDetailScreen/HospitalDetailScreen";
+import WarrantyDetailScreen from "screens/WarrantyDetailScreen/WarrantyDetailScreen";
 
 const Main = createStackNavigator<RootStackParamList>();
 
@@ -122,6 +126,38 @@ const AppStackNavigator = () => {
             <Main.Screen
                 name="NotificationScreen"
                 component={NotificationScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="WarrantyScreen"
+                component={WarrantyScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="ScheduleXrayScreen"
+                component={ScheduleXrayScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="HospitalDetailScreen"
+                component={HospitalDetailScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="WarrantyDetailScreen"
+                component={WarrantyDetailScreen}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,

@@ -349,6 +349,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                 }}
             >
                 <TouchableOpacity
+                    onPress={() => NavigationService.navigate("WarrantyScreen")}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
@@ -360,6 +361,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                     <Text color="#fff" style={{ fontWeight: "bold" }}>보증서 보기</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    onPress={() => NavigationService.navigate("ScheduleXrayScreen")}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",

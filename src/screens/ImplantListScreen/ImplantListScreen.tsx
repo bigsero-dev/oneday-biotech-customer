@@ -168,7 +168,7 @@ const ImplantListScreen = () => {
                                     style={{
                                         flexDirection: "row",
                                         marginRight: 12,
-                                        width: 260
+                                        width: 290,
                                     }}
                                 >
                                     <Image source={images.abutmentExample} style={{ width: 70, height: 70, alignSelf: "center" }} />
@@ -176,11 +176,12 @@ const ImplantListScreen = () => {
                                         style={{
                                             paddingHorizontal: 12,
                                             marginTop: 15,
+                                            width: '76%'
                                         }}
                                     >
-                                        <Text size={12} color="#616161">{item?.category_name}</Text>
-                                        <Text size={14} style={{ fontWeight: "bold" }} numberOfLines={2}>{item?.description}</Text>
-                                        <Text size={12} color="#aaa" numberOfLines={2} style={{ position: "absolute", bottom: 12, left: 12 }}>{item?.date}</Text>
+                                        <Text size={12} color="#616161">{item?.category_name?.toUpperCase()}</Text>
+                                        <Text size={13} style={{ fontWeight: "bold", marginTop: 5 }} numberOfLines={2}>{item?.description}</Text>
+                                        <Text size={12} color="#aaa" numberOfLines={2} style={{ position: "absolute", bottom: 10, left: 12 }}>{item?.date}</Text>
                                     </View>
                                 </View>
                             </View>

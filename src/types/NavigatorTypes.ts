@@ -14,6 +14,10 @@ export type RootStackParamList = {
   ImplantListScreen: undefined;
   ChangeHospitalScreen: undefined;
   NotificationScreen: undefined;
+  WarrantyScreen: undefined;
+  ScheduleXrayScreen: undefined;
+  HospitalDetailScreen: undefined;
+  WarrantyDetailScreen: undefined;
 }
 
 export type RootType =
@@ -29,4 +33,8 @@ export type RootType =
   | "HospitalListScreen"
   | "ImplantListScreen"
   | "ChangeHospitalScreen"
-  | "NotificationScreen";
+  | "NotificationScreen"
+  | "WarrantyScreen"
+  | "ScheduleXrayScreen"
+  | "HospitalDetailScreen"
+  | "WarrantyDetailScreen";

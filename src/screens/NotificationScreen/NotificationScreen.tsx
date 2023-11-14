@@ -75,9 +75,9 @@ const NotificationScreen = () => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    width: "100%"
+                    width: "100%",
                 }}>
-                    <TouchableOpacity onPress={() => NavigationService.back()} style={{ flexDirection: "row", }}>
+                    <TouchableOpacity onPress={() => NavigationService.back()} style={{ flexDirection: "row", backgroundColor: "#fff" }}>
                         <View
                             style={{
                                 width: 10,
@@ -112,13 +112,13 @@ const NotificationScreen = () => {
                                     marginBottom: 18
                                 }}
                             >
-                                <Text size={14} style={{ fontWeight: "bold" }}>{itm?.title}</Text>
+                                <Text size={14} style={{ fontWeight: "bold", marginBottom: 8 }}>{itm?.title}</Text>
                                 <Text size={13} color="#555">{itm?.description}</Text>
                                 <Space height={10} />
                                 <Text size={12} color="#999">{itm?.created_at}</Text>
                             </BaseCard>
                         ))}
-                        <Space height={38} />
+                        <Space height={10} />
                     </View>
                 ))}
                 <Text textAlign="center" color="#999" size={12}>최대 15일 간의 내역만 조회 됩니다.</Text>

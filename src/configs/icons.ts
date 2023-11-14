@@ -57,7 +57,11 @@ const icons = {
   profile: require("../assets/icons/profile.png"),
   markYellow: require("../assets/icons/mark-yellow.png"),
   clipBoard: require("../assets/icons/clipboard.png"),
-  check2: require("../assets/icons/check2.png")
+  check2: require("../assets/icons/check2.png"),
+
+  location: require("../assets/icons/location.png"),
+  clock: require("../assets/icons/clock.png"),
+  message: require("../assets/icons/message.png")
 };
 
 export default icons;
