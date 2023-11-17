@@ -48,6 +48,7 @@ const WarrantyScreen = () => {
                         </View>
                         <Text style={{ fontWeight: "bold" }}>보증서</Text>
                     </TouchableOpacity>
+                    <Text style={{ fontWeight: "bold" }}>1/1</Text>
                 </View>
             </View>
             <ScrollView>
@@ -66,7 +67,7 @@ const WarrantyScreen = () => {
                         borderBottomWidth: tab === "임플란트 보증서" ? 1 : 0,
                         marginRight: scaledHorizontal(30)
                     }}>
-                        <Text color={tab === "임플란트 보증서" ? "#000" : "#767676"} style={{ fontWeight: tab === "임플란트 보증서" ? "bold" : "500" }} >임플란트 보증서</Text>
+                        <Text size={13} color={tab === "임플란트 보증서" ? "#000" : "#767676"} style={{ fontWeight: tab === "임플란트 보증서" ? "bold" : "500" }} >임플란트 보증서</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setTab("시술 보증서")}
                         style={{
@@ -74,7 +75,7 @@ const WarrantyScreen = () => {
                             borderBottomWidth: tab === "시술 보증서" ? 1 : 0,
                             marginRight: scaledHorizontal(30)
                         }}>
-                        <Text color={tab === "시술 보증서" ? "#000" : "#767676"} style={{ fontWeight: tab === "시술 보증서" ? "bold" : "500" }}>시술 보증서</Text>
+                        <Text size={13} color={tab === "시술 보증서" ? "#000" : "#767676"} style={{ fontWeight: tab === "시술 보증서" ? "bold" : "500" }}>시술 보증서</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setTab("동의서")}
                         style={{
@@ -82,7 +83,7 @@ const WarrantyScreen = () => {
                             borderBottomWidth: tab === "동의서" ? 1 : 0,
                             marginRight: scaledHorizontal(30)
                         }}>
-                        <Text color={tab === "동의서" ? "#000" : "#767676"} style={{ fontWeight: tab === "동의서" ? "bold" : "500" }}>동의서</Text>
+                        <Text size={13} color={tab === "동의서" ? "#000" : "#767676"} style={{ fontWeight: tab === "동의서" ? "bold" : "500" }}>동의서</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setTab("주의사항")}
                         style={{
@@ -90,7 +91,7 @@ const WarrantyScreen = () => {
                             borderBottomWidth: tab === "주의사항" ? 1 : 0,
                             marginRight: scaledHorizontal(30)
                         }}>
-                        <Text color={tab === "주의사항" ? "#000" : "#767676"} style={{ fontWeight: tab === "주의사항" ? "bold" : "500" }}>주의사항</Text>
+                        <Text size={13} color={tab === "주의사항" ? "#000" : "#767676"} style={{ fontWeight: tab === "주의사항" ? "bold" : "500" }}>주의사항</Text>
                     </TouchableOpacity>
                 </ScrollView>
                 {/* <Space height={30} /> */}
@@ -146,8 +147,8 @@ const WarrantyScreen = () => {
                     borderRadius: 22,
                     height: 45,
                     width: 200,
-                    backgroundColor: "#000",
-                    opacity: 0.6,
+                    backgroundColor: "rgba(0, 0, 0, 0.6);",
+                    // opacity: 0.6,
                     alignSelf: "center",
                     justifyContent: "center"
 

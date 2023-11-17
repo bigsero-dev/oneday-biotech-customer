@@ -78,8 +78,7 @@ const WarrantyDetailScreen = () => {
                     borderRadius: 22,
                     height: 45,
                     width: 200,
-                    backgroundColor: "#000",
-                    opacity: 0.6,
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
                     alignSelf: "center",
                     justifyContent: "center"
 

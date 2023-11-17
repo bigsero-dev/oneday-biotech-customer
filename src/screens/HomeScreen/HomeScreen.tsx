@@ -49,7 +49,7 @@ const HomeScreen = () => {
                         }}
                     >
                         <View style={{ marginBottom: 10 }}>
-                            <Text size={14} style={{ lineHeight: 23, fontWeight: "bold" }}>2. 진료내역</Text>
+                            <Text size={14} style={{ lineHeight: 23, fontWeight: "bold" }}>1. 홈 화면 - 임플란트</Text>
                             <Text size={14} style={{ lineHeight: 23 }}>(1) 하단 푸터에 보면, &apos;임플란트&apos; 메뉴를 누르면</Text>
                             <Text size={14} style={{ lineHeight: 23 }}>(2) 종 모양 아이콘 : 병원에서 진료내역에 대한
                                 예약 정보를 알림으로 발송해줍니다.

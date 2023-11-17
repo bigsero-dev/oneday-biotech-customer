@@ -8,17 +8,18 @@ import Text from "components/Text";
 import Button from "components/Button";
 import Input from "components/Input";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigation } from "@react-navigation/core";
 import NavigationService from "utils/NavigationService";
+import { useAuth } from "utils/hooks/UseAuth";
 
 const LoginScreen = () => {
-    const [form, setForm] = useState({} as { username: string; password: string });
+    const [form, setForm] = useState({} as { name: string; contact: string });
     const [focusInput, setFocusInput] = useState({
-        username: false,
-        password: false,
+        name: false,
+        contact: false,
     });
     const [isLoading, setIsLoading] = useState(false);
     const [isCheck, setIsCheck] = useState(false);
+    const { postLogin } = useAuth();
     // const navigate = useNavigation();
 
     const {
@@ -29,9 +30,13 @@ const LoginScreen = () => {
         reset,
     } = useForm({ mode: "onChange" });
 
-    const _onSubmit = (data: any) => {
+    const _onSubmit = async (data: any) => {
         setIsLoading(true);
-        NavigationService.navigate("TabNavigator", { screen: "Home" });
+        const res = await postLogin(data);
+        if (res?.ok) {
+            NavigationService.navigate("TabNavigator", { screen: "Home" });
+
+        }
         console.log(data);
         setIsLoading(false);
     }
@@ -55,32 +60,32 @@ const LoginScreen = () => {
                                     <Input
                                         onChange={text => {
                                             onChange(text);
-                                            setForm({ ...form, username: text });
+                                            setForm({ ...form, name: text });
                                         }}
                                         value={value}
                                         isRequired
                                         borderLess={true}
                                         placeholder={"이름"}
-                                        error={errors.username && errors?.username?.message}
+                                        error={errors.name && errors?.name?.message}
                                         onClearButton={value ? true : false}
                                         onFocus={() =>
-                                            setFocusInput({ ...focusInput, username: true })
+                                            setFocusInput({ ...focusInput, name: true })
                                         }
                                         onBlur={() =>
-                                            setFocusInput({ ...focusInput, username: false })
+                                            setFocusInput({ ...focusInput, name: false })
                                         }
                                         onClear={() => {
                                             reset((formValues: any) => ({
                                                 ...formValues,
-                                                username: "",
+                                                name: "",
                                             }));
-                                            setForm({ ...form, username: "" });
+                                            setForm({ ...form, name: "" });
                                         }}
                                         //label={i18n.t("login.formEmail")}
-                                        focusInput={focusInput.username}
+                                        focusInput={focusInput.name}
                                     />
                                 )}
-                                name="username"
+                                name="name"
                                 rules={{}}
                             />
                             <Controller
@@ -90,33 +95,33 @@ const LoginScreen = () => {
                                     <Input
                                         onChange={text => {
                                             onChange(text);
-                                            setForm({ ...form, password: text });
+                                            setForm({ ...form, contact: text });
                                         }}
                                         keyboardType="numeric"
                                         value={value}
                                         isRequired
                                         borderLess={true}
                                         placeholder={"휴대전화 번호"}
-                                        error={errors.password && errors?.password?.message}
+                                        error={errors.contact && errors?.contact?.message}
                                         onClearButton={value ? true : false}
                                         onFocus={() =>
-                                            setFocusInput({ ...focusInput, password: true })
+                                            setFocusInput({ ...focusInput, contact: true })
                                         }
                                         onBlur={() =>
-                                            setFocusInput({ ...focusInput, password: false })
+                                            setFocusInput({ ...focusInput, contact: false })
                                         }
                                         onClear={() => {
                                             reset((formValues: any) => ({
                                                 ...formValues,
-                                                password: "",
+                                                contact: "",
                                             }));
-                                            setForm({ ...form, password: "" });
+                                            setForm({ ...form, contact: "" });
                                         }}
                                         //label={i18n.t("login.formEmail")}
-                                        focusInput={focusInput.password}
+                                        focusInput={focusInput.contact}
                                     />
                                 )}
-                                name="password"
+                                name="contact"
                                 rules={{}}
                             />
                             <View
@@ -166,16 +171,16 @@ const LoginScreen = () => {
                             onPress={handleSubmit(_onSubmit)}
                             type="light"
                             title="로그인"
-                            disabled={!form?.password || !form?.username}
+                            disabled={!form?.contact || !form?.name}
                             style={{
-                                backgroundColor: !form?.password || !form?.username ? "#ececec" : colors.mediumChampagne,
+                                backgroundColor: !form?.contact || !form?.name ? "#ececec" : colors.mediumChampagne,
                                 paddingVertical: scaledVertical(25),
                                 marginHorizontal: scaledVertical(70),
                                 width: "83%",
                                 borderRadius: 2,
                             }}
                             textStyle={{
-                                color: !form?.password || !form?.username ? "#767676" : colors.black,
+                                color: !form?.contact || !form?.name ? "#767676" : colors.black,
                                 flex: 1,
                                 textAlign: "center",
                                 fontSize: 17,
