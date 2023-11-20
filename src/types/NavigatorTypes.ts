@@ -18,6 +18,7 @@ export type RootStackParamList = {
   ScheduleXrayScreen: undefined;
   HospitalDetailScreen: undefined;
   WarrantyDetailScreen: undefined;
+  PickHospitalScreen: undefined;
 }
 
 export type RootType =
@@ -37,4 +38,5 @@ export type RootType =
   | "WarrantyScreen"
   | "ScheduleXrayScreen"
   | "HospitalDetailScreen"
-  | "WarrantyDetailScreen";
+  | "WarrantyDetailScreen"
+  | "PickHospitalScreen";

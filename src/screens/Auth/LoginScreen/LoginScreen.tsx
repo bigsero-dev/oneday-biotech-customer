@@ -10,6 +10,7 @@ import Input from "components/Input";
 import { Controller, useForm } from "react-hook-form";
 import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
+import BaseModal from "components/BaseModal";
 
 const LoginScreen = () => {
     const [form, setForm] = useState({} as { name: string; contact: string });
@@ -20,6 +21,8 @@ const LoginScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isCheck, setIsCheck] = useState(false);
     const { postLogin } = useAuth();
+    const [modalError, setModalError] = useState(false);
+
     // const navigate = useNavigation();
 
     const {
@@ -34,8 +37,11 @@ const LoginScreen = () => {
         setIsLoading(true);
         const res = await postLogin(data);
         if (res?.ok) {
-            NavigationService.navigate("TabNavigator", { screen: "Home" });
+            // NavigationService.navigate("TabNavigator", { screen: "Home" });
+            NavigationService.navigate("PickHospitalScreen")
 
+        } else {
+            setModalError(true)
         }
         console.log(data);
         setIsLoading(false);
@@ -43,6 +49,45 @@ const LoginScreen = () => {
 
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#0f1e3d" }}>
+            <BaseModal
+                contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 315 }}
+                showModal={modalError}
+                animation="slide"
+                onBackdropPress={() => setModalError(false)}
+                onBackButtonPress={() => setModalError(false)}
+            >
+                <View
+                    style={{
+                        backgroundColor: colors.white,
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingHorizontal: 41
+                    }}
+                >
+                    <Text size={18} style={{ fontWeight: "bold" }}>환자 정보가 없습니다.</Text>
+                    <Space height={25} />
+                    <Text size={14} color="#616161">조금 시간을 두고 다시 시도하시거나{"\n"}
+                        진료하신 병원에 문의 하시기 바랍니다.</Text>
+                    <Space height={25} />
+                    <Text size={14} textAlign="center" color="#c91b17">
+                        ※ 휴대전화 번호가 변경될 시,{"\n"}
+                        병원에 변경 문의바랍니다.</Text>
+                </View>
+                <Button
+                    onPress={() => setModalError(false)}
+                    title="확인"
+                    textStyle={{
+                        color: "#000",
+                        fontWeight: "bold"
+                    }}
+                    style={{
+                        borderRadius: 2,
+                        height: 55,
+                        backgroundColor: "#f2dca8"
+                    }}
+                />
+            </BaseModal>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={"height"}

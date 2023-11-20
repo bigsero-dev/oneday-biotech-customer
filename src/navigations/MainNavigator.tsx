@@ -21,6 +21,7 @@ import WarrantyScreen from "screens/WarrantyScreen/WarrantyScreen";
 import ScheduleXrayScreen from "screens/ScheduleXrayScreen/ScheduleXrayScreen";
 import HospitalDetailScreen from "screens/HospitalDetailScreen/HospitalDetailScreen";
 import WarrantyDetailScreen from "screens/WarrantyDetailScreen/WarrantyDetailScreen";
+import PickHospitalScreen from "screens/PickHospitalScreen/PickHospitalScreen";
 
 const Main = createStackNavigator<RootStackParamList>();
 
@@ -158,6 +159,14 @@ const AppStackNavigator = () => {
             <Main.Screen
                 name="WarrantyDetailScreen"
                 component={WarrantyDetailScreen}
+                options={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                }}
+            />
+            <Main.Screen
+                name="PickHospitalScreen"
+                component={PickHospitalScreen}
                 options={{
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,

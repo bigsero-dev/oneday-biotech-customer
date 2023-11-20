@@ -50,10 +50,11 @@ const HomeScreen = () => {
                     >
                         <View style={{ marginBottom: 10 }}>
                             <Text size={14} style={{ lineHeight: 23, fontWeight: "bold" }}>1. 홈 화면 - 임플란트</Text>
-                            <Text size={14} style={{ lineHeight: 23 }}>(1) 하단 푸터에 보면, &apos;임플란트&apos; 메뉴를 누르면</Text>
+                            <Text size={14} style={{ lineHeight: 23 }}>(1) 하단 푸터에 보면, &apos;임플란트&apos; 메뉴를 누르면 홈 화면으로 올 수 있습니다.</Text>
                             <Text size={14} style={{ lineHeight: 23 }}>(2) 종 모양 아이콘 : 병원에서 진료내역에 대한
                                 예약 정보를 알림으로 발송해줍니다.
                                 푸시알림을 ON 설정해주세요.
+
                             </Text>
                             <Text size={14} style={{ lineHeight: 23 }}>
                                 (3) 치료중 {"\n"}
@@ -61,12 +62,12 @@ const HomeScreen = () => {
                                 - 병원에서 1차 수술이 예약되면 그때부터 임플란트 수술을 받는 치아 번호에 색표시가 되면서, 임플란트 보증서를 확인할 수 있습니다.
                             </Text>
                             <Text size={14} style={{ lineHeight: 23 }}>
-                                (4) 완료중 {"\n"}
+                                (3) 완료중 {"\n"}
                                 - 진료가 최종적으로 검진까지 완료된 경우, 파란색으로 치아에 색이 표시됩니다.{"\n"}
                                 - 그동안 해당 병원에서 임플란트 진료가 완료된 치아가 색표시 됩니다.
                             </Text>
                             <Text size={14} style={{ lineHeight: 23 }}>
-                                (5) 예약 현황 {"\n"}
+                                (4) 예약 현황 {"\n"}
                                 병원에서 진료일정을 등록할 경우, 예약 현황이 파란색으로 표시됩니다.{"\n"}
                                 클릭하면 &apos;진료내역 상세&apos;를 확인 할 수 있습니다.
                             </Text>

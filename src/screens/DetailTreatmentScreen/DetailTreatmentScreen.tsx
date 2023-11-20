@@ -80,14 +80,14 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                         borderBottomWidth: tab === "예약관리" ? 1 : 0,
                         marginRight: scaledHorizontal(30)
                     }}>
-                        <Text color={tab === "예약관리" ? "#000" : "#767676"} style={{ fontWeight: tab === "예약관리" ? "bold" : "500" }} >예약관리</Text>
+                        <Text size={13} color={tab === "예약관리" ? "#000" : "#767676"} style={{ fontWeight: tab === "예약관리" ? "bold" : "500" }} >예약관리</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setTab("상세내역")}
                         style={{
                             borderBottomColor: "#000",
                             borderBottomWidth: tab === "상세내역" ? 1 : 0
                         }}>
-                        <Text color={tab === "상세내역" ? "#000" : "#767676"} style={{ fontWeight: tab === "상세내역" ? "bold" : "500" }}>상세내역</Text>
+                        <Text size={13} color={tab === "상세내역" ? "#000" : "#767676"} style={{ fontWeight: tab === "상세내역" ? "bold" : "500" }}>상세내역</Text>
                     </TouchableOpacity>
                 </View>
                 <Space height={24} />

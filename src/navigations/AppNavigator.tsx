@@ -5,6 +5,9 @@ import type { RootStackParamList } from "types/NavigatorTypes";
 import NavigationService, { navigationRef } from "utils/NavigationService";
 
 import MainNavigator from "./MainNavigator";
+import { useAuth } from "utils/hooks/UseAuth";
+import { wait } from "utils/Utils";
+import { useEffect } from "react";
 
 const App = createStackNavigator<RootStackParamList>();
 const options: StackNavigationOptions = {
@@ -20,14 +23,27 @@ const options: StackNavigationOptions = {
 }
 
 const AppNavigator = () => {
+    const { token } = useAuth();
+
+    const checkUser = () => {
+        if (token !== "") {
+            wait(2000).then(() => {
+                NavigationService.navigate("TabNavigator", { screen: "Home" });
+            });
+        }
+    };
+
+    useEffect(() => {
+        checkUser();
+    }, []);
     return (
         <NavigationContainer ref={navigationRef}>
             <App.Navigator screenOptions={options}>
-            <App.Screen
-                name="MainNavigator"
-                component={MainNavigator}
-                options={{ headerShown: false }}
-            />
+                <App.Screen
+                    name="MainNavigator"
+                    component={MainNavigator}
+                    options={{ headerShown: false }}
+                />
             </App.Navigator>
         </NavigationContainer>
     );

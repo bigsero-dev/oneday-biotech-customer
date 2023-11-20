@@ -10,11 +10,13 @@ import { getVersion } from "react-native-device-info";
 import BaseModal from "components/BaseModal";
 import Button from "components/Button";
 import NavigationService from "utils/NavigationService";
+import { useAuth } from "utils/hooks/UseAuth";
 
 const ProfileScreen = () => {
 
   const [isRadioOn, setIsRadioOn] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const { postLogout } = useAuth();
 
   const menuInformation = [
     {
@@ -103,7 +105,12 @@ const ProfileScreen = () => {
             />
             <Space width={12} />
             <Button
-              onPress={() => setOpenModal(false)}
+              onPress={() => {
+                postLogout(() => {
+                  setOpenModal(false);
+                  NavigationService.navigate("LoginScreen")
+                })
+              }}
               textStyle={{
                 color: colors.black,
                 fontWeight: "bold"
