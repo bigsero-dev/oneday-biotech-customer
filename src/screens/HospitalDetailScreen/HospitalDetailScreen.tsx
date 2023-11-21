@@ -40,7 +40,7 @@ const HospitalDetailScreen = () => {
                     width: "100%"
                 }}>
                     <TouchableOpacity onPress={() => NavigationService.back()} style={{ flexDirection: "row", }}>
-                        <TouchableOpacity
+                        <View
                             style={{
                                 width: 10,
                                 height: 18,
@@ -48,7 +48,7 @@ const HospitalDetailScreen = () => {
                             }}
                         >
                             <Image source={icons.arrowLeft} style={{ width: 10, height: 18 }} resizeMode="cover" />
-                        </TouchableOpacity>
+                        </View>
                         <Text style={{ fontWeight: "bold" }}>원데이 치과</Text>
                     </TouchableOpacity>
                 </View>

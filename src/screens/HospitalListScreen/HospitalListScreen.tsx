@@ -21,6 +21,7 @@ const mockData = [
 ];
 const HospitalListScreen = () => {
     const [openModal, setOpenModel] = useState(false);
+    const [itemSelected, setItemSelected] = useState({} as any);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -75,7 +76,7 @@ const HospitalListScreen = () => {
                     width: "100%"
                 }}>
                     <TouchableOpacity onPress={() => NavigationService.back()} style={{ flexDirection: "row", }}>
-                        <TouchableOpacity
+                        <View
                             style={{
                                 width: 10,
                                 height: 18,
@@ -83,7 +84,7 @@ const HospitalListScreen = () => {
                             }}
                         >
                             <Image source={icons.arrowLeft} style={{ width: 10, height: 18 }} resizeMode="cover" />
-                        </TouchableOpacity>
+                        </View>
                         <Text style={{ fontWeight: "bold" }}>병원 목록</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -118,11 +119,14 @@ const HospitalListScreen = () => {
                 <ScrollView>
                     {mockData && mockData.map((item, idx) => (
                         <TouchableOpacity
-                            onPress={() => NavigationService.navigate("HospitalDetailScreen")}
+                            onPress={() => {
+                                setItemSelected(item)
+                                NavigationService.navigate("HospitalDetailScreen")
+                            }}
                             key={idx}
                             style={{
                                 height: 70,
-                                backgroundColor: idx === 0 ? "#0f1e3d" : "#fff",
+                                backgroundColor: itemSelected?.id === item?.id ? "#0f1e3d" : "#fff",
                                 borderRadius: 2,
                                 flexDirection: "row",
                                 justifyContent: "space-between",
@@ -138,8 +142,8 @@ const HospitalListScreen = () => {
                                 marginBottom: 12
                             }}
                         >
-                            <Text style={{ fontWeight: "bold" }} size={15} color={idx === 0 ? "#f2dca8" : "#000"}>{item?.title}</Text>
-                            <Image tintColor={idx === 0 ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" />
+                            <Text style={{ fontWeight: "bold" }} size={15} color={itemSelected?.id === item?.id ? "#f2dca8" : "#000"}>{item?.title}</Text>
+                            <Image tintColor={itemSelected?.id === item?.id ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" />
                         </TouchableOpacity>
                     ))}
                 </ScrollView>

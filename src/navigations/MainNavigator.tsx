@@ -22,6 +22,7 @@ import ScheduleXrayScreen from "screens/ScheduleXrayScreen/ScheduleXrayScreen";
 import HospitalDetailScreen from "screens/HospitalDetailScreen/HospitalDetailScreen";
 import WarrantyDetailScreen from "screens/WarrantyDetailScreen/WarrantyDetailScreen";
 import PickHospitalScreen from "screens/PickHospitalScreen/PickHospitalScreen";
+import SplashScreen from "screens/SplashScreen/SplashScreen";
 
 const Main = createStackNavigator<RootStackParamList>();
 
@@ -47,6 +48,11 @@ const MainNavigator = () => {
 const AppStackNavigator = () => {
     return (
         <Main.Navigator screenOptions={options}>
+            <Main.Screen
+                name="SplashScreen"
+                component={SplashScreen}
+                options={{ headerShown: false }}
+            />
             <Main.Screen
                 name="LoginScreen"
                 component={LoginScreen}

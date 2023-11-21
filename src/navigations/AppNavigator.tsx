@@ -30,6 +30,10 @@ const AppNavigator = () => {
             wait(2000).then(() => {
                 NavigationService.navigate("TabNavigator", { screen: "Home" });
             });
+        } else {
+            wait(2000).then(() => {
+                NavigationService.navigate("LoginScreen");
+            });
         }
     };
 

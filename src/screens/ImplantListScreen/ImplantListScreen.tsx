@@ -160,7 +160,9 @@ const ImplantListScreen = () => {
                                         borderBottomRightRadius: 0,
                                         backgroundColor: _renderColorStatus(item?.status),
                                         width: 18,
-                                        marginRight: 18
+                                        marginRight: 18,
+                                        borderTopLeftRadius: 5,
+                                        borderBottomLeftRadius: 5
                                     }}
                                 >
                                 </View>

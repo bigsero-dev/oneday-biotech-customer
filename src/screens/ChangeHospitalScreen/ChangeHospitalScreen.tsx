@@ -20,6 +20,7 @@ const mockData = [
 ];
 const ChangeHospitalScreen = () => {
     const [openModal, setOpenModel] = useState(false);
+    const [itemSelected, setItemSelected] = useState({} as any);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -143,10 +144,11 @@ const ChangeHospitalScreen = () => {
                 <ScrollView>
                     {mockData && mockData.map((item, idx) => (
                         <TouchableOpacity
+                            onPress={() => setItemSelected(item)}
                             key={idx}
                             style={{
                                 height: 70,
-                                backgroundColor: idx === 0 ? "#0f1e3d" : "#fff",
+                                backgroundColor: itemSelected?.id === item?.id ? "#0f1e3d" : "#fff",
                                 borderRadius: 2,
                                 flexDirection: "row",
                                 justifyContent: "space-between",
@@ -162,7 +164,7 @@ const ChangeHospitalScreen = () => {
                                 marginBottom: 12
                             }}
                         >
-                            <Text style={{ fontWeight: "bold" }} size={15} color={idx === 0 ? "#f2dca8" : "#000"}>{item?.title}</Text>
+                            <Text style={{ fontWeight: "bold" }} size={15} color={itemSelected?.id === item?.id ? "#f2dca8" : "#000"}>{item?.title}</Text>
                             {/* <Image tintColor={idx === 0 ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" /> */}
                         </TouchableOpacity>
                     ))}

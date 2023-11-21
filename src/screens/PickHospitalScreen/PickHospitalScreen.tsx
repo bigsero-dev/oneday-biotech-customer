@@ -3,9 +3,8 @@ import Button from "components/Button";
 import Space from "components/Space";
 import Text from "components/Text";
 import colors from "configs/colors";
-import icons from "configs/icons";
 import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 
@@ -21,6 +20,7 @@ const mockData = [
 ];
 const PickHospitalScreen = () => {
     const [openModal, setOpenModel] = useState(false);
+    const [itemSelected, setItemSelected] = useState({} as any);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -124,11 +124,12 @@ const PickHospitalScreen = () => {
                 <ScrollView>
                     {mockData && mockData.map((item, idx) => (
                         <TouchableOpacity
+                            onPress={() => setItemSelected(item)}
                             // onPress={() => NavigationService.navigate("HospitalDetailScreen")}
                             key={idx}
                             style={{
                                 height: 70,
-                                backgroundColor: idx === 0 ? "#0f1e3d" : "#fff",
+                                backgroundColor: itemSelected?.id === item?.id ? "#0f1e3d" : "#fff",
                                 borderRadius: 2,
                                 flexDirection: "row",
                                 justifyContent: "space-between",
@@ -144,7 +145,7 @@ const PickHospitalScreen = () => {
                                 marginBottom: 12
                             }}
                         >
-                            <Text style={{ fontWeight: "bold" }} size={15} color={idx === 0 ? "#f2dca8" : "#000"}>{item?.title}</Text>
+                            <Text style={{ fontWeight: "bold" }} size={15} color={itemSelected?.id === item?.id ? "#f2dca8" : "#000"}>{item?.title}</Text>
                             {/* <Image tintColor={idx === 0 ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" /> */}
                         </TouchableOpacity>
                     ))}
@@ -154,7 +155,7 @@ const PickHospitalScreen = () => {
                 onPress={() => {
                     setOpenModel(true)
                 }}
-                title="보증서 다운"
+                title="선택완료"
                 textStyle={{
                     color: "#000",
                     fontWeight: "bold"

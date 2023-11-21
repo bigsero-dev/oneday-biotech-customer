@@ -3,7 +3,7 @@ import Space from "components/Space";
 import Text from "components/Text";
 import colors from "configs/colors";
 import icons from "configs/icons";
-import React from "react";
+import React, { useState } from "react";
 import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -60,7 +60,6 @@ const mockData = [
     }
 ];
 const NotificationScreen = () => {
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
             <View style={{
@@ -87,7 +86,7 @@ const NotificationScreen = () => {
                         >
                             <Image source={icons.arrowLeft} style={{ width: 10, height: 18 }} resizeMode="cover" />
                         </View>
-                        <Text style={{ fontWeight: "bold" }}>알림</Text>
+                        <Text>알림</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -113,7 +112,7 @@ const NotificationScreen = () => {
                                 }}
                             >
                                 <Text size={14} style={{ fontWeight: "bold", marginBottom: 8 }}>{itm?.title}</Text>
-                                <Text size={13} color="#555">{itm?.description}</Text>
+                                <Text size={13} color="#555" style={{ lineHeight: 22 }}>{itm?.description}</Text>
                                 <Space height={10} />
                                 <Text size={12} color="#999">{itm?.created_at}</Text>
                             </BaseCard>
