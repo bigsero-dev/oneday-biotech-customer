@@ -14,7 +14,7 @@ export const useAuth = () => {
         try {
             const resp = await api.postLogin(value);
             if (resp.data) {
-                dispatch(onPostLoginToken(resp?.data));
+                dispatch(onPostLoginToken(resp?.data?.data));
             }
 
             return {

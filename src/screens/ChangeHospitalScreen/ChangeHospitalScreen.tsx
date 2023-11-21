@@ -2,25 +2,31 @@ import BaseModal from "components/BaseModal";
 import Button from "components/Button";
 import Space from "components/Space";
 import Text from "components/Text";
+import api from "configs/api";
 import colors from "configs/colors";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { ListUserHospitalType } from "types/UserTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
+import { useAuth } from "utils/hooks/UseAuth";
 
-const mockData = [
-    {
-        id: 1,
-        title: "원데이 치과"
-    },
-    {
-        id: 2,
-        title: "여의도 베스트1234병원"
-    },
-];
 const ChangeHospitalScreen = () => {
     const [openModal, setOpenModel] = useState(false);
     const [itemSelected, setItemSelected] = useState({} as any);
+    const [dataHospital, setDataHospital] = useState({} as ListUserHospitalType);
+    const { token } = useAuth();
+
+    const _getDataHospital = async () => {
+        const result = await api.getHospital(token);
+        if (result?.data?.ok) {
+            setDataHospital(result?.data?.data);
+        }
+    }
+
+    useEffect(() => {
+        _getDataHospital();
+    }, []);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -142,7 +148,7 @@ const ChangeHospitalScreen = () => {
                 <Text size={13} color="#555">HOME에 연결하기 위한 병원을 선택해주세요.</Text>
                 <Space height={18} />
                 <ScrollView>
-                    {mockData && mockData.map((item, idx) => (
+                    {dataHospital?.data?.length > 0 && dataHospital?.data?.map((item, idx) => (
                         <TouchableOpacity
                             onPress={() => setItemSelected(item)}
                             key={idx}
@@ -164,7 +170,7 @@ const ChangeHospitalScreen = () => {
                                 marginBottom: 12
                             }}
                         >
-                            <Text style={{ fontWeight: "bold" }} size={15} color={itemSelected?.id === item?.id ? "#f2dca8" : "#000"}>{item?.title}</Text>
+                            <Text style={{ fontWeight: "bold" }} size={15} color={itemSelected?.id === item?.id ? "#f2dca8" : "#000"}>{item?.name}</Text>
                             {/* <Image tintColor={idx === 0 ? "#fff" : "#0f1e3d"} style={{ width: 7, height: 12 }} source={icons.arrowRight} resizeMode="contain" /> */}
                         </TouchableOpacity>
                     ))}
