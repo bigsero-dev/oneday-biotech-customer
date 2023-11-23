@@ -20,7 +20,7 @@ const ChangeHospitalScreen = () => {
     const _getDataHospital = async () => {
         const result = await api.getHospital(token);
         if (result?.data?.ok) {
-            setDataHospital(result?.data?.data);
+            setDataHospital(result?.data);
         }
     }
 

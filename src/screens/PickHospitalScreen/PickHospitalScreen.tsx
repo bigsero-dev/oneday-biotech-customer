@@ -6,6 +6,8 @@ import api from "configs/api";
 import colors from "configs/colors";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { onSaveHospital } from "stores/hospital/hospitalSlice";
 import { ListUserHospitalType } from "types/UserTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -16,12 +18,18 @@ const PickHospitalScreen = () => {
     const [itemSelected, setItemSelected] = useState({} as any);
     const [dataHospital, setDataHospital] = useState({} as ListUserHospitalType);
     const { token } = useAuth();
+    const dispatch = useDispatch();
 
     const _getDataHospital = async () => {
         const result = await api.getHospital(token);
         if (result?.data?.ok) {
-            setDataHospital(result?.data?.data);
+            setDataHospital(result?.data);
         }
+    }
+
+    const selectHospital = (item: any) => {
+        setItemSelected(item);
+        dispatch(onSaveHospital(item));
     }
 
     useEffect(() => {
@@ -130,7 +138,9 @@ const PickHospitalScreen = () => {
                 <ScrollView>
                     {dataHospital?.data?.length > 0 && dataHospital?.data?.map((item, idx) => (
                         <TouchableOpacity
-                            onPress={() => setItemSelected(item)}
+                            onPress={() => {
+                                selectHospital(item)
+                            }}
                             // onPress={() => NavigationService.navigate("HospitalDetailScreen")}
                             key={idx}
                             style={{
