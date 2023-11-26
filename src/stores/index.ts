@@ -6,10 +6,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import type { PersistState } from "./persist/persistSlice";
 import persist from "./persist/persistSlice";
-import hospital from "./hospital/hospitalSlice";
+import hospital, { HospitalState } from "./hospital/hospitalSlice";
 
 export interface StoreStateType {
   persist: PersistState;
+  hospital: HospitalState;
 }
 
 const rootReducer = combineReducers({

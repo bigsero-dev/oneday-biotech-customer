@@ -27,7 +27,9 @@ const getHeaderPublic: any = () => {
 const api = {
     postLogin: (body: any) =>
         BaseService.post("auth/login/user", body, getHeaderPublic()),
-    getHospital: (token: string) => BaseService.get("hospital-by-user?page=1&pageSize=999", getHeaderPrivate(token))
+    getMe: (token: string) => BaseService.get('mine/get-user', getHeaderPrivate(token)),
+    getHospital: (token: string) => BaseService.get("hospital-by-user?page=1&pageSize=999", getHeaderPrivate(token)),
+    getHistorySurgery: (token: string, params: any) => BaseService.get("user-surgery-history-by-user?" + params, getHeaderPrivate(token))
 }
 
 export default api;

@@ -83,3 +83,9 @@ export function maskPhoneNumber(contactNumber: any) {
     return "Invalid input format";
   }
 }
+
+export const ObjectToURLSnake = (obj: any) => {
+  return Object.entries(obj)
+    .map(([key, val]) => (val === '' ? `${key}` : `${key}=${val}`))
+    .join('&');
+};

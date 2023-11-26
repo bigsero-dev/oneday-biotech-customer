@@ -5,10 +5,13 @@ export interface UserLoginType {
 
 export interface UserDataType {
   id: string;
-  role: string;
-  email: string;
-  type: string;
-  hospitalId: string;
+  name: string;
+  contact: string;
+  citizenNo: string;
+  address: string;
+  gender: string;
+  createdAt: string;
+  userSurgeryHistory: any[];
 }
 
 export interface ListUserHospitalType {

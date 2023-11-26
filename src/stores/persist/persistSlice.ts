@@ -16,9 +16,11 @@ export const persistSlice = createSlice({
   } as PersistState,
   reducers: {
     onPostLoginToken: (state, action: { payload: UserLoginType }) => {
-      console.log("tokeeenn ", action.payload.accessToken)
       state.token = action.payload.accessToken;
-      state.userData = action.payload.user;
+      // state.userData = action.payload.user;
+    },
+    onPostUser: (state, action: { payload: UserDataType }) => {
+      state.userData = action.payload;
     },
     onResetPersist: state => {
       state.token = "";
@@ -27,6 +29,6 @@ export const persistSlice = createSlice({
   },
 });
 
-export const { onPostLoginToken, onResetPersist } = persistSlice.actions;
+export const { onPostLoginToken, onResetPersist, onPostUser } = persistSlice.actions;
 
 export default persistSlice.reducer;

@@ -7,14 +7,17 @@ import colors from "configs/colors";
 import icons from "configs/icons";
 import React, { useEffect, useState } from "react";
 import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
+import { StoreStateType } from "stores";
 import { ListUserHospitalType } from "types/UserTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import { useAuth } from "utils/hooks/UseAuth";
 
 const HospitalListScreen = () => {
+    const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
     const [openModal, setOpenModel] = useState(false);
-    const [itemSelected, setItemSelected] = useState({} as any);
+    const [itemSelected, setItemSelected] = useState(userHospital);
     const [dataHospital, setDataHospital] = useState({} as ListUserHospitalType);
     const { token } = useAuth();
 

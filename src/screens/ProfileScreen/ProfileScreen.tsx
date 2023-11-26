@@ -11,12 +11,13 @@ import BaseModal from "components/BaseModal";
 import Button from "components/Button";
 import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
+import { wait } from "utils/Utils";
 
 const ProfileScreen = () => {
 
   const [isRadioOn, setIsRadioOn] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const { postLogout } = useAuth();
+  const { postLogout, userData } = useAuth();
 
   const menuInformation = [
     {
@@ -108,7 +109,9 @@ const ProfileScreen = () => {
               onPress={() => {
                 postLogout(() => {
                   setOpenModal(false);
-                  NavigationService.navigate("LoginScreen")
+                  wait(1000).then(() => {
+                    NavigationService.jump("LoginScreen");
+                  });
                 })
               }}
               textStyle={{
@@ -157,8 +160,8 @@ const ProfileScreen = () => {
         height: 100,
         justifyContent: "center",
       }}>
-        <Text color="#fff" size={18} style={{ fontWeight: "bold" }}>Antony Santos</Text>
-        <Text color="#fff" size={16}>910926-2******</Text>
+        <Text color="#fff" size={18} style={{ fontWeight: "bold" }}>{userData?.name}</Text>
+        <Text color="#fff" size={16}>{userData?.contact}</Text>
       </View>
       <Space height={30} />
       <View style={{ backgroundColor: colors.white, marginHorizontal: scaledHorizontal(20) }}>

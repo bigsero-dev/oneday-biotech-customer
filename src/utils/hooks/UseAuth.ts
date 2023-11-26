@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import api from "configs/api";
 import type { StoreStateType } from "stores";
-import { onPostLoginToken, onResetPersist } from "stores/persist/persistSlice";
+import { onPostLoginToken, onPostUser, onResetPersist } from "stores/persist/persistSlice";
 
 export const useAuth = () => {
     const dispatch = useDispatch();
@@ -15,6 +15,9 @@ export const useAuth = () => {
             const resp = await api.postLogin(value);
             if (resp.data) {
                 dispatch(onPostLoginToken(resp?.data?.data));
+
+                const result = await api.getMe(resp?.data?.data?.accessToken);
+                dispatch(onPostUser(result?.data?.data))
             }
 
             return {

@@ -1,15 +1,65 @@
 import Space from "components/Space";
 import Text from "components/Text";
 import icons from "configs/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, SafeAreaView, TouchableOpacity, View } from "react-native"
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import Ongoing from "./TreatmentTab/Ongoing";
 import Completed from "./TreatmentTab/Completed";
 import NavigationService from "utils/NavigationService";
+import api from "configs/api";
+import { useAuth } from "utils/hooks/UseAuth";
+import { ObjectToURLSnake } from "utils/Utils";
 
 const TreatmentScreen = () => {
     const [tab, setTab] = useState("치료중");
+    const { token, userData } = useAuth();
+    const [dataOngoing, setDataOngoing] = useState([] as any);
+    const [pageOngoing, setPageOngoing] = useState(1);
+    const [dataCompleted, setDataCompleted] = useState([] as any);
+    const [pageCOmpleted, setPageCompleted] = useState(1);
+
+    const _getDataOngoing = async () => {
+        const params = {
+            page: pageOngoing,
+            pageSize: 10,
+            status: 'RESERVATION',
+            orderBy: 'RESERVATED_AT_DESC'
+        } as any;
+        const queryParams = ObjectToURLSnake(params);
+        const result = await api.getHistorySurgery(token, queryParams);
+        if (result?.data?.ok) {
+            setDataOngoing((prevData: any) => [...prevData, ...result?.data?.data]);
+        }
+    }
+
+    const _getDataCompleted = async () => {
+        const params = {
+            page: pageCOmpleted,
+            pageSize: 10,
+            status: 'COMPLETE',
+            orderBy: 'RESERVATED_AT_DESC'
+        } as any;
+        const queryParams = ObjectToURLSnake(params);
+
+        const result = await api.getHistorySurgery(token, queryParams);
+        if (result?.data?.ok) {
+            setDataCompleted((prevData: any) => [...prevData, ...result?.data?.data]);
+        }
+    }
+
+    const handleLoadMoreOngoing = () => {
+        setPageOngoing(pageOngoing + 1);
+    };
+
+    const handleLoadMoreCompleted = () => {
+        setPageCompleted(pageCOmpleted + 1);
+    };
+
+    useEffect(() => {
+        _getDataOngoing();
+        _getDataCompleted();
+    }, [pageOngoing, pageCOmpleted]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -42,8 +92,8 @@ const TreatmentScreen = () => {
                 height: 100,
                 justifyContent: "center",
             }}>
-                <Text color="#fff" size={18} style={{ fontWeight: "bold" }}>Antony Santos</Text>
-                <Text color="#fff" size={16}>910926-2******</Text>
+                <Text color="#fff" size={18} style={{ fontWeight: "bold" }}>{userData?.name}</Text>
+                <Text color="#fff" size={16}>{userData?.contact}</Text>
             </View>
             <Space height={20} />
             <View style={{
@@ -71,9 +121,9 @@ const TreatmentScreen = () => {
             <Space height={23} />
             <View>
                 {tab === "치료중" ? (
-                    <Ongoing />
+                    <Ongoing data={dataOngoing} handleLoadMore={handleLoadMoreOngoing} />
                 ) : (
-                    <Completed />
+                    <Completed data={dataCompleted} handleLoadMore={handleLoadMoreCompleted} />
                 )}
             </View>
         </SafeAreaView>

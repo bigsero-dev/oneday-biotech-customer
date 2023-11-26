@@ -6,16 +6,22 @@ import api from "configs/api";
 import colors from "configs/colors";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreStateType } from "stores";
+import { onSaveHospital } from "stores/hospital/hospitalSlice";
 import { ListUserHospitalType } from "types/UserTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
+import { wait } from "utils/Utils";
 import { useAuth } from "utils/hooks/UseAuth";
 
 const ChangeHospitalScreen = () => {
+    const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
     const [openModal, setOpenModel] = useState(false);
-    const [itemSelected, setItemSelected] = useState({} as any);
+    const [itemSelected, setItemSelected] = useState(userHospital);
     const [dataHospital, setDataHospital] = useState({} as ListUserHospitalType);
     const { token } = useAuth();
+    const dispatch = useDispatch();
 
     const _getDataHospital = async () => {
         const result = await api.getHospital(token);
@@ -177,6 +183,10 @@ const ChangeHospitalScreen = () => {
                 </ScrollView>
             </View>
             <Button
+                onPress={() => {
+                    dispatch(onSaveHospital(itemSelected))
+                    wait(500).then(() => NavigationService.back())
+                }}
                 style={{
                     height: 55,
                     backgroundColor: "#f2dca8",

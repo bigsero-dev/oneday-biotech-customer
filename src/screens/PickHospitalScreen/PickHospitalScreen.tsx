@@ -24,6 +24,10 @@ const PickHospitalScreen = () => {
         const result = await api.getHospital(token);
         if (result?.data?.ok) {
             setDataHospital(result?.data);
+            if (result?.data?.data?.length > 0) {
+                setItemSelected(result?.data?.data[0])
+                dispatch(onSaveHospital(result?.data?.data[0]));
+            }
         }
     }
 
@@ -176,6 +180,7 @@ const PickHospitalScreen = () => {
                     color: "#000",
                     fontWeight: "bold"
                 }}
+                disabled={!itemSelected}
                 style={{
                     borderRadius: 2,
                     height: 55,
