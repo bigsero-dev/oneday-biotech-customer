@@ -54,7 +54,7 @@ const HospitalListScreen = () => {
                     <Space height={25} />
                     <Text size={14} color="#616161">변경할 병원 정보가 없습니다.</Text>
                     <Space height={25} />
-                    <Text size={14} textAlign="center" color="#c91b17">※ 이용 중인 병원이 1곳인 경우에는 다른 병원으로 변경하기가 불가능합니다.</Text>
+                    <Text size={14} textAlign="center" color="#c91b17">※ 이용 중인 병원이 1곳인 경우에는{"\n"}다른 병원으로 변경하기가 불가능합니다.</Text>
                 </View>
                 <Button
                     onPress={() => setOpenModel(false)}
@@ -130,7 +130,7 @@ const HospitalListScreen = () => {
                         <TouchableOpacity
                             onPress={() => {
                                 setItemSelected(item)
-                                NavigationService.navigate("HospitalDetailScreen")
+                                NavigationService.navigate("HospitalDetailScreen", { id: item?.id })
                             }}
                             key={idx}
                             style={{

@@ -10,11 +10,16 @@ import BaseModal from "components/BaseModal";
 import colors from "configs/colors";
 import Button from "components/Button";
 import NavigationService from "utils/NavigationService";
+import { useAuth } from "utils/hooks/UseAuth";
+import { useSelector } from "react-redux";
+import { StoreStateType } from "stores";
 
 const HomeScreen = () => {
     // const [dataTeeth, setDataTeeth] = useState(Config);
     const [openModal, setOpenModel] = useState(false);
     const [tab, setTab] = useState("완료");
+    const { userData } = useAuth();
+    const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
     // const { height } = useWindowDimensions();
 
     return (
@@ -210,9 +215,9 @@ const HomeScreen = () => {
                 <View style={{
                     paddingHorizontal: scaledHorizontal(20)
                 }}>
-                    <Text size={14}>안녕하세요, 김하루님</Text>
+                    <Text size={14}>안녕하세요, {userData?.name}님</Text>
                     <Space height={7} />
-                    <Text size={22} style={{ fontWeight: "bold" }} type="extrabold">여의도 베스트1234 임플란트 병원 입니다.</Text>
+                    <Text size={22} style={{ fontWeight: "bold" }} type="extrabold">{userHospital?.name} 입니다.</Text>
                     <View
                         style={{
                             width: 110,

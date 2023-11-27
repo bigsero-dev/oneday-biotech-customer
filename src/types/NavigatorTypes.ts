@@ -16,7 +16,9 @@ export type RootStackParamList = {
   NotificationScreen: undefined;
   WarrantyScreen: undefined;
   ScheduleXrayScreen: undefined;
-  HospitalDetailScreen: undefined;
+  HospitalDetailScreen: {
+    id: string;
+  };
   WarrantyDetailScreen: undefined;
   PickHospitalScreen: undefined;
 }

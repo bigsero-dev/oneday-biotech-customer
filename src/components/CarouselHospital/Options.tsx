@@ -106,7 +106,7 @@ const Options = ({
                     right: 20
                 }}
             >
-                <Text size={10} color="#fff">1/5</Text>
+                <Text size={10} color="#fff">1/{images?.length}</Text>
             </View>
 
             {/* <View
