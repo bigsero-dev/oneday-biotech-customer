@@ -218,6 +218,7 @@ const HomeScreen = () => {
                     <Text size={14}>안녕하세요, {userData?.name}님</Text>
                     <Space height={7} />
                     <Text size={22} style={{ fontWeight: "bold" }} type="extrabold">{userHospital?.name} 입니다.</Text>
+                    <Space height={16} />
                     <View
                         style={{
                             width: 110,

@@ -60,6 +60,22 @@ const ProfileScreen = () => {
     },
   ];
 
+  const renderPhone = (phone: string) => {
+    let result = ''
+    const cleanPhoneNumber = phone?.replace(/-/g, '');
+
+    const lengthData = cleanPhoneNumber.length;
+    const split = Math.floor(lengthData / 2);
+
+    let part1 = cleanPhoneNumber.slice(0, split);
+    let part2 = cleanPhoneNumber.slice(split);
+
+    let remainingLength = part2.length - 1;
+    let replacement = '*'.repeat(remainingLength);
+    result = part1 + '-' + part2[0] + replacement;
+    return result;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <BaseModal
@@ -161,7 +177,8 @@ const ProfileScreen = () => {
         justifyContent: "center",
       }}>
         <Text color="#fff" size={18} style={{ fontWeight: "bold" }}>{userData?.name}</Text>
-        <Text color="#fff" size={16}>{userData?.contact}</Text>
+        {/* <Text color="#fff" size={16}>{userData?.contact}</Text> */}
+        <Text color="#fff" size={16}>{renderPhone(userData?.citizenNo)}</Text>
       </View>
       <Space height={30} />
       <View style={{ backgroundColor: colors.white, marginHorizontal: scaledHorizontal(20) }}>
