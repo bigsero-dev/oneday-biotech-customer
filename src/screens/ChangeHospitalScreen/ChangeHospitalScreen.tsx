@@ -18,6 +18,7 @@ import { useAuth } from "utils/hooks/UseAuth";
 const ChangeHospitalScreen = () => {
     const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
     const [openModal, setOpenModel] = useState(false);
+    const [openModalConfirm, setOpenModalConfirm] = useState(false);
     const [itemSelected, setItemSelected] = useState(userHospital);
     const [dataHospital, setDataHospital] = useState({} as ListUserHospitalType);
     const { token } = useAuth();
@@ -99,6 +100,79 @@ const ChangeHospitalScreen = () => {
                             }}
                         />
                     </View>
+                </View>
+            </BaseModal>
+            <BaseModal
+                contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 280 }}
+                showModal={openModalConfirm}
+                animation="slide"
+                onBackdropPress={() => setOpenModalConfirm(false)}
+                onBackButtonPress={() => setOpenModalConfirm(false)}
+            >
+                <View
+                    style={{
+                        backgroundColor: colors.white,
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingHorizontal: 41
+                    }}
+                >
+                    <Text size={18} style={{ fontWeight: "bold" }}>병원 정보 확인</Text>
+                    <Space height={25} />
+                    <Text size={14} color="#616161" textAlign="center">선택된 병원으로 진료 일정을{"\n"}
+                        연결하시겠습니까?</Text>
+                    <Space height={25} />
+                    <Text size={14} textAlign="center" color="#c91b17">
+                        ※ 변경완료를 할 경우, {"\n"}
+                        HOME 화면으로 이동됩니다.
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 20
+                    }}
+                >
+                    <Button
+                        onPress={() => setOpenModalConfirm(false)}
+                        title="취소"
+                        textStyle={{
+                            color: colors.black,
+                            fontWeight: "bold"
+                        }}
+                        style={{
+                            width: 125,
+                            height: 45,
+                            borderRadius: 5,
+                            backgroundColor: colors.white,
+                            borderWidth: 1,
+                            borderColor: "#767676"
+                        }}
+                    />
+                    <Space width={12} />
+                    <Button
+                        onPress={() => {
+                            setOpenModalConfirm(false)
+                            dispatch(onSaveHospital(itemSelected))
+                            wait(500).then(() => NavigationService.back())
+                        }}
+                        textStyle={{
+                            color: colors.black,
+                            fontWeight: "bold"
+                        }}
+                        title="확인"
+                        style={{
+                            width: 125,
+                            height: 45,
+                            borderRadius: 5,
+                            backgroundColor: "#f2dca8",
+                            borderWidth: 1,
+                            borderColor: "#e9ce8f"
+                        }}
+                    />
                 </View>
             </BaseModal>
             <View style={{
@@ -184,8 +258,9 @@ const ChangeHospitalScreen = () => {
             </View>
             <Button
                 onPress={() => {
-                    dispatch(onSaveHospital(itemSelected))
-                    wait(500).then(() => NavigationService.back())
+                    setOpenModalConfirm(true);
+                    // dispatch(onSaveHospital(itemSelected))
+                    // wait(500).then(() => NavigationService.back())
                 }}
                 style={{
                     height: 55,
