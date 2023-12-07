@@ -98,6 +98,7 @@ const HospitalListScreen = () => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
+                            // NavigationService.navigate("ChangeHospitalScreen")
                             if (dataHospital?.data?.length > 1) {
                                 NavigationService.navigate("ChangeHospitalScreen")
                             } else {

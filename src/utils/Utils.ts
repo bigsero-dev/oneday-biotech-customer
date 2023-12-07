@@ -89,3 +89,30 @@ export const ObjectToURLSnake = (obj: any) => {
     .map(([key, val]) => (val === '' ? `${key}` : `${key}=${val}`))
     .join('&');
 };
+
+export const ConvertStepToText = (step: string) => {
+  let convertedText = '';
+  if (step === "INITIAL_EXAMINATION") {
+    convertedText = '초진검진';
+  }
+  if (step === "FIRST_SURGERY") {
+    convertedText = '초진검진';
+  }
+  if (step === "SECOND_SURGERY") {
+    convertedText = '초진검진';
+  }
+  if (step === "IMPLANT") {
+    convertedText = '초진검진';
+  }
+  if (step === "INTERMEDIATE_PROCESS") {
+    convertedText = '초진검진';
+  }
+  if (step === "PROSTHESIS_SETTING") {
+    convertedText = '초진검진';
+  }
+  if (step === "EXAMINATION") {
+    convertedText = '초진검진';
+  }
+
+  return convertedText;
+}

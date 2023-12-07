@@ -15,7 +15,9 @@ import { RootStackParamList } from "types/NavigatorTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import api from "configs/api";
 import { useAuth } from "utils/hooks/UseAuth";
-
+import RenderHTML from "react-native-render-html";
+import WebView from "react-native-webview";
+import colors from "configs/colors";
 
 type DetailHospitalRouteType = RouteProp<RootStackParamList, "HospitalDetailScreen">;
 type DetailHospitalNavigationProps = StackNavigationProp<
@@ -126,7 +128,46 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                         <Text size={16} style={{ fontWeight: "bold", marginBottom: 7 }}>주소</Text>
                         <Text size={13} style={{ lineHeight: 19, marginBottom: 7 }}>{detailHospital?.address || '-'}</Text>
                         <Text size={13} color="#aaa" style={{ marginBottom: 14 }}>{detailHospital?.addressDetail || '-'}</Text>
-                        <Image source={images.locationExample} style={{ height: 175, width: "100%" }} resizeMode="contain" />
+                        <View
+                            style={{
+                                backgroundColor: colors.antiFlashWhite,
+                                // paddingHorizontal: scaledHorizontal(25),
+                                // paddingVertical: scaledVertical(25),
+                            }}
+                        >
+                            <RenderHTML
+                                contentWidth={300}
+                                source={{
+                                    html:
+                                        `<!DOCTYPE html>
+                                    <html>
+                                        <head>
+                                            <meta charset="UTF-8">
+                                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                                            <meta name="viewport" content="width=300, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+                                            <title>Display a simple map</title>
+                                            <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7dtgd0y4um"></script>
+                                        </head>
+                                        <body>
+                                        <div id="map" style="width:100%;height:300px;"></div>
+                                        
+                                        <script>
+                                        var mapOptions = {
+                                            center: new naver.maps.LatLng(37.3595704, 127.105399),
+                                            zoom: 10
+                                        };
+                                        
+                                        var map = new naver.maps.Map('map', mapOptions);
+                                        </script>
+                                        </body>
+                                    </html>
+                            `
+                                }}
+                                WebView={WebView}
+                            />
+                        </View>
+
+                        {/* <Image source={images.locationExample} style={{ height: 175, width: "100%" }} resizeMode="contain" /> */}
                     </View>
                 </View>
                 <Space height={30} />

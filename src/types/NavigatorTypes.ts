@@ -1,3 +1,5 @@
+import { UserHistoryUserData } from "./UserSurgeryHistoryTypes";
+
 export type RootStackParamList = {
   SplashScreen: undefined;
   HomeScreen: undefined;
@@ -7,7 +9,8 @@ export type RootStackParamList = {
   TreatmentScreen: undefined;
   ProfileScreen: undefined;
   DetailTreatmentScreen: {
-    type?: string
+    type?: string,
+    userHistoryDetail?: UserHistoryUserData
   };
   WarrantyListScreen: undefined;
   HospitalListScreen: undefined;

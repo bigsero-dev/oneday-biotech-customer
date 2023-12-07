@@ -21,7 +21,8 @@ const Completed = ({ data, handleLoadMore }: any) => {
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => NavigationService.navigate("DetailTreatmentScreen", {
-                                    type: "completed"
+                                    type: "completed",
+                                    userHistoryDetail: item
                                 })}
                                 style={{
                                     height: 49,
