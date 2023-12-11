@@ -157,13 +157,13 @@ const ChangeHospitalScreen = () => {
                         onPress={() => {
                             setOpenModalConfirm(false)
                             dispatch(onSaveHospital(itemSelected))
-                            wait(500).then(() => NavigationService.back())
+                            wait(500).then(() => NavigationService.jump("TabNavigator"))
                         }}
                         textStyle={{
                             color: colors.black,
                             fontWeight: "bold"
                         }}
-                        title="확인"
+                        title="변경완료"
                         style={{
                             width: 125,
                             height: 45,

@@ -373,40 +373,23 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
 
                 <Space height={12} />
 
-                {type === "completed" ? (
-                    <TouchableOpacity
-                        onPress={() => NavigationService.navigate("ImplantListScreen")}
-                        style={{
-                            height: 35,
-                            backgroundColor: "#fff",
-                            borderWidth: 1,
-                            borderColor: "#0070ef",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: 320,
-                            marginHorizontal: scaledHorizontal(20),
-                            alignSelf: "center"
-                        }}
-                    >
-                        <Text size={13} color="#0070ef">임플란트 목록 확인</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <View
-                        style={{
-                            height: 35,
-                            backgroundColor: "#dddddd",
-                            borderWidth: 1,
-                            borderColor: "#cccccc",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: 320,
-                            marginHorizontal: scaledHorizontal(20),
-                            alignSelf: "center"
-                        }}
-                    >
-                        <Text size={13} color="#707070">임플란트 목록 확인</Text>
-                    </View>
-                )}
+                <TouchableOpacity
+                    onPress={() => NavigationService.navigate("ImplantListScreen")}
+                    style={{
+                        height: 35,
+                        backgroundColor: (userHistoryDetail?.userTeeth?.length || 0) < 1 ? "#ddd" : "#fff",
+                        borderWidth: 1,
+                        borderColor: (userHistoryDetail?.userTeeth?.length || 0) < 1 ? "#ccc" : "#0070ef",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: 320,
+                        marginHorizontal: scaledHorizontal(20),
+                        alignSelf: "center"
+                    }}
+                    disabled={(userHistoryDetail?.userTeeth?.length || 0) < 1}
+                >
+                    <Text size={13} color={(userHistoryDetail?.userTeeth?.length || 0) < 1 ? "#707070" : "#0070ef"}>임플란트 목록 확인</Text>
+                </TouchableOpacity>
 
                 <Space height={40} />
 
