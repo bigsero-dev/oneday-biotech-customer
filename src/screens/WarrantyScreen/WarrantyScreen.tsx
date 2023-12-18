@@ -15,6 +15,7 @@ import { useAuth } from "utils/hooks/UseAuth";
 import { RouteProp } from "@react-navigation/core";
 import { RootStackParamList } from "types/NavigatorTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
+import OthersTab from "./WarrantyTabs/OthersTab";
 
 type WarrantyScreenRouteType = RouteProp<RootStackParamList, "WarrantyScreen">;
 
@@ -37,6 +38,7 @@ const WarrantyScreen = ({ route }: Prop) => {
     const [xray, setXray] = useState([] as any);
     const [agreements, setAgreements] = useState([] as any);
     const [others, setOthers] = useState([] as any);
+    const [warranty, setDataWarranty] = useState([] as any);
 
     const { token } = useAuth();
 
@@ -44,7 +46,7 @@ const WarrantyScreen = ({ route }: Prop) => {
         const result = await api.getUserSurgeryHistory(token, historyId || "");
 
         if (result?.data?.ok) {
-            console.log(result?.data?.data);
+            // console.log(result?.data?.data);
             if (result?.data?.data?.userSurgeryHistoryForm?.length > 0) {
                 const xrayData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "XRAY");
                 setXray(xrayData);
@@ -58,11 +60,40 @@ const WarrantyScreen = ({ route }: Prop) => {
                 const treatData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "TREATMENT");
                 setTreatments(treatData);
 
-                const cautionData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "CAUTION");
+                const cautionData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "CAUTION"); // satu lagi warranty
                 setCauions(cautionData);
+
+                const warrantyData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "WARRANTY"); // satu lagi warranty
+                setDataWarranty(warrantyData);
 
             }
         }
+    }
+
+    const renderTotalImage = () => {
+        let total = "0/0";
+
+        if (others?.length > 0 && tab === "기타") {
+            total = `${others?.length}/${others?.length}`
+        }
+
+        if (cautions?.length > 0 && tab === "주의사항") {
+            total = `${cautions?.length}/${cautions?.length}`
+        }
+
+        if (treatments?.length > 0 && tab === "시술 보증서") {
+            total = `${treatments?.length}/${treatments?.length}`
+        }
+
+        if (agreements?.length > 0 && tab === "동의서") {
+            total = `${agreements?.length}/${agreements?.length}`
+        }
+
+        if (warranty?.length > 0 && tab === "임플란트 보증서") {
+            total = `${warranty?.length}/${warranty?.warranty}`
+        }
+
+        return total;
     }
 
     useEffect(() => {
@@ -102,7 +133,9 @@ const WarrantyScreen = ({ route }: Prop) => {
                         </View>
                         <Text style={{ fontWeight: "bold" }}>보증서</Text>
                     </TouchableOpacity>
-                    <Text style={{ fontWeight: "bold" }}>1/1</Text>
+                    <Text style={{ fontWeight: "bold" }}>
+                        {renderTotalImage()}
+                    </Text>
                 </View>
             </View>
             <ScrollView>
@@ -147,27 +180,39 @@ const WarrantyScreen = ({ route }: Prop) => {
                         }}>
                         <Text size={13} color={tab === "주의사항" ? "#000" : "#767676"} style={{ fontWeight: tab === "주의사항" ? "bold" : "500" }}>주의사항</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setTab("기타")}
+                        style={{
+                            borderBottomColor: "#000",
+                            borderBottomWidth: tab === "기타" ? 1 : 0,
+                            marginRight: scaledHorizontal(30)
+                        }}>
+                        <Text size={13} color={tab === "기타" ? "#000" : "#767676"} style={{ fontWeight: tab === "기타" ? "bold" : "500" }}>기타</Text>
+                    </TouchableOpacity>
                 </ScrollView>
                 {/* <Space height={30} /> */}
 
                 {tab === "임플란트 보증서" && (
-                    <ImplantWarrantyTab warrantyData={others?.[0]} />
+                    <ImplantWarrantyTab warrantyData={warranty} />
                 )}
 
                 {tab === "시술 보증서" && (
-                    <TreatmentWarrantyTab treatmentData={treatments?.[0]} />
+                    <TreatmentWarrantyTab treatmentData={treatments} />
                 )}
 
                 {tab === "동의서" && (
-                    <AgreementTab agreementData={agreements?.[0]} />
+                    <AgreementTab agreementData={agreements} />
                 )}
 
                 {tab === "주의사항" && (
-                    <CautionTab cautionData={cautions?.[0]} />
+                    <CautionTab cautionData={cautions} />
+                )}
+
+                {tab === "기타" && (
+                    <OthersTab otherData={others} />
                 )}
             </ScrollView>
 
-            {cautions?.length > 0 || agreements?.length > 0 || treatments?.length > 0 || others?.length > 0 ? (
+            {cautions?.length > 0 || agreements?.length > 0 || treatments?.length > 0 || others?.length > 0 || warranty?.length > 0 ? (
                 <Button
                     onPress={() => {
                         setOpenModal(true)

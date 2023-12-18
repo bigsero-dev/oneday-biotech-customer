@@ -62,8 +62,8 @@ const CarouselXray = ({
             onLoadEnd={() => {
               setIsLoading(false);
             }}
-            source={item}
-            // source={{ uri: item }}
+            // source={item}
+            source={{ uri: item }}
             style={{
               height: "100%",
               width: "100%",
