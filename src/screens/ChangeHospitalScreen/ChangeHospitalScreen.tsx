@@ -8,7 +8,8 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreStateType } from "stores";
-import { onSaveHospital } from "stores/hospital/hospitalSlice";
+import { onSaveHospital } from "stores/persist/persistSlice";
+// import { onSaveHospital } from "stores/hospital/hospitalSlice";
 import { ListUserHospitalType } from "types/UserTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -16,7 +17,7 @@ import { wait } from "utils/Utils";
 import { useAuth } from "utils/hooks/UseAuth";
 
 const ChangeHospitalScreen = () => {
-    const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
+    const { userHospital } = useSelector((state: StoreStateType) => state.persist)
     const [openModal, setOpenModel] = useState(false);
     const [openModalConfirm, setOpenModalConfirm] = useState(false);
     const [itemSelected, setItemSelected] = useState(userHospital);

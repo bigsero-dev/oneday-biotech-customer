@@ -19,7 +19,7 @@ const HomeScreen = () => {
     const [openModal, setOpenModel] = useState(false);
     const [tab, setTab] = useState("완료");
     const { userData } = useAuth();
-    const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
+    const { userHospital } = useSelector((state: StoreStateType) => state.persist)
     // const { height } = useWindowDimensions();
 
     return (

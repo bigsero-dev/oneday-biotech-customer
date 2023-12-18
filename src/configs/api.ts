@@ -30,7 +30,8 @@ const api = {
     getMe: (token: string) => BaseService.get('mine/get-user', getHeaderPrivate(token)),
     getHospital: (token: string) => BaseService.get("hospital-by-user?page=1&pageSize=999", getHeaderPrivate(token)),
     getHistorySurgery: (token: string, params: any) => BaseService.get("user-surgery-history-by-user?" + params, getHeaderPrivate(token)),
-    getDetailHospital: (token: string, id: string) => BaseService.get("hospitals/" + id, getHeaderPrivate(token))
+    getDetailHospital: (token: string, id: string) => BaseService.get("hospitals/" + id, getHeaderPrivate(token)),
+    getUserSurgeryHistory: (token: string, id: string) => BaseService.get("user-surgery-history/" + id, getHeaderPrivate(token))
 }
 
 export default api;

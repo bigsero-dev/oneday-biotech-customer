@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { UserDataType, UserLoginType } from "types/UserTypes";
+import type { UserDataType, UserHospitalType, UserLoginType } from "types/UserTypes";
 
 export type PersistState = {
   token: string;
   dataLoading: boolean;
   userData: UserDataType;
+  userHospital: UserHospitalType;
 };
 
 export const persistSlice = createSlice({
@@ -13,6 +14,7 @@ export const persistSlice = createSlice({
     dataLoading: false,
     token: "",
     userData: {} as UserDataType,
+    userHospital: {} as UserHospitalType,
   } as PersistState,
   reducers: {
     onPostLoginToken: (state, action: { payload: UserLoginType }) => {
@@ -26,9 +28,12 @@ export const persistSlice = createSlice({
       state.token = "";
       state = {} as PersistState;
     },
+    onSaveHospital: (state, action: { payload: UserHospitalType }) => {
+      state.userHospital = action.payload;
+    },
   },
 });
 
-export const { onPostLoginToken, onResetPersist, onPostUser } = persistSlice.actions;
+export const { onPostLoginToken, onResetPersist, onPostUser, onSaveHospital } = persistSlice.actions;
 
 export default persistSlice.reducer;

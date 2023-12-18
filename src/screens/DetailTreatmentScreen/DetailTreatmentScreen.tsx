@@ -348,7 +348,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={() => NavigationService.navigate("WarrantyScreen")}
+                    onPress={() => NavigationService.navigate("WarrantyScreen", { historyId: userHistoryDetail?.id })}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",

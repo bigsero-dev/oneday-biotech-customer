@@ -1,6 +1,6 @@
 import Text from "components/Text";
 import icons from "configs/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -10,10 +10,64 @@ import AgreementTab from "./WarrantyTabs/AgreementTab";
 import CautionTab from "./WarrantyTabs/CautionTab";
 import Button from "components/Button";
 import BaseModal from "components/BaseModal";
+import api from "configs/api";
+import { useAuth } from "utils/hooks/UseAuth";
+import { RouteProp } from "@react-navigation/core";
+import { RootStackParamList } from "types/NavigatorTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-const WarrantyScreen = () => {
+type WarrantyScreenRouteType = RouteProp<RootStackParamList, "WarrantyScreen">;
+
+type WarrantyScreenNavigationProps = StackNavigationProp<
+    RootStackParamList,
+    "WarrantyScreen"
+>;
+
+type Prop = {
+    route: WarrantyScreenRouteType;
+    navigation: WarrantyScreenNavigationProps;
+};
+
+const WarrantyScreen = ({ route }: Prop) => {
+    const { historyId } = route?.params;
     const [tab, setTab] = useState("임플란트 보증서");
     const [openModal, setOpenModal] = useState(false);
+    const [cautions, setCauions] = useState([] as any);
+    const [treatments, setTreatments] = useState([] as any);
+    const [xray, setXray] = useState([] as any);
+    const [agreements, setAgreements] = useState([] as any);
+    const [others, setOthers] = useState([] as any);
+
+    const { token } = useAuth();
+
+    const getDataSurgery = async () => {
+        const result = await api.getUserSurgeryHistory(token, historyId || "");
+
+        if (result?.data?.ok) {
+            console.log(result?.data?.data);
+            if (result?.data?.data?.userSurgeryHistoryForm?.length > 0) {
+                const xrayData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "XRAY");
+                setXray(xrayData);
+
+                const otherData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "OTHER");
+                setOthers(otherData);
+
+                const agreementData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "AGREEMENT");
+                setAgreements(agreementData);
+
+                const treatData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "TREATMENT");
+                setTreatments(treatData);
+
+                const cautionData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "CAUTION");
+                setCauions(cautionData);
+
+            }
+        }
+    }
+
+    useEffect(() => {
+        getDataSurgery();
+    }, []);
 
     return (
         <SafeAreaView
@@ -97,23 +151,23 @@ const WarrantyScreen = () => {
                 {/* <Space height={30} /> */}
 
                 {tab === "임플란트 보증서" && (
-                    <ImplantWarrantyTab />
+                    <ImplantWarrantyTab warrantyData={others?.[0]} />
                 )}
 
                 {tab === "시술 보증서" && (
-                    <TreatmentWarrantyTab />
+                    <TreatmentWarrantyTab treatmentData={treatments?.[0]} />
                 )}
 
                 {tab === "동의서" && (
-                    <AgreementTab />
+                    <AgreementTab agreementData={agreements?.[0]} />
                 )}
 
                 {tab === "주의사항" && (
-                    <CautionTab />
+                    <CautionTab cautionData={cautions?.[0]} />
                 )}
             </ScrollView>
 
-            {tab === "임플란트 보증서" || tab === "시술 보증서" ? (
+            {cautions?.length > 0 || agreements?.length > 0 || treatments?.length > 0 || others?.length > 0 ? (
                 <Button
                     onPress={() => {
                         setOpenModal(true)

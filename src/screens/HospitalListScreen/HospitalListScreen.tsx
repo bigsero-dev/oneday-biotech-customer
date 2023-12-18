@@ -15,7 +15,7 @@ import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import { useAuth } from "utils/hooks/UseAuth";
 
 const HospitalListScreen = () => {
-    const { userHospital } = useSelector((state: StoreStateType) => state.hospital)
+    const { userHospital } = useSelector((state: StoreStateType) => state.persist)
     const [openModal, setOpenModel] = useState(false);
     const [itemSelected, setItemSelected] = useState(userHospital);
     const [dataHospital, setDataHospital] = useState({} as ListUserHospitalType);
