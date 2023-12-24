@@ -1,6 +1,6 @@
 import Options from "components/CarouselXray/Options";
 import CarouselXray from "components/CarouselXray";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { ICarouselInstance } from "react-native-reanimated-carousel";
 import globalStyles from "utils/GlobalStyles";
@@ -8,21 +8,45 @@ import Text from "components/Text";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import NavigationService from "utils/NavigationService";
 import icons from "configs/icons";
-import images from "configs/images";
+import { useAuth } from "utils/hooks/UseAuth";
+import api from "configs/api";
+import { RouteProp } from "@react-navigation/core";
+import { RootStackParamList } from "types/NavigatorTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-interface ScheduleXrayScreenProps { }
+type ScheduleXrayScreenRouteType = RouteProp<RootStackParamList, "ScheduleXrayScreen">;
 
-const ScheduleXrayScreen = (props: ScheduleXrayScreenProps) => {
+type ScheduleXrayScreenNavigationProps = StackNavigationProp<
+    RootStackParamList,
+    "ScheduleXrayScreen"
+>;
+
+type Prop = {
+    route: ScheduleXrayScreenRouteType;
+    navigation: ScheduleXrayScreenNavigationProps;
+};
+
+const ScheduleXrayScreen = ({ route }: Prop) => {
+    const { historyId } = route?.params;
+
     const ref = React.useRef<ICarouselInstance>(null);
+    const { token } = useAuth();
+
     const [currentIndex, setCurrentIndex] = useState(0);
-    const exampleImages = [
-        images.exampleImplant,
-        images.exampleImplant,
-        images.exampleImplant,
-        // "https://dentistryfortheentirefamily.com/wp-content/uploads/2016/06/Panoramic-dental-xray-300x200.jpg",
-        // "https://dentistryfortheentirefamily.com/wp-content/uploads/2016/06/Panoramic-dental-xray-300x200.jpg",
-        // "https://dentistryfortheentirefamily.com/wp-content/uploads/2016/06/Panoramic-dental-xray-300x200.jpg",
-    ];
+    const [xray, setXray] = useState([] as any);
+
+    const getDataSurgery = async () => {
+        const result = await api.getUserSurgeryHistory(token, historyId || "");
+        if (result?.data?.ok) {
+            const xrayData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "XRAY");
+            setXray(xrayData);
+        }
+    }
+
+    useEffect(() => {
+        getDataSurgery();
+    }, []);
+
     return (
         <View style={[globalStyles().topSafeArea]}>
             <View style={{ flex: 1 }}>
@@ -54,16 +78,20 @@ const ScheduleXrayScreen = (props: ScheduleXrayScreenProps) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {exampleImages.length > 0 ? (
+                {xray.length > 0 ? (
                     <View style={{ flex: 1 }}>
                         <CarouselXray
-                            items={exampleImages}
+                            items={xray?.map((item: any) => {
+                                return item?.imgUrl
+                            })}
                             carouselRef={ref}
                             setCurrentIndex={setCurrentIndex}
                         />
-                        {exampleImages.length > 1 && (
+                        {xray.length > 1 && (
                             <Options
-                                images={exampleImages}
+                                images={xray?.map((item: any) => {
+                                    return item?.imgUrl
+                                })}
                                 carouselRef={ref}
                                 currentIndex={currentIndex}
                                 customOption={true}

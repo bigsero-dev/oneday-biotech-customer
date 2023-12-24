@@ -2,14 +2,16 @@ import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Space from "components/Space";
 import Text from "components/Text";
+import api from "configs/api";
 import icons from "configs/icons";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "types/NavigatorTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import { ConvertStepToText } from "utils/Utils";
+import { useAuth } from "utils/hooks/UseAuth";
 
 type DetailTreatmentScreenRouteType = RouteProp<RootStackParamList, "DetailTreatmentScreen">;
 
@@ -25,12 +27,24 @@ type Prop = {
 
 const DetailTreatmentScreen = ({ route }: Prop) => {
     const { type, userHistoryDetail } = route?.params;
-    console.log(userHistoryDetail);
     const dataHistory = userHistoryDetail?.userSurgeryDetail?.slice(-2);
-    console.log("history, ", dataHistory?.[dataHistory?.length - 1]);
     const dataOngoing = dataHistory?.[dataHistory?.length - 1];
+    const { token } = useAuth();
 
     const [tab, setTab] = useState("예약관리");
+    const [xray, setXray] = useState([] as any);
+
+    const getDataSurgery = async () => {
+        const result = await api.getUserSurgeryHistory(token, userHistoryDetail?.id || "");
+        if (result?.data?.ok) {
+            const xrayData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "XRAY");
+            setXray(xrayData);
+        }
+    }
+
+    useEffect(() => {
+        getDataSurgery();
+    }, []);
 
     return (
         <SafeAreaView style={{
@@ -360,7 +374,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                     <Text color="#fff" style={{ fontWeight: "bold" }}>보증서 보기</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => NavigationService.navigate("ScheduleXrayScreen")}
+                    onPress={() => NavigationService.navigate("ScheduleXrayScreen", { historyId: userHistoryDetail?.id })}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
