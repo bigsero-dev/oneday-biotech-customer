@@ -1,7 +1,7 @@
 import Text from "components/Text";
 import icons from "configs/icons";
 import React, { useEffect, useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import ImplantWarrantyTab from "./WarrantyTabs/ImplantWarrantyTab";
@@ -16,6 +16,7 @@ import { RouteProp } from "@react-navigation/core";
 import { RootStackParamList } from "types/NavigatorTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import OthersTab from "./WarrantyTabs/OthersTab";
+import RNFetchBlob from 'rn-fetch-blob'
 
 type WarrantyScreenRouteType = RouteProp<RootStackParamList, "WarrantyScreen">;
 
@@ -41,6 +42,124 @@ const WarrantyScreen = ({ route }: Prop) => {
     const [warranty, setDataWarranty] = useState([] as any);
 
     const { token } = useAuth();
+
+    const getFileExtention = (fileUrl: any) => {
+        // To get the file extension
+        return /[.]/.exec(fileUrl) ?
+            /[^.]+$/.exec(fileUrl) : undefined;
+    };
+
+    const downloadFile = (fileUrl: any) => {
+
+        // Get today's date to add the time suffix in filename
+        let date = new Date();
+        // File URL which we want to download
+        let FILE_URL = fileUrl;
+        // Function to get extention of the file url
+        let file_ext: any = getFileExtention(FILE_URL);
+
+        file_ext = `.${file_ext?.[0]}`
+        // file_ext = '.' + file_ext[0];
+
+        // config: To get response by passing the downloading related options
+        // fs: Root directory path to download
+        const { config, fs } = RNFetchBlob;
+        let RootDir = fs.dirs.PictureDir;
+        let options = {
+            fileCache: true,
+            addAndroidDownloads: {
+                path:
+                    RootDir +
+                    '/file_' +
+                    Math.floor(date.getTime() + date.getSeconds() / 2) +
+                    file_ext,
+                description: 'downloading file...',
+                notification: true,
+                // useDownloadManager works with Android only
+                useDownloadManager: true,
+            },
+        };
+        config(options)
+            .fetch('GET', FILE_URL)
+            .then(res => {
+                // Alert after successful downloading
+                // console.log('res -> ', JSON.stringify(res));
+                setOpenModal(true);
+                setTimeout(() => {
+                    setOpenModal(false);
+                }, 5000);
+                // alert('File Downloaded Successfully.');
+            });
+    };
+
+    const checkPermission = async () => {
+
+        // Function to check the platform
+        // If iOS then start downloading
+        // If Android then ask for permission
+
+        let urlFiles = [];
+        if (tab === "임플란트 보증서") {
+            urlFiles = warranty?.map((item: any) => {
+                return item?.imgUrl
+            })
+        }
+
+        if (tab === "시술 보증서") {
+            urlFiles = treatments?.map((item: any) => {
+                return item?.imgUrl
+            })
+        }
+
+        if (tab === "동의서") {
+            urlFiles = agreements?.map((item: any) => {
+                return item?.imgUrl
+            })
+        }
+
+        if (tab === "주의사항") {
+            urlFiles = cautions?.map((item: any) => {
+                return item?.imgUrl
+            })
+        }
+
+        if (tab === "기타") {
+            urlFiles = others?.map((item: any) => {
+                return item?.imgUrl
+            })
+        }
+
+        if (Platform.OS === 'ios') {
+
+            urlFiles?.map((item: any) => downloadFile(item))
+
+            // downloadFile();
+        } else {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'Storage Permission Required',
+                        message:
+                            'App needs access to your storage to download Photos',
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    // Once user grant the permission start downloading
+                    console.log('Storage Permission Granted.');
+                    urlFiles?.map((item: any) => downloadFile(item))
+                } else {
+                    // If permission denied then show alert
+                    alert('Storage Permission Not Granted');
+                }
+            } catch (err) {
+                // To handle permission related exception
+                console.warn(err);
+            }
+        }
+    };
+
+
 
     const getDataSurgery = async () => {
         const result = await api.getUserSurgeryHistory(token, historyId || "");
@@ -215,10 +334,11 @@ const WarrantyScreen = ({ route }: Prop) => {
             {cautions?.length > 0 || agreements?.length > 0 || treatments?.length > 0 || others?.length > 0 || warranty?.length > 0 ? (
                 <Button
                     onPress={() => {
-                        setOpenModal(true)
-                        setTimeout(() => {
-                            setOpenModal(false);
-                        }, 5000);
+                        checkPermission();
+                        // setOpenModal(true)
+                        // setTimeout(() => {
+                        //     setOpenModal(false);
+                        // }, 5000);
                     }}
                     title="보증서 다운"
                     textStyle={{

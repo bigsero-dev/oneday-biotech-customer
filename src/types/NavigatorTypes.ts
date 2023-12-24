@@ -20,7 +20,9 @@ export type RootStackParamList = {
   WarrantyScreen: {
     historyId?: string
   };
-  ScheduleXrayScreen: undefined;
+  ScheduleXrayScreen: {
+    historyId?: string
+  };
   HospitalDetailScreen: {
     id: string;
   };
