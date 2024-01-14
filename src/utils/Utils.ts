@@ -116,3 +116,88 @@ export const ConvertStepToText = (step: string) => {
 
   return convertedText;
 }
+
+export const ConvertTeethPosition = (number: number) => {
+  const left = 'LEFT';
+  const right = 'RIGHT';
+  const upper = 'UPPER';
+  const bottom = 'BOTTOM';
+  const incisor = 'INCISOR';
+  const canine = 'CANINE';
+  const premolar = 'PREMOLAR';
+  const molar = 'MOLAR';
+
+  //Left Upper Incisor
+  const arrDigits: any = Array.from(String(number), Number);
+  let teethName = "";
+
+  //incisor
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 1 || arrDigits[0] === 2) && (arrDigits[1] === 1 || arrDigits[1] === 2)) {
+    teethName = `${right} ${upper} ${incisor}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 1 || arrDigits[0] === 2) && (arrDigits[1] === 1 || arrDigits[1] === 2)) {
+    teethName = `${left} ${upper} ${incisor}`;
+  }
+
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 3 || arrDigits[0] === 4) && (arrDigits[1] === 1 || arrDigits[1] === 2)) {
+    teethName = `${right} ${bottom} ${incisor}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 3 || arrDigits[0] === 4) && (arrDigits[1] === 1 || arrDigits[1] === 2)) {
+    teethName = `${left} ${bottom} ${incisor}`;
+  }
+
+  //canine
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 1 || arrDigits[0] === 2) && arrDigits[1] === 3) {
+    teethName = `${right} ${upper} ${canine}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 1 || arrDigits[0] === 2) && arrDigits[1] === 3) {
+    teethName = `${left} ${upper} ${canine}`;
+  }
+
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 3 || arrDigits[0] === 4) && arrDigits[1] === 3) {
+    teethName = `${right} ${bottom} ${canine}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 3 || arrDigits[0] === 4) && arrDigits[1] === 3) {
+    teethName = `${left} ${bottom} ${canine}`;
+  }
+
+  //premolar
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 1 || arrDigits[0] === 2) && (arrDigits[1] === 4 || arrDigits[1] === 5)) {
+    teethName = `${right} ${upper} ${premolar}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 1 || arrDigits[0] === 2) && (arrDigits[1] === 4 || arrDigits[1] === 5)) {
+    teethName = `${left} ${upper} ${premolar}`;
+  }
+
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 3 || arrDigits[0] === 4) && (arrDigits[1] === 4 || arrDigits[1] === 5)) {
+    teethName = `${right} ${bottom} ${premolar}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 3 || arrDigits[0] === 4) && (arrDigits[1] === 4 || arrDigits[1] === 5)) {
+    teethName = `${left} ${bottom} ${premolar}`;
+  }
+
+  //molar
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 1 || arrDigits[0] === 2) && (arrDigits[1] === 6 || arrDigits[1] === 7 || arrDigits[1] === 8)) {
+    teethName = `${right} ${upper} ${molar}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 1 || arrDigits[0] === 2) && (arrDigits[1] === 6 || arrDigits[1] === 7 || arrDigits[1] === 8)) {
+    teethName = `${left} ${upper} ${molar}`;
+  }
+
+  if (arrDigits[0] % 2 === 0 && (arrDigits[0] === 3 || arrDigits[0] === 4) && (arrDigits[1] === 6 || arrDigits[1] === 7 || arrDigits[1] === 8)) {
+    teethName = `${right} ${bottom} ${molar}`;
+  }
+
+  if (arrDigits[0] % 2 === 1 && (arrDigits[0] === 3 || arrDigits[0] === 4) && (arrDigits[1] === 6 || arrDigits[1] === 7 || arrDigits[1] === 8)) {
+    teethName = `${left} ${bottom} ${molar}`;
+  }
+
+  return teethName;
+}

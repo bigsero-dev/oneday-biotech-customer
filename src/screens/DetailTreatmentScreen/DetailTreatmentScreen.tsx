@@ -159,7 +159,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                 <Space height={12} />
 
                 <TouchableOpacity
-                    onPress={() => NavigationService.navigate("ImplantListScreen")}
+                    onPress={() => NavigationService.navigate("ImplantListScreen", { historyId: userHistoryDetail?.id })}
                     style={{
                         height: 35,
                         backgroundColor: (userHistoryDetail?.userTeeth?.length || 0) < 1 ? "#ddd" : "#fff",

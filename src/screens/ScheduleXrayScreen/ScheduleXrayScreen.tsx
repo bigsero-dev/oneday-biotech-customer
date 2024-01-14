@@ -13,6 +13,8 @@ import api from "configs/api";
 import { RouteProp } from "@react-navigation/core";
 import { RootStackParamList } from "types/NavigatorTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { convertDate } from "utils/Utils";
+import moment from "moment";
 
 type ScheduleXrayScreenRouteType = RouteProp<RootStackParamList, "ScheduleXrayScreen">;
 
@@ -76,6 +78,7 @@ const ScheduleXrayScreen = ({ route }: Prop) => {
                             </View>
                             <Text style={{ fontWeight: "bold" }}>엑스레이</Text>
                         </TouchableOpacity>
+                        <Text style={{ fontWeight: "bold" }}>{xray?.length}/{xray?.length}</Text>
                     </View>
                 </View>
                 {xray.length > 0 ? (
@@ -95,6 +98,9 @@ const ScheduleXrayScreen = ({ route }: Prop) => {
                                 carouselRef={ref}
                                 currentIndex={currentIndex}
                                 customOption={true}
+                                withCornerText
+                                textCorner={moment(xray?.[currentIndex]?.createdAt).format('YYYY-MM-DD') || "-"}
+                            // textCorner={convertDate(xray?.[currentIndex]?.createdAt) || "-"}
                             />
                         )}
                     </View>
