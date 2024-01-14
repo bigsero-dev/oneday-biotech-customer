@@ -2,27 +2,19 @@ import BaseModal from "components/BaseModal";
 import SearchInput from "components/SearchInput";
 import Space from "components/Space";
 import Text from "components/Text";
+import api from "configs/api";
 import colors from "configs/colors";
 import icons from "configs/icons";
-import { useRef, useState } from "react";
-import { Image, ScrollView, TouchableOpacity, View } from "react-native"
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from "react-native"
 import globalStyles from "utils/GlobalStyles";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
-
-const mockData = [
-    {
-        title: "하얀마음치과 임플란트 보증서",
-        date: "2021.09.26"
-    },
-    {
-        title: "원데이치과 임플란트 보증서",
-        date: "2021.09.26"
-    },
-];
+import { useAuth } from "utils/hooks/UseAuth";
 
 const WarrantyListScreen = () => {
     const timeout: any = useRef(null);
+    const { token } = useAuth();
     const [openModalSort, SetOpenModalSort] = useState(false);
     const [searchInfo, setSearchInfo] = useState({
         searchText: "",
@@ -32,18 +24,60 @@ const WarrantyListScreen = () => {
     });
     const [_, setIsSearch] = useState(false);
 
+    const [dataWarranty, setDataWarranty] = useState([] as any);
+    const [searchResults, setSearchResults] = useState([] as any);
+    const [isLoading, setLoading] = useState(true);
+
     const onChangeTextSearch = (text: string) => {
         clearTimeout(timeout.current);
-        if (text.length > 3) {
+        // const tempArr = [...dataWarranty];
+        if (text.length > 2) {
             timeout.current = setTimeout(() => {
                 setIsSearch(true);
+                const term = text.toLocaleLowerCase();
+                const res = dataWarranty?.filter((item: any) => item?.name?.toLocaleLowerCase().includes(term))
+                console.log("aasdas", res)
+                setSearchResults(res);
                 //setIsLoading(true);
             }, 1000);
         } else {
+            setSearchResults([...dataWarranty]);
+            // setDataWarranty(tempArr);
             setIsSearch(false);
         }
         setSearchInfo({ ...searchInfo, searchText: text });
     };
+
+    const _getWarranty = async () => {
+        setLoading(true);
+        const result = await api.getMineWarranty(token);
+
+        if (result?.data?.ok) {
+            let newArr: any = [];
+            result?.data?.data?.userSurgeryHistory?.forEach((item: any) => {
+                if (item?.userSurgeryHistoryForm?.length > 0) {
+                    item?.userSurgeryHistoryForm?.forEach((data: any) => {
+                        const newData = {
+                            id: data?.id,
+                            name: `${item?.hospital?.name} ${data?.type} Warranty`,
+                            url: data?.imgUrl
+                        }
+
+                        newArr = [...newArr, newData];
+                    })
+                }
+            })
+
+            setDataWarranty(newArr)
+            setSearchResults(newArr)
+        }
+
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        _getWarranty();
+    }, []);
 
     return (
         <View style={[globalStyles().topSafeArea]}>
@@ -74,101 +108,158 @@ const WarrantyListScreen = () => {
                     </TouchableOpacity>
                 </View>
                 <Space height={20} />
-                <ScrollView
-                    style={{ flex: 1, paddingHorizontal: scaledHorizontal(20) }}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <SearchInput
-                        value={searchInfo.searchText}
-                        placeholder="환자명 검색"
-                        onChangeText={onChangeTextSearch}
-                        onSubmit={onChangeTextSearch}
-                        onDeleteInput={() => {
-                            setSearchInfo({ ...searchInfo, searchText: "" });
-                            setIsSearch(false);
-                        }}
+                {isLoading ? (
+                    <ActivityIndicator
+                        size={30}
+                        color={colors.darkBlue}
                     />
-                    <Space height={19} />
+                ) : (
                     <View
-                        style={{
-                            // paddingHorizontal: scaledHorizontal(25),
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                        }}
+                        style={{ flex: 1, paddingHorizontal: scaledHorizontal(20) }}
+                    // showsVerticalScrollIndicator={false}
                     >
-                        <Text size={13}>
-                            총{" "}
-                            <Text style={{ fontWeight: "900" }} size={13}>
-                                2
-                            </Text>
-                            건
-                        </Text>
-                        <View>
-                            <TouchableOpacity
-                                style={{ flexDirection: "row", alignItems: "center" }}
-                                onPress={() => { SetOpenModalSort(true) }}
-                            >
-                                <Text size={13}>{searchInfo.sortBy}</Text>
-                                <Image
-                                    source={icons.arrowDown}
-                                    style={{
-                                        height: 12,
-                                        width: 12,
-                                        tintColor: colors.black,
-                                        marginLeft: 5,
-                                    }}
-                                    resizeMode="contain"
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <Space height={12} />
-                    {mockData?.map((item, idx) => (
-                        <TouchableOpacity
-                            onPress={() => NavigationService.navigate("WarrantyDetailScreen")}
-                            key={idx}
+                        <SearchInput
+                            value={searchInfo.searchText}
+                            placeholder="환자명 검색"
+                            onChangeText={onChangeTextSearch}
+                            onSubmit={onChangeTextSearch}
+                            onDeleteInput={() => {
+                                setSearchInfo({ ...searchInfo, searchText: "" });
+                                setIsSearch(false);
+                                _getWarranty();
+                            }}
+                        />
+                        <Space height={19} />
+                        <View
                             style={{
-                                paddingHorizontal: 16,
-                                paddingVertical: 15,
-                                borderRadius: 2,
-                                borderWidth: 0.3,
-                                marginHorizontal: 1,
-                                borderColor: colors.gainsboro,
-                                marginBottom: 12,
-                                shadowColor: '#000',
-                                shadowOffset: { width: 0, height: 1 },
-                                shadowOpacity: 0.2,
-                                shadowRadius: 2,
-                                elevation: 3,
-                                backgroundColor: "#fff",
-                                height: 70,
+                                // paddingHorizontal: scaledHorizontal(25),
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
                             }}
                         >
-                            <View
+                            <Text size={13}>
+                                총{" "}
+                                <Text style={{ fontWeight: "900" }} size={13}>
+                                    {searchResults?.length}
+                                </Text>
+                                건
+                            </Text>
+                            <View>
+                                <TouchableOpacity
+                                    style={{ flexDirection: "row", alignItems: "center" }}
+                                    onPress={() => { SetOpenModalSort(true) }}
+                                >
+                                    <Text size={13}>{searchInfo.sortBy}</Text>
+                                    <Image
+                                        source={icons.arrowDown}
+                                        style={{
+                                            height: 12,
+                                            width: 12,
+                                            tintColor: colors.black,
+                                            marginLeft: 5,
+                                        }}
+                                        resizeMode="contain"
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <Space height={12} />
+                        <FlatList
+                            data={searchResults}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    onPress={() => NavigationService.navigate("WarrantyDetailScreen")}
+                                    style={{
+                                        paddingHorizontal: 16,
+                                        paddingVertical: 15,
+                                        borderRadius: 2,
+                                        borderWidth: 0.3,
+                                        marginHorizontal: 1,
+                                        borderColor: colors.gainsboro,
+                                        marginBottom: 12,
+                                        shadowColor: '#000',
+                                        shadowOffset: { width: 0, height: 1 },
+                                        shadowOpacity: 0.2,
+                                        shadowRadius: 2,
+                                        elevation: 3,
+                                        backgroundColor: "#fff",
+                                        minHeight: 70,
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            justifyContent: "space-between",
+                                            flexDirection: "row",
+                                            alignItems: "center"
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                flexDirection: "column",
+                                                width: 285
+                                            }}
+                                        >
+                                            <Text size={15} style={{ fontWeight: "bold" }}>{item?.name}</Text>
+                                            <Space height={8} />
+                                            <Text size={12} color="#999999">발급일 : {item?.date}</Text>
+                                        </View>
+                                        <View>
+                                            <Image source={icons.arrowRight} style={{ width: 7, height: 12 }} />
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        />
+                        {/* {dataWarranty?.map((item: any, idx: number) => (
+                            <TouchableOpacity
+                                onPress={() => NavigationService.navigate("WarrantyDetailScreen")}
+                                key={idx}
                                 style={{
-                                    justifyContent: "space-between",
-                                    flexDirection: "row",
-                                    alignItems: "center"
+                                    paddingHorizontal: 16,
+                                    paddingVertical: 15,
+                                    borderRadius: 2,
+                                    borderWidth: 0.3,
+                                    marginHorizontal: 1,
+                                    borderColor: colors.gainsboro,
+                                    marginBottom: 12,
+                                    shadowColor: '#000',
+                                    shadowOffset: { width: 0, height: 1 },
+                                    shadowOpacity: 0.2,
+                                    shadowRadius: 2,
+                                    elevation: 3,
+                                    backgroundColor: "#fff",
+                                    minHeight: 70,
                                 }}
                             >
                                 <View
                                     style={{
-                                        flexDirection: "column"
+                                        justifyContent: "space-between",
+                                        flexDirection: "row",
+                                        alignItems: "center"
                                     }}
                                 >
-                                    <Text size={15} style={{ fontWeight: "bold" }}>{item?.title}</Text>
-                                    <Space height={8} />
-                                    <Text size={12} color="#999999">발급일 : {item?.date}</Text>
+                                    <View
+                                        style={{
+                                            flexDirection: "column",
+                                            width: 285
+                                        }}
+                                    >
+                                        <Text size={15} style={{ fontWeight: "bold" }}>{item?.name}</Text>
+                                        <Space height={8} />
+                                        <Text size={12} color="#999999">발급일 : {item?.date}</Text>
+                                    </View>
+                                    <View>
+                                        <Image source={icons.arrowRight} style={{ width: 7, height: 12 }} />
+                                    </View>
                                 </View>
-                                <View>
-                                    <Image source={icons.arrowRight} style={{ width: 7, height: 12 }} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                            </TouchableOpacity>
+                        ))} */}
 
-                </ScrollView>
+                    </View>
+                )}
+
             </View>
             <BaseModal
                 contentStyle={{

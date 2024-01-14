@@ -22,6 +22,8 @@ interface OptionsProps {
   isNew?: boolean;
   customOption?: boolean;
   images: string[];
+  withCornerText?: boolean;
+  textCorner?: string;
 }
 
 const Options = ({
@@ -31,6 +33,8 @@ const Options = ({
   customOption,
   images,
   isNew,
+  withCornerText,
+  textCorner
 }: OptionsProps) => {
   const { height } = useWindowDimensions();
   return (
@@ -143,6 +147,21 @@ const Options = ({
           {placeholder}
         </Text>
       </View> */}
+      {withCornerText && (
+        <View style={{
+          position: "absolute",
+          bottom: 10,
+          right: 10,
+          width: 100,
+          height: 40,
+          // backgroundColor: "yellow",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <Text color="#fff">{textCorner}</Text>
+        </View>
+      )}
+
     </>
   );
 };

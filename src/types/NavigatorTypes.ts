@@ -14,7 +14,9 @@ export type RootStackParamList = {
   };
   WarrantyListScreen: undefined;
   HospitalListScreen: undefined;
-  ImplantListScreen: undefined;
+  ImplantListScreen: {
+    historyId?: string
+  };
   ChangeHospitalScreen: undefined;
   NotificationScreen: undefined;
   WarrantyScreen: {

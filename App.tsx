@@ -16,6 +16,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from "redux-persist/integration/react";
 import { RootSiblingParent } from 'react-native-root-siblings';
 import AppNavigator from 'navigations/AppNavigator';
+import { NavermapsProvider } from 'react-naver-maps';
 
 const App = () => {
   enableScreens(true);
@@ -26,7 +27,9 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <RootSiblingParent>
+
               <AppNavigator />
+
             </RootSiblingParent>
           </PersistGate>
         </Provider>

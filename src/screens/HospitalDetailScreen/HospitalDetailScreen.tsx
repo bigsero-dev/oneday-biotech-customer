@@ -15,7 +15,6 @@ import { RootStackParamList } from "types/NavigatorTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import api from "configs/api";
 import { useAuth } from "utils/hooks/UseAuth";
-import RenderHTML from "react-native-render-html";
 import WebView from "react-native-webview";
 import colors from "configs/colors";
 
@@ -135,7 +134,35 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                                 // paddingVertical: scaledVertical(25),
                             }}
                         >
-                            <RenderHTML
+                            <WebView
+                                style={{ height: 700, width: '100%' }}
+                                originWhitelist={['*']}
+                                javaScriptEnabled
+                                onMessage={(event) => console.log('WebView Message:', event.nativeEvent.data)}
+                                source={{ uri: 'https://2435-125-161-84-46.ngrok-free.app/?latitude=37.3595704&longitude=127.105399' }}
+                            //     source={{
+                            //         html: `<html>
+                            //     <head>
+                            //         <meta charset="UTF-8">
+                            //         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                            //         <meta name="viewport" content="width=300, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+                            //         <title>Display a simple map</title>
+                            //         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+                            //         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=83bfuniegk"></script>
+                            //     </head>
+                            //     <body>
+                            //     <div id="map" style="width:100%;height:300px;"></div>
+
+                            //     <script>
+                            //     var map = new naver.maps.Map('map', {
+                            //         center: new naver.maps.LatLng(37.3593052, 127.1069474),
+                            //         zoom: 16
+                            //     });
+                            //     </script>
+                            //     </body>
+                            // </html>` }}
+                            />
+                            {/* <RenderHTML
                                 contentWidth={300}
                                 source={{
                                     html:
@@ -146,25 +173,24 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                                             <meta http-equiv="X-UA-Compatible" content="IE=edge">
                                             <meta name="viewport" content="width=300, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
                                             <title>Display a simple map</title>
-                                            <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7dtgd0y4um"></script>
+                                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+                                            <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=83bfuniegk"></script>
                                         </head>
                                         <body>
                                         <div id="map" style="width:100%;height:300px;"></div>
                                         
                                         <script>
-                                        var mapOptions = {
-                                            center: new naver.maps.LatLng(37.3595704, 127.105399),
-                                            zoom: 10
-                                        };
-                                        
-                                        var map = new naver.maps.Map('map', mapOptions);
+                                        var map = new naver.maps.Map('map', {
+                                            center: new naver.maps.LatLng(37.3593052, 127.1069474),
+                                            zoom: 16
+                                        });
                                         </script>
                                         </body>
                                     </html>
                             `
                                 }}
-                                WebView={WebView}
-                            />
+                            // WebView={WebView}
+                            /> */}
                         </View>
 
                         {/* <Image source={images.locationExample} style={{ height: 175, width: "100%" }} resizeMode="contain" /> */}
