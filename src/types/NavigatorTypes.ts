@@ -28,7 +28,9 @@ export type RootStackParamList = {
   HospitalDetailScreen: {
     id: string;
   };
-  WarrantyDetailScreen: undefined;
+  WarrantyDetailScreen: {
+    urlImage?: string
+  };
   PickHospitalScreen: undefined;
 }
 

@@ -1,8 +1,11 @@
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
+import BaseModal from "components/BaseModal";
+import Button from "components/Button";
 import Space from "components/Space";
 import Text from "components/Text";
 import api from "configs/api";
+import colors from "configs/colors";
 import icons from "configs/icons";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -33,12 +36,16 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
 
     const [tab, setTab] = useState("예약관리");
     const [xray, setXray] = useState([] as any);
+    const [dataWarranty, setDataWarranty] = useState([] as any);
+    const [openModalEmpty, setOpenModalEmpty] = useState(false);
 
     const getDataSurgery = async () => {
         const result = await api.getUserSurgeryHistory(token, userHistoryDetail?.id || "");
         if (result?.data?.ok) {
             const xrayData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "XRAY");
+            const warrantyData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type !== "XRAY");
             setXray(xrayData);
+            setDataWarranty(warrantyData);
         }
     }
 
@@ -362,7 +369,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={() => NavigationService.navigate("WarrantyScreen", { historyId: userHistoryDetail?.id })}
+                    onPress={() => dataWarranty?.length > 0 ? NavigationService.navigate("WarrantyScreen", { historyId: userHistoryDetail?.id }) : setOpenModalEmpty(true)}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
@@ -374,7 +381,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                     <Text color="#fff" style={{ fontWeight: "bold" }}>보증서 보기</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => NavigationService.navigate("ScheduleXrayScreen", { historyId: userHistoryDetail?.id })}
+                    onPress={() => xray?.length > 0 ? NavigationService.navigate("ScheduleXrayScreen", { historyId: userHistoryDetail?.id }) : setOpenModalEmpty(true)}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
@@ -386,6 +393,50 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                     <Text color="#000" style={{ fontWeight: "bold" }}>엑스레이 보기</Text>
                 </TouchableOpacity>
             </View>
+            <BaseModal
+                contentStyle={{
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingHorizontal: 0,
+                    borderRadius: 2,
+                    minHeight: 114,
+                    width: 320,
+                    alignSelf: "center"
+                }}
+                showModal={openModalEmpty}
+                animation="slide"
+                onBackdropPress={() => setOpenModalEmpty(false)}
+                onBackButtonPress={() => setOpenModalEmpty(false)}
+            >
+                <View
+                    style={{
+                        backgroundColor: colors.white,
+                        // flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingVertical: 18
+                    }}
+                >
+                    <Text size={15} color="#000" style={{ marginBottom: 23 }} textAlign="center">{"등록된 정보가 없습니다.\n병원에서 등록해야만 열람이 가능합니다.\n병원에 문의해주세요."}</Text>
+                    <Button
+                        onPress={() => setOpenModalEmpty(false)}
+                        title="확인"
+                        textStyle={{
+                            color: "#fff",
+                            // fontWeight: "bold",
+                            fontSize: 13
+                        }}
+                        style={{
+                            borderRadius: 2,
+                            height: 30,
+                            width: 80,
+                            paddingHorizontal: 17,
+                            // paddingVertical: 7,
+                            backgroundColor: "#0f1e3d"
+                        }}
+                    />
+                </View>
+            </BaseModal>
         </SafeAreaView>
     );
 }

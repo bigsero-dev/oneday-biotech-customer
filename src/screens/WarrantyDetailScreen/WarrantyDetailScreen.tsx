@@ -1,20 +1,122 @@
+import { RouteProp } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import BaseModal from "components/BaseModal";
 import Button from "components/Button";
 import Text from "components/Text";
 import icons from "configs/icons";
-import images from "configs/images";
 import React, { useState } from "react";
-import { Image, SafeAreaView, TouchableOpacity, View } from "react-native";
+import { Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { RootStackParamList } from "types/NavigatorTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
+import RNFetchBlob from 'rn-fetch-blob'
 
-const WarrantyDetailScreen = () => {
+type WarrantyDetailScreenRouteType = RouteProp<RootStackParamList, "WarrantyDetailScreen">;
+
+type WarrantyDetailScreenNavigationProps = StackNavigationProp<
+    RootStackParamList,
+    "WarrantyDetailScreen"
+>;
+
+type Prop = {
+    route: WarrantyDetailScreenRouteType;
+    navigation: WarrantyDetailScreenNavigationProps;
+};
+
+const WarrantyDetailScreen = ({ route }: Prop) => {
+    const { urlImage } = route?.params;
     const [openModal, setOpenModal] = useState(false);
+
+    const getFileExtention = (fileUrl: any) => {
+        // To get the file extension
+        return /[.]/.exec(fileUrl) ?
+            /[^.]+$/.exec(fileUrl) : undefined;
+    };
+
+    const downloadFile = (fileUrl: any) => {
+
+        // Get today's date to add the time suffix in filename
+        let date = new Date();
+        // File URL which we want to download
+        let FILE_URL = fileUrl;
+        // Function to get extention of the file url
+        let file_ext: any = getFileExtention(FILE_URL);
+
+        file_ext = `.${file_ext?.[0]}`
+        // file_ext = '.' + file_ext[0];
+
+        // config: To get response by passing the downloading related options
+        // fs: Root directory path to download
+        const { config, fs } = RNFetchBlob;
+        let RootDir = fs.dirs.PictureDir;
+        let options = {
+            fileCache: true,
+            addAndroidDownloads: {
+                path:
+                    RootDir +
+                    '/file_' +
+                    Math.floor(date.getTime() + date.getSeconds() / 2) +
+                    file_ext,
+                description: 'downloading file...',
+                notification: true,
+                // useDownloadManager works with Android only
+                useDownloadManager: true,
+            },
+        };
+        config(options)
+            .fetch('GET', FILE_URL)
+            .then(res => {
+                // Alert after successful downloading
+                // console.log('res -> ', JSON.stringify(res));
+                setOpenModal(true);
+                setTimeout(() => {
+                    setOpenModal(false);
+                }, 5000);
+                // alert('File Downloaded Successfully.');
+            });
+    };
+
+    const checkPermission = async () => {
+
+        // Function to check the platform
+        // If iOS then start downloading
+        // If Android then ask for permission
+
+        if (Platform.OS === 'ios') {
+
+            downloadFile(urlImage)
+
+            // downloadFile();
+        } else {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'Storage Permission Required',
+                        message:
+                            'App needs access to your storage to download Photos',
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    // Once user grant the permission start downloading
+                    console.log('Storage Permission Granted.');
+                    downloadFile(urlImage)
+                } else {
+                    // If permission denied then show alert
+                    alert('Storage Permission Not Granted');
+                }
+            } catch (err) {
+                // To handle permission related exception
+                console.warn(err);
+            }
+        }
+    };
+
     return (
         <SafeAreaView
             style={{
                 flex: 1,
-                backgroundColor: "#fff"
+                backgroundColor: "#ffffff"
             }}
         >
             <View style={{
@@ -24,6 +126,7 @@ const WarrantyDetailScreen = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexDirection: "row",
+                backgroundColor: "#ffffff"
             }}>
                 <View style={{
                     flexDirection: "row",
@@ -43,17 +146,20 @@ const WarrantyDetailScreen = () => {
                         </View>
                         <Text style={{ fontWeight: "bold" }}>하얀마음치과 임플란트 보증서</Text>
                     </TouchableOpacity>
-                    <Text size={14} style={{ fontWeight: "bold" }}>1/1</Text>
+                    <Text size={14}>1/1</Text>
                 </View>
             </View>
-            {/* <View> */}
-            <Image source={images.implant1} style={{ width: "100%", height: 600 }} resizeMode="contain" />
+            <ScrollView>
+                <Image source={{ uri: urlImage }} style={{ width: "100%", height: 600 }} resizeMode="contain" />
+
+            </ScrollView>
             <Button
                 onPress={() => {
-                    setOpenModal(true)
-                    setTimeout(() => {
-                        setOpenModal(false);
-                    }, 5000);
+                    checkPermission();
+                    // setOpenModal(true)
+                    // setTimeout(() => {
+                    //     setOpenModal(false);
+                    // }, 5000);
                 }}
                 title="보증서 다운"
                 textStyle={{
@@ -70,7 +176,6 @@ const WarrantyDetailScreen = () => {
                     zIndex: 9999
                 }}
             />
-            {/* </View> */}
             <BaseModal
                 contentStyle={{
                     paddingBottom: 0,

@@ -32,7 +32,7 @@ const api = {
     getHistorySurgery: (token: string, params: any) => BaseService.get("user-surgery-history-by-user?" + params, getHeaderPrivate(token)),
     getDetailHospital: (token: string, id: string) => BaseService.get("hospitals/" + id, getHeaderPrivate(token)),
     getUserSurgeryHistory: (token: string, id: string) => BaseService.get("user-surgery-history/" + id, getHeaderPrivate(token)),
-    getMineWarranty: (token: string) => BaseService.get("mine/get-warranty", getHeaderPrivate(token))
+    getMineWarranty: (token: string, sortBy: string) => BaseService.get("mine/get-warranty?sortBy=" + sortBy, getHeaderPrivate(token))
 }
 
 export default api;
