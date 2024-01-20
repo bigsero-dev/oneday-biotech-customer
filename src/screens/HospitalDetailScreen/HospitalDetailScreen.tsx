@@ -4,7 +4,7 @@ import Text from "components/Text";
 import icons from "configs/icons";
 import images from "configs/images";
 import React, { useEffect, useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, ScrollView, TouchableOpacity, View, Linking } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { ICarouselInstance } from "react-native-reanimated-carousel";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -49,6 +49,20 @@ const HospitalDetailScreen = ({ route }: Prop) => {
             setDetailHospital(result?.data?.data);
             setImageCarousel(result?.data?.data?.images);
         }
+    }
+
+    const _handleCallPress = () => {
+        const phoneUrl = `tel:${detailHospital?.contact}`;
+        Linking.openURL(phoneUrl)
+            .then((supported) => {
+                if (!supported) {
+                    console.warn('Panggilan telepon tidak didukung pada perangkat ini');
+                }
+            })
+            .catch((error) => {
+                console.error('Error saat membuka aplikasi panggilan telepon:', error);
+            });
+
     }
 
     useEffect(() => {
@@ -130,8 +144,7 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                         <View
                             style={{
                                 backgroundColor: colors.antiFlashWhite,
-                                // paddingHorizontal: scaledHorizontal(25),
-                                // paddingVertical: scaledVertical(25),
+
                             }}
                         >
                             <WebView
@@ -140,61 +153,11 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                                 javaScriptEnabled
                                 onMessage={(event) => console.log('WebView Message:', event.nativeEvent.data)}
                                 source={{ uri: 'https://onedaybiotech.vercel.app/maps/37.3595704/127.105399' }}
-                            // source={{ uri: 'https://2435-125-161-84-46.ngrok-free.app/?latitude=37.3595704&longitude=127.105399' }}
-                            //     source={{
-                            //         html: `<html>
-                            //     <head>
-                            //         <meta charset="UTF-8">
-                            //         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                            //         <meta name="viewport" content="width=300, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-                            //         <title>Display a simple map</title>
-                            //         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                            //         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=83bfuniegk"></script>
-                            //     </head>
-                            //     <body>
-                            //     <div id="map" style="width:100%;height:300px;"></div>
 
-                            //     <script>
-                            //     var map = new naver.maps.Map('map', {
-                            //         center: new naver.maps.LatLng(37.3593052, 127.1069474),
-                            //         zoom: 16
-                            //     });
-                            //     </script>
-                            //     </body>
-                            // </html>` }}
                             />
-                            {/* <RenderHTML
-                                contentWidth={300}
-                                source={{
-                                    html:
-                                        `<!DOCTYPE html>
-                                    <html>
-                                        <head>
-                                            <meta charset="UTF-8">
-                                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                                            <meta name="viewport" content="width=300, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-                                            <title>Display a simple map</title>
-                                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                                            <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=83bfuniegk"></script>
-                                        </head>
-                                        <body>
-                                        <div id="map" style="width:100%;height:300px;"></div>
-                                        
-                                        <script>
-                                        var map = new naver.maps.Map('map', {
-                                            center: new naver.maps.LatLng(37.3593052, 127.1069474),
-                                            zoom: 16
-                                        });
-                                        </script>
-                                        </body>
-                                    </html>
-                            `
-                                }}
-                            // WebView={WebView}
-                            /> */}
+
                         </View>
 
-                        {/* <Image source={images.locationExample} style={{ height: 175, width: "100%" }} resizeMode="contain" /> */}
                     </View>
                 </View>
                 <Space height={30} />
@@ -216,12 +179,7 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                                 {item}
                             </Text>
                         ))}
-                        {/* <Text size={12} color="#333">
-                            평일 09:30 - 18:30 {"\n"}
-                            월/목 저녁7시~9시 야간진료{"\n"}
-                            토요일 09:30 - 15:00 {"\n"}
-                            일요일/공휴일 휴무
-                        </Text> */}
+
                     </View>
                 </View>
                 <Space height={30} />
@@ -241,17 +199,13 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                         <Text size={12} color="#333" style={{ marginBottom: 6 }}>
                             {detailHospital?.details || "-"}
                         </Text>
-                        {/* <Text size={12} color="#333" style={{ marginBottom: 6 }}>http://www.onedaydent.co.kr</Text>
-                        <Text size={12} color="#333">
-                            어쩌구 저쩌구 우리 병원은 100년 전통을 자랑하는 {"\n"}
-                            고객만족도 1위 치과입니다. 최고의 치과의사가 신뢰와 전문성을 바탕으로 고객님께{"\n"}
-                            감동을 드리겠습니다.
-                        </Text> */}
+
                     </View>
                 </View>
                 <Space height={70} />
             </ScrollView>
             <Button
+                onPress={_handleCallPress}
                 title="전화 문의"
                 textStyle={{
                     color: "#fff",
