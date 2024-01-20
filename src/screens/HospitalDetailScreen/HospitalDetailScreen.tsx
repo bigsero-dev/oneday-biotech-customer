@@ -135,11 +135,12 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                             }}
                         >
                             <WebView
-                                style={{ height: 700, width: '100%' }}
+                                style={{ height: 300, width: '100%' }}
                                 originWhitelist={['*']}
                                 javaScriptEnabled
                                 onMessage={(event) => console.log('WebView Message:', event.nativeEvent.data)}
-                                source={{ uri: 'https://2435-125-161-84-46.ngrok-free.app/?latitude=37.3595704&longitude=127.105399' }}
+                                source={{ uri: 'https://onedaybiotech.vercel.app/maps/37.3595704/127.105399' }}
+                            // source={{ uri: 'https://2435-125-161-84-46.ngrok-free.app/?latitude=37.3595704&longitude=127.105399' }}
                             //     source={{
                             //         html: `<html>
                             //     <head>
