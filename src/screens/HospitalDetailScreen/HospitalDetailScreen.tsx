@@ -101,7 +101,7 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <ScrollView>
+            <ScrollView style={{ flex: 1 }}>
                 <View
                     style={{
                         height: 200
@@ -144,16 +144,16 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                         <View
                             style={{
                                 backgroundColor: colors.antiFlashWhite,
-
+                                flex: 1,
+                                width: '100%',
+                                height: 300
                             }}
                         >
                             <WebView
-                                style={{ height: 300, width: '100%' }}
+                                style={{ height: 300, width: '100%', backgroundColor: colors.antiFlashWhite, flex: 1 }}
                                 originWhitelist={['*']}
-                                javaScriptEnabled
-                                onMessage={(event) => console.log('WebView Message:', event.nativeEvent.data)}
-                                source={{ uri: 'https://onedaybiotech.vercel.app/maps/37.3595704/127.105399' }}
-
+                                javaScriptEnabled={true}
+                                source={{ uri: 'https://onedaybiotech.vercel.app/maps/37.3595704/127.105399/' }}
                             />
 
                         </View>

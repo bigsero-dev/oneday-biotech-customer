@@ -5,7 +5,7 @@ import Button from "components/Button";
 import Text from "components/Text";
 import icons from "configs/icons";
 import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "types/NavigatorTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -80,41 +80,34 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
     //         });
     // };
 
-    // const checkPermission = async () => {
+    const checkPermission = async () => {
 
-    //     // Function to check the platform
-    //     // If iOS then start downloading
-    //     // If Android then ask for permission
+        if (Platform.OS === 'ios') {
 
-    //     if (Platform.OS === 'ios') {
+            downloadConvertAndSaveToPDF(urlImage || "")
 
-    //         downloadFile(urlImage)
-
-    //         // downloadFile();
-    //     } else {
-    //         try {
-    //             const granted = await PermissionsAndroid.request(
-    //                 PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    //                 {
-    //                     title: 'Storage Permission Required',
-    //                     message:
-    //                         'App needs access to your storage to download Photos',
-    //                 }
-    //             );
-    //             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //                 // Once user grant the permission start downloading
-    //                 console.log('Storage Permission Granted.');
-    //                 downloadFile(urlImage)
-    //             } else {
-    //                 // If permission denied then show alert
-    //                 alert('Storage Permission Not Granted');
-    //             }
-    //         } catch (err) {
-    //             // To handle permission related exception
-    //             console.warn(err);
-    //         }
-    //     }
-    // };
+            // downloadFile();
+        } else {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'Storage Permission Required',
+                        message:
+                            'App needs access to your storage to download Photos',
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    console.log('Storage Permission Granted.');
+                    downloadConvertAndSaveToPDF(urlImage || "")
+                } else {
+                    alert('Storage Permission Not Granted');
+                }
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+    };
 
     const downloadConvertAndSaveToPDF = async (Url: string) => {
         const imageUrl = Url;
@@ -189,7 +182,8 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
             </ScrollView>
             <Button
                 onPress={() => {
-                    downloadConvertAndSaveToPDF(urlImage || "");
+                    checkPermission();
+                    // downloadConvertAndSaveToPDF(urlImage || "");
                 }}
                 title="보증서 다운"
                 textStyle={{

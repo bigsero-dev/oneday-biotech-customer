@@ -1,7 +1,7 @@
 import Text from "components/Text";
 import icons from "configs/icons";
 import React, { useEffect, useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import ImplantWarrantyTab from "./WarrantyTabs/ImplantWarrantyTab";
@@ -95,72 +95,38 @@ const WarrantyScreen = ({ route }: Prop) => {
     //         });
     // };
 
-    // const checkPermission = async () => {
+    const checkPermission = async () => {
 
-    //     // Function to check the platform
-    //     // If iOS then start downloading
-    //     // If Android then ask for permission
+        if (Platform.OS === 'ios') {
+            downloadConvertAndSaveToPDF();
+            // urlFiles?.map((item: any) => downloadFile(item))
 
-    //     let urlFiles = [];
-    //     if (tab === "임플란트 보증서") {
-    //         urlFiles = warranty?.map((item: any) => {
-    //             return item?.imgUrl
-    //         })
-    //     }
-
-    //     if (tab === "시술 보증서") {
-    //         urlFiles = treatments?.map((item: any) => {
-    //             return item?.imgUrl
-    //         })
-    //     }
-
-    //     if (tab === "동의서") {
-    //         urlFiles = agreements?.map((item: any) => {
-    //             return item?.imgUrl
-    //         })
-    //     }
-
-    //     if (tab === "주의사항") {
-    //         urlFiles = cautions?.map((item: any) => {
-    //             return item?.imgUrl
-    //         })
-    //     }
-
-    //     if (tab === "기타") {
-    //         urlFiles = others?.map((item: any) => {
-    //             return item?.imgUrl
-    //         })
-    //     }
-
-    //     if (Platform.OS === 'ios') {
-
-    //         urlFiles?.map((item: any) => downloadFile(item))
-
-    //         // downloadFile();
-    //     } else {
-    //         try {
-    //             const granted = await PermissionsAndroid.request(
-    //                 PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    //                 {
-    //                     title: 'Storage Permission Required',
-    //                     message:
-    //                         'App needs access to your storage to download Photos',
-    //                 }
-    //             );
-    //             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //                 // Once user grant the permission start downloading
-    //                 console.log('Storage Permission Granted.');
-    //                 urlFiles?.map((item: any) => downloadFile(item))
-    //             } else {
-    //                 // If permission denied then show alert
-    //                 alert('Storage Permission Not Granted');
-    //             }
-    //         } catch (err) {
-    //             // To handle permission related exception
-    //             console.warn(err);
-    //         }
-    //     }
-    // };
+            // downloadFile();
+        } else {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'Storage Permission Required',
+                        message:
+                            'App needs access to your storage to download Photos',
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    // Once user grant the permission start downloading
+                    console.log('Storage Permission Granted.');
+                    downloadConvertAndSaveToPDF();
+                    // urlFiles?.map((item: any) => downloadFile(item))
+                } else {
+                    // If permission denied then show alert
+                    alert('Storage Permission Not Granted');
+                }
+            } catch (err) {
+                // To handle permission related exception
+                console.warn(err);
+            }
+        }
+    };
 
     const downloadConvertAndSaveToPDF = async () => {
         try {
@@ -395,11 +361,15 @@ const WarrantyScreen = ({ route }: Prop) => {
                 )}
             </ScrollView>
 
-            {cautions?.length > 0 || agreements?.length > 0 || treatments?.length > 0 || others?.length > 0 || warranty?.length > 0 ? (
+            {(cautions?.length > 0 && tab === "주의사항") ||
+                (agreements?.length > 0 && tab === "동의서") ||
+                (treatments?.length > 0 && tab === "시술 보증서") ||
+                (others?.length > 0 && tab === "기타") ||
+                (warranty?.length > 0 && tab === "임플란트 보증서") ? (
                 <Button
                     onPress={() => {
-                        downloadConvertAndSaveToPDF();
-                        // checkPermission();
+                        // downloadConvertAndSaveToPDF();
+                        checkPermission();
                         // setOpenModal(true)
                         // setTimeout(() => {
                         //     setOpenModal(false);
