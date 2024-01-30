@@ -3,6 +3,7 @@ import type { UserDataType, UserHospitalType, UserLoginType } from "types/UserTy
 
 export type PersistState = {
   token: string;
+  isAutoLogin: boolean;
   dataLoading: boolean;
   userData: UserDataType;
   userHospital: UserHospitalType;
@@ -13,12 +14,14 @@ export const persistSlice = createSlice({
   initialState: {
     dataLoading: false,
     token: "",
+    isAutoLogin: false,
     userData: {} as UserDataType,
     userHospital: {} as UserHospitalType,
   } as PersistState,
   reducers: {
     onPostLoginToken: (state, action: { payload: UserLoginType }) => {
       state.token = action.payload.accessToken;
+      state.isAutoLogin = action.payload.isAutoLogin
       // state.userData = action.payload.user;
     },
     onPostUser: (state, action: { payload: UserDataType }) => {

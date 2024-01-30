@@ -150,9 +150,12 @@ const HospitalDetailScreen = ({ route }: Prop) => {
                             }}
                         >
                             <WebView
-                                style={{ height: 300, width: '100%', backgroundColor: colors.antiFlashWhite, flex: 1 }}
+                                style={{ minHeight: 200, height: 300, flex: 1, opacity: 0.99 }}
                                 originWhitelist={['*']}
+                                androidLayerType="hardware"
                                 javaScriptEnabled={true}
+                                scrollEnabled={false}
+                                androidHardwareAccelerationDisabled={true}
                                 source={{ uri: 'https://onedaybiotech.vercel.app/maps/37.3595704/127.105399/' }}
                             />
 

@@ -8,6 +8,7 @@ import MainNavigator from "./MainNavigator";
 import { useAuth } from "utils/hooks/UseAuth";
 import { wait } from "utils/Utils";
 import { useEffect } from "react";
+import api from "configs/api";
 
 const App = createStackNavigator<RootStackParamList>();
 const options: StackNavigationOptions = {
@@ -23,13 +24,23 @@ const options: StackNavigationOptions = {
 }
 
 const AppNavigator = () => {
-    const { token } = useAuth();
+    const { token, isAutoLogin } = useAuth();
 
-    const checkUser = () => {
-        if (token !== "") {
-            wait(2000).then(() => {
-                NavigationService.jump("TabNavigator");
-            });
+    const checkUser = async () => {
+
+        if (isAutoLogin) {
+            if (token !== "") {
+                const result = await api.getMe(token);
+                if (result?.data?.ok) {
+                    wait(2000).then(() => {
+                        NavigationService.jump("TabNavigator");
+                    });
+                } else {
+                    wait(2000).then(() => {
+                        NavigationService.jump("LoginScreen");
+                    });
+                }
+            }
         } else {
             wait(2000).then(() => {
                 NavigationService.jump("LoginScreen");
