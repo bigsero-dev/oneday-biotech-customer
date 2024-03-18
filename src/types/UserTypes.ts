@@ -1,6 +1,7 @@
 export interface UserLoginType {
   accessToken: string;
   user: UserDataType;
+  isAutoLogin: boolean;
 }
 
 export interface UserDataType {

@@ -1,7 +1,7 @@
 import Text from "components/Text";
 import icons from "configs/icons";
 import React, { useEffect, useState } from "react";
-import { Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { Alert, Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import ImplantWarrantyTab from "./WarrantyTabs/ImplantWarrantyTab";
@@ -20,6 +20,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { createPdf } from 'react-native-images-to-pdf';
 import RNFS from 'react-native-fs';
 import moment from "moment";
+import notifee, { EventType } from '@notifee/react-native';
 
 type WarrantyScreenRouteType = RouteProp<RootStackParamList, "WarrantyScreen">;
 
@@ -104,15 +105,14 @@ const WarrantyScreen = ({ route }: Prop) => {
             // downloadFile();
         } else {
             try {
-                const granted = await PermissionsAndroid.request(
+                let permission = [
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    {
-                        title: 'Storage Permission Required',
-                        message:
-                            'App needs access to your storage to download Photos',
-                    }
-                );
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                ] as any
+
+                const granted = await PermissionsAndroid.requestMultiple(permission);
+                if (granted[PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any &&
+                    granted[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any) {
                     // Once user grant the permission start downloading
                     console.log('Storage Permission Granted.');
                     downloadConvertAndSaveToPDF();
@@ -181,13 +181,14 @@ const WarrantyScreen = ({ route }: Prop) => {
                             setOpenModal(false);
                         }, 5000);
                         console.log(`PDF created successfully: ${path}`)
+                        handleNotification(path)
                     })
-                    .catch((error) => console.log(`Failed to create PDF: ${error}`));
+                    .catch((error) => Alert.alert("Failed", "Failed converting " + error));
             })
 
 
         } catch (error) {
-            console.error('Error saat mengunduh, mengonversi, dan menyimpan file:', error);
+            Alert.alert("Failed", "Failed converting " + error)
         }
     };
 
@@ -245,8 +246,50 @@ const WarrantyScreen = ({ route }: Prop) => {
         return total;
     }
 
+    const handleNotification = async (outputPath: any) => {
+        await notifee.requestPermission()
+
+        const channelId = await notifee.createChannel({
+            id: 'default',
+            name: 'Default Channel',
+        });
+
+        await notifee.displayNotification({
+            title: 'File Downloaded!',
+            body: 'Your file saved in Download Folder.',
+            android: {
+                channelId,
+                // pressAction is needed if you want the notification to open the app when pressed
+                pressAction: {
+                    id: 'default',
+                },
+            },
+            data: {
+                path: outputPath
+            }
+        });
+    }
+
     useEffect(() => {
         getDataSurgery();
+
+        return notifee.onForegroundEvent(({ type, detail }) => {
+            switch (type) {
+                case EventType.DISMISSED:
+                    console.log('User dismissed notification', detail.notification);
+                    break;
+                case EventType.PRESS:
+                    if (Platform.OS === "android") {
+                        RNFetchBlob.android.actionViewIntent(detail?.notification?.data?.path, "application/pdf");
+                    }
+
+                    if (Platform.OS === "ios") {
+                        RNFetchBlob.ios.previewDocument("file://" + detail?.notification?.data?.path)
+                    }
+                    console.log('User pressed notification', detail.notification);
+                    break;
+            }
+        });
     }, []);
 
     return (

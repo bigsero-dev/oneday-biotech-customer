@@ -4,8 +4,8 @@ import BaseModal from "components/BaseModal";
 import Button from "components/Button";
 import Text from "components/Text";
 import icons from "configs/icons";
-import React, { useState } from "react";
-import { Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, Image, PermissionsAndroid, Platform, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "types/NavigatorTypes";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -13,6 +13,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import RNFS from 'react-native-fs';
 import { createPdf } from 'react-native-images-to-pdf';
 import moment from "moment";
+import notifee, { EventType } from '@notifee/react-native';
 
 type WarrantyDetailScreenRouteType = RouteProp<RootStackParamList, "WarrantyDetailScreen">;
 
@@ -30,76 +31,62 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
     const { urlImage } = route?.params;
     const [openModal, setOpenModal] = useState(false);
 
-    // const getFileExtention = (fileUrl: any) => {
-    //     // To get the file extension
-    //     return /[.]/.exec(fileUrl) ?
-    //         /[^.]+$/.exec(fileUrl) : undefined;
-    // };
+    const getFileExtention = (fileUrl: any) => {
+        // To get the file extension
+        return /[.]/.exec(fileUrl) ?
+            /[^.]+$/.exec(fileUrl) : undefined;
+    };
 
-    // const downloadFile = (fileUrl: any) => {
+    const downloadFile = (fileUrl: any) => {
+        let date = new Date();
+        let FILE_URL = fileUrl;
+        let file_ext: any = getFileExtention(FILE_URL);
 
-    //     // Get today's date to add the time suffix in filename
-    //     let date = new Date();
-    //     // File URL which we want to download
-    //     let FILE_URL = fileUrl;
-    //     // Function to get extention of the file url
-    //     let file_ext: any = getFileExtention(FILE_URL);
-
-    //     file_ext = `.${file_ext?.[0]}`
-    //     // file_ext = '.' + file_ext[0];
-
-    //     // config: To get response by passing the downloading related options
-    //     // fs: Root directory path to download
-    //     const { config, fs } = RNFetchBlob;
-    //     let RootDir = fs.dirs.PictureDir;
-    //     let options = {
-    //         fileCache: true,
-    //         addAndroidDownloads: {
-    //             path:
-    //                 RootDir +
-    //                 '/file_' +
-    //                 Math.floor(date.getTime() + date.getSeconds() / 2) +
-    //                 file_ext,
-    //             description: 'downloading file...',
-    //             notification: true,
-    //             // useDownloadManager works with Android only
-    //             useDownloadManager: true,
-    //         },
-    //     };
-    //     config(options)
-    //         .fetch('GET', FILE_URL)
-    //         .then(res => {
-    //             // Alert after successful downloading
-    //             // console.log('res -> ', JSON.stringify(res));
-    //             // setPath(res);
-    //             setOpenModal(true);
-    //             setTimeout(() => {
-    //                 setOpenModal(false);
-    //             }, 5000);
-    //             // alert('File Downloaded Successfully.');
-    //         });
-    // };
+        file_ext = `.${file_ext?.[0]}`
+        const { config, fs } = RNFetchBlob;
+        let RootDir = fs.dirs.PictureDir;
+        let options = {
+            fileCache: true,
+            addAndroidDownloads: {
+                path:
+                    RootDir +
+                    '/file_' +
+                    Math.floor(date.getTime() + date.getSeconds() / 2) +
+                    file_ext,
+                description: 'downloading file...',
+                notification: false,
+                useDownloadManager: true,
+            },
+        };
+        config(options)
+            .fetch('GET', FILE_URL)
+            .then((res: any) => {
+                console.log('res -> ', JSON.stringify(res));
+                console.log('res -> ', res.path());
+                downloadConvertAndSaveToPDF(res.path())
+            });
+    };
 
     const checkPermission = async () => {
 
         if (Platform.OS === 'ios') {
 
-            downloadConvertAndSaveToPDF(urlImage || "")
+            // downloadConvertAndSaveToPDF(urlImage || "")
 
-            // downloadFile();
+            downloadFile(urlImage);
         } else {
             try {
-                const granted = await PermissionsAndroid.request(
+                let permission = [
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    {
-                        title: 'Storage Permission Required',
-                        message:
-                            'App needs access to your storage to download Photos',
-                    }
-                );
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                ] as any
+                const granted = await PermissionsAndroid.requestMultiple(permission)
+                if (granted[PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any &&
+                    granted[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any
+                ) {
                     console.log('Storage Permission Granted.');
-                    downloadConvertAndSaveToPDF(urlImage || "")
+                    // downloadConvertAndSaveToPDF(urlImage || "")
+                    downloadFile(urlImage);
                 } else {
                     alert('Storage Permission Not Granted');
                 }
@@ -109,20 +96,15 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
         }
     };
 
-    const downloadConvertAndSaveToPDF = async (Url: string) => {
-        const imageUrl = Url;
+    const downloadConvertAndSaveToPDF = async (path: any) => {
 
         try {
-            const response = await RNFetchBlob.config({ fileCache: true }).fetch('GET', imageUrl);
-            const imagePath = response.path();
-
-            const imageContent = await RNFS.readFile(imagePath, 'base64');
-
+            const outputPath = `file://${RNFS.DownloadDirectoryPath}/warranty_${moment().format('YYYY_MM_DD_HH_mm_ss')}.pdf`;
             const options = {
                 pages: [
-                    { imagePath: imageContent }
+                    { imagePath: path }
                 ],
-                outputPath: `file://${RNFS.DownloadDirectoryPath}/warranty_${moment().format('YYYY_MM_DD_HH_mm_ss')}.pdf`,
+                outputPath: outputPath,
             };
 
             createPdf(options)
@@ -131,13 +113,59 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
                     setTimeout(() => {
                         setOpenModal(false);
                     }, 5000);
+
                     console.log(`PDF created successfully: ${path}`)
+                    handleNotification(path)
                 })
-                .catch((error) => console.log(`Failed to create PDF: ${error}`));
+                .catch((error) => Alert.alert("Failed", "Failed converting " + error));
         } catch (error) {
-            console.error('Error saat mengunduh, mengonversi, dan menyimpan file:', error);
+            Alert.alert("Failed", "Failed converting " + error)
         }
     };
+
+    const handleNotification = async (outputPath: any) => {
+        await notifee.requestPermission()
+
+        const channelId = await notifee.createChannel({
+            id: 'default',
+            name: 'Default Channel',
+        });
+
+        await notifee.displayNotification({
+            title: 'File Downloaded!',
+            body: 'Your file saved in Download Folder.',
+            android: {
+                channelId,
+                // pressAction is needed if you want the notification to open the app when pressed
+                pressAction: {
+                    id: 'default',
+                },
+            },
+            data: {
+                path: outputPath
+            }
+        });
+    }
+
+    useEffect(() => {
+        return notifee.onForegroundEvent(({ type, detail }) => {
+            switch (type) {
+                case EventType.DISMISSED:
+                    console.log('User dismissed notification', detail.notification);
+                    break;
+                case EventType.PRESS:
+                    if (Platform.OS === "android") {
+                        RNFetchBlob.android.actionViewIntent(detail?.notification?.data?.path, "application/pdf");
+                    }
+
+                    if (Platform.OS === "ios") {
+                        RNFetchBlob.ios.previewDocument("file://" + detail?.notification?.data?.path)
+                    }
+                    console.log('User pressed notification', detail.notification);
+                    break;
+            }
+        });
+    }, []);
 
     return (
         <SafeAreaView
@@ -182,6 +210,7 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
             </ScrollView>
             <Button
                 onPress={() => {
+                    // handleNotification();
                     checkPermission();
                     // downloadConvertAndSaveToPDF(urlImage || "");
                 }}

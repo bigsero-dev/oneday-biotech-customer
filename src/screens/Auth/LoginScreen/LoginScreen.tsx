@@ -35,7 +35,7 @@ const LoginScreen = () => {
 
     const _onSubmit = async (data: any) => {
         setIsLoading(true);
-        const res = await postLogin(data);
+        const res = await postLogin(data, isCheck);
         if (res?.ok) {
             // NavigationService.navigate("TabNavigator", { screen: "Home" });
             NavigationService.navigate("PickHospitalScreen")
