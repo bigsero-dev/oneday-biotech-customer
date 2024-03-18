@@ -29,7 +29,10 @@ export const persistSlice = createSlice({
     },
     onResetPersist: state => {
       state.token = "";
-      state = {} as PersistState;
+      state.isAutoLogin = false;
+      state.dataLoading = false;
+      state.userData = {} as UserDataType;
+      state.userHospital = {} as UserHospitalType;
     },
     onSaveHospital: (state, action: { payload: UserHospitalType }) => {
       state.userHospital = action.payload;
