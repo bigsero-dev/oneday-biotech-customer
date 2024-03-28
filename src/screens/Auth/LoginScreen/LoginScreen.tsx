@@ -43,7 +43,6 @@ const LoginScreen = () => {
         } else {
             setModalError(true)
         }
-        console.log(data);
         setIsLoading(false);
     }
 

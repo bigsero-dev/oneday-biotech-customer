@@ -30,7 +30,6 @@ export const useAuth = () => {
                 message: "",
             };
         } catch (errors: any) {
-            console.log(errors?.response?.status);
             return {
                 ok: false,
                 status: "failed",

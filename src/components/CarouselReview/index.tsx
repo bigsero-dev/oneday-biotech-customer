@@ -56,12 +56,10 @@ const CarouselReview = ({
           ) : null}
           <ImageBackground
             onLoadStart={() => {
-              console.log("data 123");
               setIsLoading(true);
             }}
             progressiveRenderingEnabled
             onLoadEnd={() => {
-              console.log("data");
               setIsLoading(false);
             }}
             source={{ uri: item }}

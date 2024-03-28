@@ -99,7 +99,6 @@ const CustomCalendar = () => {
         enableSwipeMonths
         //current={selectedDate}
         onDayPress={day => {
-          console.log("data", day);
           const newSelectedDate = day.dateString; // New selected date
 
           // Create a copy of dateEvent to update

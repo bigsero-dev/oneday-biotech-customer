@@ -61,8 +61,6 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
         config(options)
             .fetch('GET', FILE_URL)
             .then((res: any) => {
-                console.log('res -> ', JSON.stringify(res));
-                console.log('res -> ', res.path());
                 downloadConvertAndSaveToPDF(res.path())
             });
     };
@@ -84,7 +82,6 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
                 if (granted[PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any &&
                     granted[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any
                 ) {
-                    console.log('Storage Permission Granted.');
                     // downloadConvertAndSaveToPDF(urlImage || "")
                     downloadFile(urlImage);
                 } else {
@@ -114,7 +111,6 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
                         setOpenModal(false);
                     }, 5000);
 
-                    console.log(`PDF created successfully: ${path}`)
                     handleNotification(path)
                 })
                 .catch((error) => Alert.alert("Failed", "Failed converting " + error));
@@ -151,7 +147,6 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
         return notifee.onForegroundEvent(({ type, detail }) => {
             switch (type) {
                 case EventType.DISMISSED:
-                    console.log('User dismissed notification', detail.notification);
                     break;
                 case EventType.PRESS:
                     if (Platform.OS === "android") {
@@ -161,7 +156,6 @@ const WarrantyDetailScreen = ({ route }: Prop) => {
                     if (Platform.OS === "ios") {
                         RNFetchBlob.ios.previewDocument("file://" + detail?.notification?.data?.path)
                     }
-                    console.log('User pressed notification', detail.notification);
                     break;
             }
         });

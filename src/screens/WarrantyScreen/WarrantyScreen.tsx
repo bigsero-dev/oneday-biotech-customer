@@ -47,55 +47,6 @@ const WarrantyScreen = ({ route }: Prop) => {
 
     const { token } = useAuth();
 
-    // const getFileExtention = (fileUrl: any) => {
-    //     // To get the file extension
-    //     return /[.]/.exec(fileUrl) ?
-    //         /[^.]+$/.exec(fileUrl) : undefined;
-    // };
-
-    // const downloadFile = (fileUrl: any) => {
-
-    //     // Get today's date to add the time suffix in filename
-    //     let date = new Date();
-    //     // File URL which we want to download
-    //     let FILE_URL = fileUrl;
-    //     // Function to get extention of the file url
-    //     let file_ext: any = getFileExtention(FILE_URL);
-
-    //     file_ext = `.${file_ext?.[0]}`
-    //     // file_ext = '.' + file_ext[0];
-
-    //     // config: To get response by passing the downloading related options
-    //     // fs: Root directory path to download
-    //     const { config, fs } = RNFetchBlob;
-    //     let RootDir = fs.dirs.PictureDir;
-    //     let options = {
-    //         fileCache: true,
-    //         addAndroidDownloads: {
-    //             path:
-    //                 RootDir +
-    //                 '/file_' +
-    //                 Math.floor(date.getTime() + date.getSeconds() / 2) +
-    //                 file_ext,
-    //             description: 'downloading file...',
-    //             notification: true,
-    //             // useDownloadManager works with Android only
-    //             useDownloadManager: true,
-    //         },
-    //     };
-    //     config(options)
-    //         .fetch('GET', FILE_URL)
-    //         .then(res => {
-    //             // Alert after successful downloading
-    //             // console.log('res -> ', JSON.stringify(res));
-    //             setOpenModal(true);
-    //             setTimeout(() => {
-    //                 setOpenModal(false);
-    //             }, 5000);
-    //             // alert('File Downloaded Successfully.');
-    //         });
-    // };
-
     const checkPermission = async () => {
 
         if (Platform.OS === 'ios') {
@@ -114,7 +65,6 @@ const WarrantyScreen = ({ route }: Prop) => {
                 if (granted[PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any &&
                     granted[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED as any) {
                     // Once user grant the permission start downloading
-                    console.log('Storage Permission Granted.');
                     downloadConvertAndSaveToPDF();
                     // urlFiles?.map((item: any) => downloadFile(item))
                 } else {
@@ -180,7 +130,6 @@ const WarrantyScreen = ({ route }: Prop) => {
                         setTimeout(() => {
                             setOpenModal(false);
                         }, 5000);
-                        console.log(`PDF created successfully: ${path}`)
                         handleNotification(path)
                     })
                     .catch((error) => Alert.alert("Failed", "Failed converting " + error));
@@ -196,7 +145,6 @@ const WarrantyScreen = ({ route }: Prop) => {
         const result = await api.getUserSurgeryHistory(token, historyId || "");
 
         if (result?.data?.ok) {
-            // console.log(result?.data?.data);
             if (result?.data?.data?.userSurgeryHistoryForm?.length > 0) {
                 const xrayData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "XRAY");
                 setXray(xrayData);
@@ -276,7 +224,6 @@ const WarrantyScreen = ({ route }: Prop) => {
         return notifee.onForegroundEvent(({ type, detail }) => {
             switch (type) {
                 case EventType.DISMISSED:
-                    console.log('User dismissed notification', detail.notification);
                     break;
                 case EventType.PRESS:
                     if (Platform.OS === "android") {
@@ -286,7 +233,6 @@ const WarrantyScreen = ({ route }: Prop) => {
                     if (Platform.OS === "ios") {
                         RNFetchBlob.ios.previewDocument("file://" + detail?.notification?.data?.path)
                     }
-                    console.log('User pressed notification', detail.notification);
                     break;
             }
         });

@@ -43,7 +43,6 @@ const HospitalDetailScreen = ({ route }: Prop) => {
     ];
 
     const _getDetailHospital = async () => {
-        console.log("ini Id nya", id);
         const result = await api.getDetailHospital(token, id);
         if (result?.data?.ok) {
             setDetailHospital(result?.data?.data);

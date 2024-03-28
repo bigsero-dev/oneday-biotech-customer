@@ -39,7 +39,6 @@ const WarrantyListScreen = () => {
                 setIsSearch(true);
                 const term = text.toLocaleLowerCase();
                 const res = dataWarranty?.filter((item: any) => item?.name?.toLocaleLowerCase().includes(term))
-                console.log("aasdas", res)
                 if (res?.length < 1) {
                     setOpenModalEmpty(true)
                 }
