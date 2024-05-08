@@ -2,7 +2,7 @@ import Space from "components/Space";
 import Text from "components/Text";
 import icons from "configs/icons";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View, ViewStyle } from "react-native";
 import { scaledHorizontal } from "utils/ScaledService";
 
 interface CardHomeProps {
@@ -11,13 +11,14 @@ interface CardHomeProps {
     date: string;
     status: string;
     step: string;
+    style?: ViewStyle;
 }
 
-const CardAppointment = ({ index, sideColor, date, status, step }: CardHomeProps) => {
+const CardAppointment = ({ index, sideColor, date, status, step, style }: CardHomeProps) => {
     return (
         <View
             key={index}
-            style={{
+            style={[style, {
                 flexDirection: "row",
                 backgroundColor: "#fff",
                 shadowColor: '#000',
@@ -26,8 +27,8 @@ const CardAppointment = ({ index, sideColor, date, status, step }: CardHomeProps
                 shadowRadius: 2,
                 elevation: 5,
                 height: 92,
-                justifyContent: "space-between"
-            }}
+                justifyContent: "space-between",
+            }]}
         >
             <View style={{ flexDirection: "row" }}>
                 <View

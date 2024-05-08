@@ -1,11 +1,9 @@
 import Space from "components/Space";
 import Text from "components/Text";
 import icons from "configs/icons";
-import { useState } from "react";
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native"
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native"
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
-// import { Config } from "./Config";
-import images from "configs/images";
 import BaseModal from "components/BaseModal";
 import colors from "configs/colors";
 import Button from "components/Button";
@@ -13,17 +11,409 @@ import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
 import { useSelector } from "react-redux";
 import { StoreStateType } from "stores";
+import { TeethConfig } from "./TeethConfig";
+import api from "configs/api";
+import { convertDateHours, ConvertStepToText, ObjectToURLSnake } from "utils/Utils";
+import CardAppointment from "components/CardAppointment";
+import moment from "moment";
 
 const HomeScreen = () => {
-    // const [dataTeeth, setDataTeeth] = useState(Config);
+    const { userData, token } = useAuth();
+    const { userHospital } = useSelector((state: StoreStateType) => state.persist);
+    const [dataTeeth, _] = useState(TeethConfig);
     const [openModal, setOpenModel] = useState(false);
     const [tab, setTab] = useState("완료");
-    const { userData } = useAuth();
-    const { userHospital } = useSelector((state: StoreStateType) => state.persist)
-    // const { height } = useWindowDimensions();
+    const [isLoading, setLoading] = useState(false);
+    const [firstLoad, setFirstLoad] = useState(true);
+    const [teeths, setTeeths] = useState([]);
+    const [reservationData, setReservationData] = useState([] as any);
+    const [indexData, setIndexData] = useState(0);
+
+    const _getDataTeeth = async () => {
+
+        const params = {
+            page: 1,
+            pageSize: 100,
+        }
+        const queryParams = ObjectToURLSnake(params);
+        await api.getHistorySurgery(token, queryParams).then((result) => {
+            const filteredData = result?.data?.data?.filter((item: any) => item?.status === "COMPLETE" || item?.status === "RESERVATION");
+            if (filteredData?.length > 0) {
+                let newData: any = [];
+                filteredData?.forEach((item: any) => {
+                    item?.userTeeth?.forEach((data: any) => {
+                        const teethData = {
+                            teethNo: data?.teethNo,
+                            status: item?.status
+                        };
+
+                        newData = [...newData, teethData];
+                        setTeeths(newData);
+                    })
+                })
+            }
+
+            const dataReserved = result?.data?.data?.filter((item: any) => item?.status === "RESERVATION");
+            if (dataReserved?.length > 0) {
+                let dataTemp: any = [];
+                dataReserved?.forEach((item: any) => {
+                    item?.userSurgeryDetail?.forEach((dt: any, index: any) => {
+                        if (moment(dt?.reservatedAt).isAfter(moment().utc())) {
+                            dataTemp = [...dataTemp, { ...dt, step: item?.step }];
+                            setReservationData(dataTemp);
+                        }
+                    });
+                })
+            }
+        }).finally(() => {
+
+            setFirstLoad(false);
+        })
+    }
+
+    const _renderTeeth = (data: any) => {
+        const isExist = teeths?.some((item: any) => item?.teethNo === data?.teethNo);
+        if (isExist) {
+            const obj: any = teeths?.find((item: any) => item?.teethNo === data?.teethNo);
+            if (obj?.status === "COMPLETE" && tab == "완료") {
+                return (
+                    <Image
+                        source={data.imageInfoSelectBlue.image}
+                        style={{
+                            position: "absolute",
+                            top: data.imageInfoSelectBlue.top,
+                            left: data.imageInfoSelectBlue.left,
+                            width: data.imageInfoSelectBlue.width,
+                            height: data.imageInfoSelectBlue.height,
+                            resizeMode: "contain"
+                        }}
+                    />
+                )
+            }
+
+            if (obj?.status === "RESERVATION" && tab == "치료중") {
+                return (
+                    <Image
+                        source={data.imageInfoSelectRed.image}
+                        style={{
+                            position: "absolute",
+                            top: data.imageInfoSelectRed.top,
+                            left: data.imageInfoSelectRed.left,
+                            width: data.imageInfoSelectRed.width,
+                            height: data.imageInfoSelectRed.height,
+                            resizeMode: "contain"
+                        }}
+                    />
+                )
+            }
+        }
+
+        return (
+            <Image
+                source={data.imageInfoUnselect.image}
+                style={{
+                    position: "absolute",
+                    top: data.imageInfoUnselect.top,
+                    left: data.imageInfoUnselect.left,
+                    width: data.imageInfoUnselect.width,
+                    height: data.imageInfoUnselect.height,
+                    resizeMode: "contain"
+                }}
+            />
+        )
+    }
+
+    const changeDataReservation = (type: any) => {
+        if (type === "prev") {
+            setIndexData(indexData - 1);
+        }
+
+        if (type === "next") {
+            setIndexData(indexData + 1);
+        }
+    }
+
+    useEffect(() => {
+        if (firstLoad) {
+            setLoading(true)
+            _getDataTeeth();
+            setLoading(false);
+        }
+    }, [indexData]);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <SafeAreaView style={{ backgroundColor: "#fff" }}>
+            <View
+                style={{
+                    paddingHorizontal: scaledHorizontal(20),
+                    paddingVertical: scaledVertical(18),
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    height: 55,
+                }}>
+                <TouchableOpacity
+                    style={{
+                        marginRight: scaledHorizontal(18),
+                        backgroundColor: "#568dff",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingHorizontal: 11,
+                        paddingVertical: 3,
+                        borderRadius: 10
+                    }}
+                    onPress={() => setOpenModel(true)}
+                >
+                    <Text size={12} color="#fff">이용 가이드</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => NavigationService.navigate("NotificationScreen")}
+                    style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
+                >
+                    <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
+                    <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
+
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <Space height={scaledVertical(28)} />
+            <ScrollView style={{}}>
+                <View style={{
+                    paddingHorizontal: scaledHorizontal(20),
+                }}>
+                    <Text size={14}>안녕하세요, {userData?.name}님</Text>
+                    <Space height={7} />
+                    <Text size={22} style={{ fontWeight: "bold" }} type="extrabold">{userHospital?.name} 입니다.</Text>
+                    <Space height={16} />
+                    <View
+                        style={{
+                            width: 110,
+                            height: 32,
+                            backgroundColor: "#ececec",
+                            borderRadius: 16,
+                            flexDirection: "row",
+                            alignSelf: "flex-end"
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{
+                                width: 55,
+                                height: 32,
+                                borderRadius: 16,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor: tab === "완료" ? "#0f1e3d" : "#ececec"
+                            }}
+                            onPress={() => setTab("완료")}
+                        >
+                            <Text
+                                color={tab === "완료" ? "#fff" : "#0f1e3d"}
+                                style={{ opacity: tab === "완료" ? 1 : 0.5 }}
+                                size={13}
+                            >
+                                완료
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                width: 55,
+                                height: 32,
+                                borderRadius: 16,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor: tab === "치료중" ? "#0f1e3d" : "#ececec"
+                            }}
+                            onPress={() => setTab("치료중")}
+                        >
+                            <Text
+                                color={tab === "치료중" ? "#fff" : "#0f1e3d"}
+                                style={{ opacity: tab === "치료중" ? 1 : 0.5 }}
+                                size={13}
+                            >
+                                치료중
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Space height={19} />
+                </View>
+                <Space height={scaledVertical(30)} />
+                {isLoading ? (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <ActivityIndicator size={"large"} color={"#0f1e3d"} />
+                    </View>
+                ) : (
+                    <View
+                        style={{
+                            width: "90%",
+                            height: "44%",
+                            alignSelf: "center",
+                        }}
+                    >
+                        {dataTeeth?.map((item, index) => {
+                            return (
+                                <TouchableOpacity key={index}>
+                                    {_renderTeeth(item)}
+                                </TouchableOpacity>
+                            )
+                        })}
+                        {((teeths?.filter((item: any) => item?.status === "COMPLETE")?.length === 0 && tab === "완료") ||
+                            (teeths?.filter((item: any) => item?.status === "RESERVATION")?.length === 0 && tab === "치료중"))
+                            && (
+                                <View
+                                    style={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        position: "absolute",
+                                        top: 160,
+                                        left: 130,
+                                        width: 100,
+                                    }}
+                                >
+                                    <Text size={13} color="#555" textAlign="center">병원에 예약일정을 문의해주세요.</Text>
+                                </View>
+                            )}
+                    </View>
+                )}
+
+                <Space height={scaledVertical(30)} />
+                <View style={{
+                    paddingHorizontal: scaledHorizontal(20),
+                    marginTop: 20
+                }}>
+                    <Text style={{ fontWeight: "bold" }} type="extrabold">예약 현황</Text>
+                    <Space height={10} />
+
+                    {/* {isLoading ? (<></>) : (
+                        <> */}
+                    {reservationData?.length > 0 ?
+                        (
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                }}
+                            >
+                                {reservationData?.length > 1 && (
+                                    <TouchableOpacity
+                                        style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: 24,
+                                            height: 24,
+                                            borderRadius: 12,
+                                            backgroundColor: "#fff",
+                                            shadowColor: '#000',
+                                            shadowOffset: { width: 0, height: 1 },
+                                            shadowOpacity: 0.2,
+                                            shadowRadius: 2,
+                                            elevation: 5,
+                                        }}
+                                        onPress={() => changeDataReservation("prev")}
+                                        disabled={indexData === 0}
+                                    >
+                                        <Image source={icons.arrowLeft} style={{ height: 16, width: 16, resizeMode: "contain" }} />
+                                    </TouchableOpacity>
+                                )}
+
+                                <CardAppointment
+                                    style={{ width: reservationData?.length > 1 ? '80%' : '100%' }}
+                                    date={reservationData?.[indexData]?.reservatedAt ? convertDateHours(reservationData?.[indexData]?.reservatedAt) : ""}
+                                    index={indexData}
+                                    sideColor="#83abff"
+                                    status={reservationData?.[indexData]?.step ? ConvertStepToText(reservationData?.[indexData]?.step || '') : ""}
+                                    step={"BE PENDING"}
+                                />
+
+                                {reservationData?.length > 1 && (
+                                    <TouchableOpacity
+                                        style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: 24,
+                                            height: 24,
+                                            borderRadius: 12,
+                                            backgroundColor: "#fff",
+                                            shadowColor: '#000',
+                                            shadowOffset: { width: 0, height: 1 },
+                                            shadowOpacity: 0.2,
+                                            shadowRadius: 2,
+                                            elevation: 5,
+                                        }}
+                                        disabled={indexData === reservationData?.length - 1}
+                                        onPress={() => changeDataReservation("next")}
+                                    >
+                                        <Image source={icons.arrowRight} style={{ height: 16, width: 16, resizeMode: "contain" }} />
+                                    </TouchableOpacity>
+                                )}
+
+                            </View>
+                        )
+                        : (
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    backgroundColor: "#fff",
+                                    shadowColor: '#000',
+                                    shadowOffset: { width: 0, height: 1 },
+                                    shadowOpacity: 0.2,
+                                    shadowRadius: 2,
+                                    elevation: 2,
+                                    height: 92
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            width: 8,
+                                            backgroundColor: "#dddddd",
+                                            height: 92,
+                                            marginRight: scaledHorizontal(18)
+                                        }}
+                                    >
+                                    </View>
+                                    <View style={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        marginRight: scaledHorizontal(18)
+                                    }}>
+                                        <Text color="#555" size={13} style={{ opacity: 0.8 }}>등록된 일정이 없습니다.</Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        marginRight: scaledVertical(18)
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 50 / 2
+                                        }}
+                                    >
+                                        <Image source={icons.clipBoard} style={{ width: 50, height: 50 }} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
+                </View>
+                <Space height={400} />
+            </ScrollView>
             <BaseModal
                 contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 525 }}
                 showModal={openModal}
@@ -177,244 +567,6 @@ const HomeScreen = () => {
                     </View>
                 </View>
             </BaseModal>
-            <View
-                style={{
-                    paddingHorizontal: scaledHorizontal(20),
-                    paddingVertical: scaledVertical(18),
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    height: 55,
-                }}>
-                <TouchableOpacity
-                    style={{
-                        marginRight: scaledHorizontal(18),
-                        backgroundColor: "#568dff",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingHorizontal: 11,
-                        paddingVertical: 3,
-                        borderRadius: 10
-                    }}
-                    onPress={() => setOpenModel(true)}
-                >
-                    <Text size={12} color="#fff">이용 가이드</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => NavigationService.navigate("NotificationScreen")}
-                    style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
-                >
-                    <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-                    <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
-
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <Space height={scaledVertical(28)} />
-            <ScrollView>
-                <View style={{
-                    paddingHorizontal: scaledHorizontal(20)
-                }}>
-                    <Text size={14}>안녕하세요, {userData?.name}님</Text>
-                    <Space height={7} />
-                    <Text size={22} style={{ fontWeight: "bold" }} type="extrabold">{userHospital?.name} 입니다.</Text>
-                    <Space height={16} />
-                    <View
-                        style={{
-                            width: 110,
-                            height: 32,
-                            backgroundColor: "#ececec",
-                            borderRadius: 16,
-                            flexDirection: "row",
-                            alignSelf: "flex-end"
-                        }}
-                    >
-                        <TouchableOpacity
-                            style={{
-                                width: 55,
-                                height: 32,
-                                borderRadius: 16,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: tab === "완료" ? "#0f1e3d" : "#ececec"
-                            }}
-                            onPress={() => setTab("완료")}
-                        >
-                            <Text
-                                color={tab === "완료" ? "#fff" : "#0f1e3d"}
-                                style={{ opacity: tab === "완료" ? 1 : 0.5 }}
-                                size={13}
-                            >
-                                완료
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                width: 55,
-                                height: 32,
-                                borderRadius: 16,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: tab === "치료중" ? "#0f1e3d" : "#ececec"
-                            }}
-                            onPress={() => setTab("치료중")}
-                        >
-                            <Text
-                                color={tab === "치료중" ? "#fff" : "#0f1e3d"}
-                                style={{ opacity: tab === "치료중" ? 1 : 0.5 }}
-                                size={13}
-                            >
-                                치료중
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <Space height={19} />
-                    <View
-                        style={{
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}
-                    >
-                        <Image source={images.teethImplant} style={{ width: 210, height: 327 }} resizeMode="cover" />
-                        <View style={{ position: "absolute", width: 100 }}>
-                            <Text textAlign="center" style={{ opacity: 0.8 }} size={13} color="#555">병원에 예약일정을 문의해주세요.</Text>
-                        </View>
-                    </View>
-                    {/* <View
-                        style={{
-                        //position: "absolute",
-                        marginTop:
-                            Platform.OS === "android" ? (height < 720 ? "15%" : "20%") : 0,
-                        justifyContent:
-                            Platform.OS === "android" ? "flex-start" : "center",
-
-                        height:
-                            Platform.OS === "ios"
-                            ? height * ((height < 720 ? 10 : 23) / 100)
-                            : heightPercentage(75),
-                        //height: height,
-                        width: "100%",
-                        alignItems: "center",
-                        }}
-                    >   
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                position: "absolute", 
-                                top: scaledVertical(440),
-                                width: 100,
-                            }}
-                        >
-                            <Text size={13} color="#555" textAlign="center">병원에 예약일정을 문의해주세요.</Text>
-                        </View>
-                        {dataTeeth.map((item, index) => (
-                            <View
-                                key={index}
-                                style={{
-                                flexDirection: "row",
-                                position: "absolute",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                //gap: scaledHorizontal(item.gap),
-                                //top: item.top,
-                                //zIndex: item.zIndex,
-                                //backgroundColor: index === 0 ? "red" : "blue",
-                                backgroundColor: "red",
-                                }}
-                            >
-                                {item.teeth &&
-                                    item.teeth.map((img, idx) => (
-                                        <TouchableOpacity
-                                            key={idx}
-                                            style={{
-                                                position: "absolute", 
-                                                top: img.imageInfoUnselect.top,
-                                                left: img.imageInfoUnselect.left
-                                            }}
-                                        >
-                                            <Image 
-                                                source={img.imageInfoUnselect.image}
-                                                style={{
-                                                    height: img.imageInfoUnselect.height,
-                                                    width: img.imageInfoUnselect.width
-                                                }}
-                                                resizeMode="cover"
-                                            />
-                                        </TouchableOpacity>
-                                    ))
-                                }
-                            </View>
-                        ))}
-                    </View> */}
-                </View>
-                <Space height={scaledVertical(30)} />
-                <View style={{
-                    paddingHorizontal: scaledHorizontal(20),
-                    // position: "absolute",
-                    // top: scaledVertical(1100)
-                }}>
-                    <Text style={{ fontWeight: "bold" }} type="extrabold">예약 현황</Text>
-                    <Space height={10} />
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            backgroundColor: "#fff",
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 1 },
-                            shadowOpacity: 0.2,
-                            shadowRadius: 2,
-                            elevation: 2,
-                            height: 92
-                        }}
-                    >
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                // justifyContent: "space-between"
-                            }}
-                        >
-                            <View
-                                style={{
-                                    width: 8,
-                                    backgroundColor: "#dddddd",
-                                    height: 92,
-                                    marginRight: scaledHorizontal(18)
-                                }}
-                            >
-                            </View>
-                            <View style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginRight: scaledHorizontal(18)
-                            }}>
-                                <Text color="#555" size={13} style={{ opacity: 0.8 }}>등록된 일정이 없습니다.</Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginRight: scaledVertical(18)
-                            }}
-                        >
-                            <TouchableOpacity
-                                style={{
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    width: 50,
-                                    height: 50,
-                                    borderRadius: 50 / 2
-                                }}
-                            >
-                                <Image source={icons.clipBoard} style={{ width: 50, height: 50 }} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-                <Space height={100} />
-            </ScrollView>
         </SafeAreaView>
     );
 }

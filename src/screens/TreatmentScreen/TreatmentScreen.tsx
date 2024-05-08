@@ -60,13 +60,13 @@ const TreatmentScreen = () => {
         let result = ''
         const cleanPhoneNumber = phone?.replace(/-/g, '');
 
-        const lengthData = cleanPhoneNumber.length;
+        const lengthData = cleanPhoneNumber?.length;
         const split = Math.floor(lengthData / 2);
 
-        let part1 = cleanPhoneNumber.slice(0, split);
-        let part2 = cleanPhoneNumber.slice(split);
+        let part1 = cleanPhoneNumber?.slice(0, split);
+        let part2 = cleanPhoneNumber?.slice(split);
 
-        let remainingLength = part2.length - 1;
+        let remainingLength = part2?.length - 1;
         let replacement = '*'.repeat(remainingLength);
         result = part1 + '-' + part2[0] + replacement;
         return result;
@@ -75,7 +75,7 @@ const TreatmentScreen = () => {
     useEffect(() => {
         _getDataOngoing();
         _getDataCompleted();
-    }, [pageOngoing, pageCOmpleted]);
+    }, []);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>

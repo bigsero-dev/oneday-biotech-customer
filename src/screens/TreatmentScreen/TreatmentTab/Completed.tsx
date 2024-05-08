@@ -17,7 +17,7 @@ const Completed = ({ data, handleLoadMore }: any) => {
                     <Space height={12} />
                     <FlatList
                         data={data}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item) => item?.id?.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => NavigationService.navigate("DetailTreatmentScreen", {
@@ -59,7 +59,7 @@ const Completed = ({ data, handleLoadMore }: any) => {
                             </TouchableOpacity>
                         )}
                         onEndReached={handleLoadMore}
-                        onEndReachedThreshold={0.1} // Adjust as needed
+                    // onEndReachedThreshold={0.1} // Adjust as needed
                     />
                 </>
             ) : (
