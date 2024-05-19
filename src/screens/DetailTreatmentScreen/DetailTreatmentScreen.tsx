@@ -163,7 +163,7 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                                 }}
                             >
                                 <Text size={13}>주치의</Text>
-                                <Text size={13} style={{ fontWeight: "bold" }}>{userHistoryDetail?.hospitalMember?.name}</Text>
+                                <Text size={13} style={{ fontWeight: "bold" }}>{userHistoryDetail?.doctorName}</Text>
                             </View>
                         </View>
                         <Space height={12} />
@@ -247,13 +247,13 @@ const DetailTreatmentScreen = ({ route }: Prop) => {
                                                 justifyContent: "center",
                                                 marginRight: scaledHorizontal(18)
                                             }}>
-                                                <Text color="#000" size={13}>{moment(dataOngoing?.reservatedAt).format('Y.M.D H:m')}</Text>
+                                                <Text color="#000" size={13}>{moment(dataOngoing?.reservatedAt).format('Y.M.D HH:mm')}</Text>
                                                 {/* <Text color="#000" size={13}>{new Date(dataOngoing?.reservatedAt || '') >= new Date() ? moment(dataOngoing?.reservatedAt).format('Y.M.D H:m') : "(미등록)"}</Text> */}
                                                 <Space height={8} />
                                                 <Text color="#000" size={13}>{ConvertStepToText(userHistoryDetail?.step || '')}</Text>
                                                 {/* <Text color="#000" size={13}>{new Date(dataOngoing?.reservatedAt || '') >= new Date() ? ConvertStepToText(userHistoryDetail?.step || '') : "(미등록)"}</Text> */}
                                                 <Space height={8} />
-                                                <Text color="#000" size={13}>{"[BE PENDING]"}</Text>
+                                                <Text color="#000" size={13}>{userHistoryDetail?.userSurgeryDetail?.[0]?.sort ? `${userHistoryDetail?.userSurgeryDetail?.[0]?.sort} 회차` : "1 회차"}</Text>
                                                 {/* <Text color="#000" size={13}>{new Date(dataOngoing?.reservatedAt || '') >= new Date() ? ConvertStepToText(userHistoryDetail?.step || '') : "(미등록)"}</Text> */}
                                             </View>
                                         </View>

@@ -36,6 +36,7 @@ type Prop = {
 
 const WarrantyScreen = ({ route }: Prop) => {
     const { historyId } = route?.params;
+    console.log("id ", historyId);
     const [tab, setTab] = useState("임플란트 보증서");
     const [openModal, setOpenModal] = useState(false);
     const [cautions, setCauions] = useState([] as any);

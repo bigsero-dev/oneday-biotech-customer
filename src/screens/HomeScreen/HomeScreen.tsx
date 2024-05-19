@@ -280,7 +280,7 @@ const HomeScreen = () => {
                     </View>
                 )}
 
-                <Space height={scaledVertical(30)} />
+                {/* <Space height={scaledVertical(50)} /> */}
                 <View style={{
                     paddingHorizontal: scaledHorizontal(20),
                     marginTop: 20
@@ -412,7 +412,7 @@ const HomeScreen = () => {
                             </View>
                         )}
                 </View>
-                <Space height={400} />
+                <Space height={500} />
             </ScrollView>
             <BaseModal
                 contentStyle={{ paddingBottom: 0, paddingHorizontal: 0, borderRadius: 2, height: 525 }}

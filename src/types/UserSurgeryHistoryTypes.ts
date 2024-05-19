@@ -43,4 +43,5 @@ export interface SurgeryDetailData {
     type: number,
     status: string,
     reservatedAt: string
+    sort: string
 }

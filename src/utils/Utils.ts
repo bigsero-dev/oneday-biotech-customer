@@ -96,22 +96,22 @@ export const ConvertStepToText = (step: string) => {
     convertedText = '초진검진';
   }
   if (step === "FIRST_SURGERY") {
-    convertedText = '초진검진';
+    convertedText = '1차 수술';
   }
   if (step === "SECOND_SURGERY") {
-    convertedText = '초진검진';
+    convertedText = '2차 수술';
   }
   if (step === "IMPLANT") {
-    convertedText = '초진검진';
+    convertedText = '본뜨기';
   }
   if (step === "INTERMEDIATE_PROCESS") {
-    convertedText = '초진검진';
+    convertedText = '중간과정';
   }
   if (step === "PROSTHESIS_SETTING") {
-    convertedText = '초진검진';
+    convertedText = '보철세팅';
   }
   if (step === "EXAMINATION") {
-    convertedText = '초진검진';
+    convertedText = '검진';
   }
 
   return convertedText;

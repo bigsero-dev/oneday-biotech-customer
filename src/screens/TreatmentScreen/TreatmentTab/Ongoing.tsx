@@ -4,7 +4,7 @@ import icons from "configs/icons";
 import { FlatList, ImageBackground, TouchableOpacity, View } from "react-native"
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, widthPercentage } from "utils/ScaledService";
-import { convertDateHours } from "utils/Utils";
+import { convertDateHours, ConvertStepToText } from "utils/Utils";
 
 const Ongoing = ({ data, handleLoadMore }: any) => {
     return (
@@ -55,7 +55,7 @@ const Ongoing = ({ data, handleLoadMore }: any) => {
                                 </View>
                                 <View style={{ position: "absolute", right: -6, top: 10 }}>
                                     <ImageBackground source={icons.markYellow} style={{ flex: 1, justifyContent: 'center', alignItems: "center", width: 90, height: 28 }} resizeMode="cover">
-                                        <Text size={13}>본뜨기</Text>
+                                        <Text size={13}>{ConvertStepToText(item?.step || '')}</Text>
                                     </ImageBackground>
                                 </View>
                             </TouchableOpacity>

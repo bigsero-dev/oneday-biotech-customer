@@ -68,7 +68,7 @@ const TreatmentScreen = () => {
 
         let remainingLength = part2?.length - 1;
         let replacement = '*'.repeat(remainingLength);
-        result = part1 + '-' + part2[0] + replacement;
+        result = part1 + '-' + part2?.[0] + replacement;
         return result;
     }
 
