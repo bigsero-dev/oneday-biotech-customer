@@ -34,6 +34,7 @@ const HomeScreen = () => {
         const params = {
             page: 1,
             pageSize: 100,
+            orderBy: "RESERVATED_AT_ASC"
         }
         const queryParams = ObjectToURLSnake(params);
         await api.getHistorySurgery(token, queryParams).then((result) => {
@@ -327,7 +328,7 @@ const HomeScreen = () => {
                                     index={indexData}
                                     sideColor="#83abff"
                                     status={reservationData?.[indexData]?.step ? ConvertStepToText(reservationData?.[indexData]?.step || '') : ""}
-                                    step={"BE PENDING"}
+                                    step={`${reservationData?.[indexData]?.sort || 1} 회차`}
                                 />
 
                                 {reservationData?.length > 1 && (
