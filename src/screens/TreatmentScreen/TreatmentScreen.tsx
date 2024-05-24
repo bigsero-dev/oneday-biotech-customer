@@ -23,7 +23,7 @@ const TreatmentScreen = () => {
         const params = {
             page: pageOngoing,
             pageSize: 10,
-            status: 'RESERVATION',
+            surgeryStatus: 'RESERVATION',
             orderBy: 'RESERVATED_AT_DESC'
         } as any;
         const queryParams = ObjectToURLSnake(params);
@@ -37,7 +37,7 @@ const TreatmentScreen = () => {
         const params = {
             page: pageCOmpleted,
             pageSize: 10,
-            status: 'COMPLETE',
+            surgeryStatus: 'COMPLETE',
             orderBy: 'RESERVATED_AT_DESC'
         } as any;
         const queryParams = ObjectToURLSnake(params);
@@ -136,7 +136,7 @@ const TreatmentScreen = () => {
                 </TouchableOpacity>
             </View>
             <Space height={23} />
-            <View>
+            <View style={{ marginBottom: 40 }}>
                 {tab === "치료중" ? (
                     <Ongoing data={dataOngoing} handleLoadMore={handleLoadMoreOngoing} />
                 ) : (

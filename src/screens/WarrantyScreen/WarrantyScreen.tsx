@@ -162,7 +162,7 @@ const WarrantyScreen = ({ route }: Prop) => {
                 const cautionData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "CAUTION"); // satu lagi warranty
                 setCauions(cautionData);
 
-                const warrantyData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "WARRANTY"); // satu lagi warranty
+                const warrantyData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "IMPLANT"); // satu lagi warranty
                 setDataWarranty(warrantyData);
 
             }
