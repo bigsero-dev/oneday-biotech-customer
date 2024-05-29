@@ -136,7 +136,7 @@ const TreatmentScreen = () => {
                 </TouchableOpacity>
             </View>
             <Space height={23} />
-            <View style={{ marginBottom: 40 }}>
+            <View>
                 {tab === "치료중" ? (
                     <Ongoing data={dataOngoing} handleLoadMore={handleLoadMoreOngoing} />
                 ) : (

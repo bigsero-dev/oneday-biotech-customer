@@ -16,6 +16,7 @@ const Ongoing = ({ data, handleLoadMore }: any) => {
                     </View>
                     <Space height={12} />
                     <FlatList
+                        style={{ height: '80%' }}
                         data={data}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (

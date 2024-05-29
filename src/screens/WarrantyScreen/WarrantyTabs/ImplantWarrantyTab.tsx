@@ -24,7 +24,7 @@ const ImplantWarrantyTab = ({ warrantyData }: any) => {
                         carouselRef={ref}
                         setCurrentIndex={setCurrentIndex}
                     />
-                    {warrantyData.length > 1 && (
+                    {warrantyData?.length > 1 && (
                         <Options
                             images={warrantyData?.map((item: any) => {
                                 return item?.imgUrl

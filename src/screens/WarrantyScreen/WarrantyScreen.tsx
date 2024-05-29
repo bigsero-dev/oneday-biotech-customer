@@ -170,26 +170,32 @@ const WarrantyScreen = ({ route }: Prop) => {
     }
 
     const renderTotalImage = () => {
-        let total = "0/0";
+        let total = 0;
+        // let total = "0/0";
 
         if (others?.length > 0 && tab === "기타") {
-            total = `${others?.length}/${others?.length}`
+            total = others?.length;
+            // total = `${others?.length}/${others?.length}`
         }
 
         if (cautions?.length > 0 && tab === "주의사항") {
-            total = `${cautions?.length}/${cautions?.length}`
+            total = cautions?.length;
+            // total = `${cautions?.length}/${cautions?.length}`
         }
 
         if (treatments?.length > 0 && tab === "시술 보증서") {
-            total = `${treatments?.length}/${treatments?.length}`
+            total = treatments?.length;
+            // total = `${treatments?.length}/${treatments?.length}`
         }
 
         if (agreements?.length > 0 && tab === "동의서") {
-            total = `${agreements?.length}/${agreements?.length}`
+            total = agreements?.length;
+            // total = `${agreements?.length}/${agreements?.length}`
         }
 
         if (warranty?.length > 0 && tab === "임플란트 보증서") {
-            total = `${warranty?.length}/${warranty?.warranty}`
+            total = warranty?.length;
+            // total = `${warranty?.length}/${warranty?.length}`
         }
 
         return total;
@@ -273,7 +279,7 @@ const WarrantyScreen = ({ route }: Prop) => {
                         <Text style={{ fontWeight: "bold" }}>보증서</Text>
                     </TouchableOpacity>
                     <Text style={{ fontWeight: "bold" }}>
-                        {renderTotalImage()}
+                        {renderTotalImage()} / <Text>{renderTotalImage()}</Text>
                     </Text>
                 </View>
             </View>
