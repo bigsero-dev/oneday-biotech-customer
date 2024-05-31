@@ -21,6 +21,7 @@ import { createPdf } from 'react-native-images-to-pdf';
 import RNFS from 'react-native-fs';
 import moment from "moment";
 import notifee, { EventType } from '@notifee/react-native';
+import Space from "components/Space";
 
 type WarrantyScreenRouteType = RouteProp<RootStackParamList, "WarrantyScreen">;
 
@@ -163,6 +164,7 @@ const WarrantyScreen = ({ route }: Prop) => {
                 setCauions(cautionData);
 
                 const warrantyData = result?.data?.data?.userSurgeryHistoryForm?.filter((item: any) => item?.type === "IMPLANT"); // satu lagi warranty
+                console.log(warrantyData);
                 setDataWarranty(warrantyData);
 
             }
@@ -334,7 +336,6 @@ const WarrantyScreen = ({ route }: Prop) => {
                         <Text size={13} color={tab === "기타" ? "#000" : "#767676"} style={{ fontWeight: tab === "기타" ? "bold" : "500" }}>기타</Text>
                     </TouchableOpacity>
                 </ScrollView>
-                {/* <Space height={30} /> */}
 
                 {tab === "임플란트 보증서" && (
                     <ImplantWarrantyTab warrantyData={warranty} />
@@ -356,6 +357,7 @@ const WarrantyScreen = ({ route }: Prop) => {
                     <OthersTab otherData={others} />
                 )}
             </ScrollView>
+            <Space height={60} />
 
             {(cautions?.length > 0 && tab === "주의사항") ||
                 (agreements?.length > 0 && tab === "동의서") ||

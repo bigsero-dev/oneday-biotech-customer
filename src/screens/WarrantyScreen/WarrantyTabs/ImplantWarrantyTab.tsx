@@ -1,6 +1,6 @@
 import Text from "components/Text";
 import React, { useState } from "react";
-import { Image, View } from "react-native";
+import { View } from "react-native";
 import Options from "components/CarouselXray/Options";
 import CarouselXray from "components/CarouselXray";
 import { ICarouselInstance } from "react-native-reanimated-carousel";
