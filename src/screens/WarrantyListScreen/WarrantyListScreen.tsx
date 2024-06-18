@@ -289,7 +289,7 @@ const WarrantyListScreen = () => {
                         onPress={() => {
                             setSearchInfo({ ...searchInfo, sortBy: "최신순" });
                             SetOpenModalSort(false)
-                            setSortBy("LATEST")
+                            setSortBy("OLDEST")
                         }}
                         style={{
                             justifyContent: "space-between",
@@ -308,7 +308,7 @@ const WarrantyListScreen = () => {
                         onPress={() => {
                             setSearchInfo({ ...searchInfo, sortBy: "오래된순" });
                             SetOpenModalSort(false)
-                            setSortBy("OLDEST")
+                            setSortBy("LATEST")
                         }}
                         style={{
                             justifyContent: "space-between",

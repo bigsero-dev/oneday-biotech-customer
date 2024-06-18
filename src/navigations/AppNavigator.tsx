@@ -30,16 +30,15 @@ const AppNavigator = () => {
 
         if (isAutoLogin) {
             if (token !== "") {
-                const result = await api.getMe(token);
-                if (result?.data?.ok) {
+                await api.getMe(token).then((result) => {
                     wait(2000).then(() => {
                         NavigationService.jump("TabNavigator");
                     });
-                } else {
+                }).catch((err) => {
                     wait(2000).then(() => {
                         NavigationService.jump("LoginScreen");
                     });
-                }
+                });
             }
         } else {
             wait(2000).then(() => {
