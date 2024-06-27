@@ -66,7 +66,7 @@ const WarrantyListScreen = () => {
                             id: data?.id,
                             name: `${item?.hospital?.name} ${data?.type} Warranty`,
                             url: data?.imgUrl,
-                            createdAt: data?.createdAt
+                            createdAt: item?.createdAt
                         }
 
                         newArr = [...newArr, newData];

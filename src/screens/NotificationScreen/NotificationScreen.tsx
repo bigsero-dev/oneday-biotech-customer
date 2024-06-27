@@ -6,6 +6,8 @@ import colors from "configs/colors";
 import icons from "configs/icons";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, SafeAreaView, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
+import { StoreStateType } from "stores";
 import { useAuth } from "utils/hooks/UseAuth";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
@@ -15,7 +17,8 @@ const NotificationScreen = () => {
     const { token } = useAuth();
     const [dataNotification, setDataNotification] = useState([] as any);
     const [metaNotification, setMetaNotification] = useState({} as any);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
+    const { isGetNotification } = useSelector((state: StoreStateType) => state.notification)
 
     const _getDataNotifications = async (page: 1) => {
         setLoading(true);
@@ -25,18 +28,19 @@ const NotificationScreen = () => {
             pageSize: 10,
         } as any;
         const queryParams = ObjectToURLSnake(params);
-        const result = await api.getNotifications(token, queryParams);
-
-        if (result?.data?.ok) {
+        await api.getNotifications(token, queryParams).then((result) => {
             setDataNotification((prevData: any) => [...prevData, ...result?.data?.data])
             setMetaNotification(result?.data?.metadata)
-        }
-
-        setLoading(false);
+        }).finally(() => {
+            setLoading(false);
+        });
     }
 
     useEffect(() => {
-        _getDataNotifications(1);
+        if (isGetNotification) {
+            _getDataNotifications(1);
+
+        }
     }, []);
 
     return (
@@ -79,7 +83,7 @@ const NotificationScreen = () => {
                 >
                     <ActivityIndicator size={"large"} color={"#0f1e3d"} />
                 </View>
-            ) : (
+            ) : dataNotification?.length > 0 ? (
                 <FlatList
                     data={dataNotification}
                     keyExtractor={(item) => item.id.toString()}
@@ -102,17 +106,17 @@ const NotificationScreen = () => {
                     )}
                     onEndReached={() => _getDataNotifications(metaNotification?.page + 1)}
                     onEndReachedThreshold={0.1}
-                    ListEmptyComponent={() => (
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center"
-                            }}
-                        >
-                            <Text>Data is Empty.</Text>
-                        </View>
-                    )}
                 />
+            ) : (
+                <View
+                    style={{
+                        marginTop: 120,
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}
+                >
+                    <Text color="#999" size={12}>최대 15일 간의 내역만 조회 됩니다.</Text>
+                </View>
             )}
         </SafeAreaView>
     );

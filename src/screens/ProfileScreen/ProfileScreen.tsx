@@ -12,12 +12,18 @@ import Button from "components/Button";
 import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
 import { wait } from "utils/Utils";
+import { useDispatch, useSelector } from "react-redux";
+import { onGetNotification } from "stores/persist/notificationSlice";
+import { StoreStateType } from "stores";
 
 const ProfileScreen = () => {
 
-  const [isRadioOn, setIsRadioOn] = useState(true);
+  const { isGetNotification } = useSelector((state: StoreStateType) => state.notification)
+
+  const [isRadioOn, setIsRadioOn] = useState(isGetNotification);
   const [openModal, setOpenModal] = useState(false);
   const { postLogout, userData } = useAuth();
+  const dispatch = useDispatch();
 
   const menuInformation = [
     {
@@ -39,6 +45,7 @@ const ProfileScreen = () => {
     {
       title: "알림설정",
       onPress: () => {
+        dispatch(onGetNotification(!isRadioOn))
         setIsRadioOn(!isRadioOn)
       },
       type: "radio",
