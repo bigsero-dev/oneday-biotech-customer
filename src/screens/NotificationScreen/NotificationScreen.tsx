@@ -92,7 +92,7 @@ const NotificationScreen = () => {
 
         if (data?.message === "Phone number changed.") {
             title = `휴대전화 번호 변경 완료`;
-            message = `${data?.user?.name} ${moment(data?.createdAt).format("YYYY")}년 ${moment(data?.createdAt).format("MM")}월 ${moment(data?.createdAt).format("DD")}일 ${moment(data?.createdAt).format("HH:mm")}에 로그인 계정 정보인 '휴대전화 번호'가 변경되었습니다. 앞으로 변경된 휴대전화 번호로 로그인해주세요.`
+            message = `${data?.user?.name}에서 ${moment(data?.createdAt).format("YYYY")}년 ${moment(data?.createdAt).format("MM")}월 ${moment(data?.createdAt).format("DD")}일 ${moment(data?.createdAt).format("HH:mm")}에 로그인 계정 정보인 '휴대전화 번호'가 변경되었습니다. 앞으로 변경된 휴대전화 번호로 로그인해주세요.`
         }
 
         return { title, message };
