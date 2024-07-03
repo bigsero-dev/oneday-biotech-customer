@@ -64,7 +64,7 @@ const WarrantyListScreen = () => {
                     item?.userSurgeryHistoryForm?.forEach((data: any) => {
                         const newData = {
                             id: data?.id,
-                            name: `${item?.hospital?.name} ${data?.type} Warranty`,
+                            name: `${item?.hospital?.name} 임플란트 보증서`,
                             url: data?.imgUrl,
                             createdAt: item?.createdAt
                         }
