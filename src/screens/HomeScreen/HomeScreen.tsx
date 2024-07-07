@@ -28,6 +28,18 @@ const HomeScreen = () => {
     const [teeths, setTeeths] = useState([]);
     const [reservationData, setReservationData] = useState([] as any);
     const [indexData, setIndexData] = useState(0);
+    const [metaNotification, setMetaNotification] = useState({} as any);
+
+    const _getDataNotifications = async () => {
+        const params = {
+            page: 1,
+            pageSize: 10,
+        } as any;
+        const queryParams = ObjectToURLSnake(params);
+        await api.getNotifications(token, queryParams).then((result) => {
+            setMetaNotification(result?.data?.metadata)
+        });
+    }
 
     const _getDataTeeth = async () => {
 
@@ -139,6 +151,7 @@ const HomeScreen = () => {
             setLoading(true)
             _getDataTeeth();
             setLoading(false);
+            _getDataNotifications();
         }
     }, [indexData]);
 
@@ -172,9 +185,11 @@ const HomeScreen = () => {
                     style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
                 >
                     <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-                    <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
+                    {metaNotification?.totalUnread > 0 && (
+                        <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
 
-                    </View>
+                        </View>
+                    )}
                 </TouchableOpacity>
             </View>
             <Space height={scaledVertical(28)} />

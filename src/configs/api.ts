@@ -34,6 +34,7 @@ const api = {
     getUserSurgeryHistory: (token: string, id: string) => BaseService.get("user-surgery-history/" + id, getHeaderPrivate(token)),
     getMineWarranty: (token: string, sortBy: string) => BaseService.get("mine/get-warranty?sortBy=" + sortBy, getHeaderPrivate(token)),
     getNotifications: (token: string, params: any) => BaseService.get("notification-users?" + params, getHeaderPrivate(token)),
+    getNotificationDetail: (token: string, id: string) => BaseService.get("notification-users/" + id, getHeaderPrivate(token)),
     getTeethStep2: (token: string, id: string) => BaseService.get("get-teeth-by-user-id/" + id, getHeaderPrivate(token)),
 }
 

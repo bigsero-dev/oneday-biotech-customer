@@ -3,7 +3,7 @@ import Space from "components/Space";
 import Text from "components/Text";
 import colors from "configs/colors";
 import icons from "configs/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, SafeAreaView, TouchableOpacity, View } from "react-native"
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import { getVersion } from "react-native-device-info";
@@ -11,10 +11,11 @@ import BaseModal from "components/BaseModal";
 import Button from "components/Button";
 import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
-import { wait } from "utils/Utils";
+import { ObjectToURLSnake, wait } from "utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
 import { onGetNotification } from "stores/persist/notificationSlice";
 import { StoreStateType } from "stores";
+import api from "configs/api";
 
 const ProfileScreen = () => {
 
@@ -22,8 +23,9 @@ const ProfileScreen = () => {
 
   const [isRadioOn, setIsRadioOn] = useState(isGetNotification);
   const [openModal, setOpenModal] = useState(false);
-  const { postLogout, userData } = useAuth();
+  const { postLogout, userData, token } = useAuth();
   const dispatch = useDispatch();
+  const [metaNotification, setMetaNotification] = useState({} as any);
 
   const menuInformation = [
     {
@@ -82,6 +84,21 @@ const ProfileScreen = () => {
     result = part1 + '-' + part2?.[0] + replacement;
     return result;
   }
+
+  const _getDataNotifications = async () => {
+    const params = {
+      page: 1,
+      pageSize: 10,
+    } as any;
+    const queryParams = ObjectToURLSnake(params);
+    await api.getNotifications(token, queryParams).then((result) => {
+      setMetaNotification(result?.data?.metadata)
+    });
+  }
+
+  useEffect(() => {
+    _getDataNotifications();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -171,9 +188,11 @@ const ProfileScreen = () => {
           style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
         >
           <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-          <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
+          {metaNotification?.totalUnread > 0 && (
+            <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
 
-          </View>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
       <View style={{

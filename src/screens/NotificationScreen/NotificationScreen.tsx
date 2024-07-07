@@ -98,6 +98,10 @@ const NotificationScreen = () => {
         return { title, message };
     }
 
+    const _readNotification = async (id: string) => {
+        await api.getNotificationDetail(token, id).then((result) => { });
+    }
+
     useEffect(() => {
         if (isGetNotification && firstLoad) {
             _getDataNotifications(page);
@@ -160,6 +164,7 @@ const NotificationScreen = () => {
                         initialNumToRender={10}
                         renderItem={({ item }) => (
                             <BaseCard
+                                onPress={() => _readNotification(item?.id)}
                                 key={item?.id}
                                 style={{
                                     backgroundColor: colors.white,

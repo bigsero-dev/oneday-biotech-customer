@@ -1,15 +1,17 @@
 import React from "react";
 import type { ViewStyle } from "react-native";
-import { View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 interface BaseCardProps {
   children: any;
   style?: ViewStyle | ViewStyle[];
+  onPress?: () => void;
 }
 
 const BaseCard = (props: BaseCardProps) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={props.onPress}
       style={[
         props.style,
         {
@@ -28,7 +30,7 @@ const BaseCard = (props: BaseCardProps) => {
       ]}
     >
       {props.children}
-    </View>
+    </TouchableOpacity>
   );
 };
 
