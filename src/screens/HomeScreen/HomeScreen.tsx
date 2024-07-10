@@ -31,13 +31,8 @@ const HomeScreen = () => {
     const [metaNotification, setMetaNotification] = useState({} as any);
 
     const _getDataNotifications = async () => {
-        const params = {
-            page: 1,
-            pageSize: 10,
-        } as any;
-        const queryParams = ObjectToURLSnake(params);
-        await api.getNotifications(token, queryParams).then((result) => {
-            setMetaNotification(result?.data?.metadata)
+        await api.getCheckNotificationUser(token).then((result) => {
+            setMetaNotification(result?.data?.data)
         });
     }
 
@@ -185,7 +180,7 @@ const HomeScreen = () => {
                     style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
                 >
                     <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-                    {metaNotification?.totalUnread > 0 && (
+                    {metaNotification?.notReadCount > 0 && (
                         <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
 
                         </View>

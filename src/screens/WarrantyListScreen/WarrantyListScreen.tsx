@@ -60,8 +60,8 @@ const WarrantyListScreen = () => {
         if (result?.data?.ok) {
             let newArr: any = [];
             result?.data?.data?.userSurgeryHistory?.forEach((item: any) => {
-                if (item?.userSurgeryHistoryForm?.length > 0) {
-                    item?.userSurgeryHistoryForm?.forEach((data: any) => {
+                if (item?.userSurgeryHistoryForm?.filter((val: any) => val?.type === 'IMPLANT')?.length > 0) {
+                    item?.userSurgeryHistoryForm?.filter((val: any) => val?.type === 'IMPLANT')?.forEach((data: any) => {
                         const newData = {
                             id: data?.id,
                             name: `${item?.hospital?.name} 임플란트 보증서`,

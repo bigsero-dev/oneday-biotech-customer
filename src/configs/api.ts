@@ -36,6 +36,7 @@ const api = {
     getNotifications: (token: string, params: any) => BaseService.get("notification-users?" + params, getHeaderPrivate(token)),
     getNotificationDetail: (token: string, id: string) => BaseService.get("notification-users/" + id, getHeaderPrivate(token)),
     getTeethStep2: (token: string, id: string) => BaseService.get("get-teeth-by-user-id/" + id, getHeaderPrivate(token)),
+    getCheckNotificationUser: (token: string) => BaseService.get("check-notification-users", getHeaderPrivate(token)),
 }
 
 export default api;

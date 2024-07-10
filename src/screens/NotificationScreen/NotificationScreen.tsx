@@ -43,8 +43,8 @@ const NotificationScreen = () => {
     }
 
     const _renderTextNotification = (data: any) => {
-        let title = "cobaa ";
-        let message = "aoaaa";
+        let title = "";
+        let message = "";
 
         const surgeryConst: any = {
             1: {
@@ -75,7 +75,7 @@ const NotificationScreen = () => {
             message = `${moment(data?.userSurgeryDetail?.reservatedAt).format("YYYY")}년 ${moment(data?.userSurgeryDetail?.reservatedAt).format("MM")}월 ${moment(data?.userSurgeryDetail?.reservatedAt).format("DD")}일 ${moment(data?.userSurgeryDetail?.reservatedAt).format("HH:mm")}에 예약되었습니다.`;
         }
 
-        if (data?.message === "Surgery schedule changed.") {
+        if (data?.message?.includes("Surgery schedule changed")) {
             title = `예약일정 변경`;
             message = `${surgeryConst?.[data?.userSurgeryDetail?.type]?.title}(${data?.userSurgeryDetail?.sort}회차)이 ${moment(data?.userSurgeryDetail?.reservatedAt).format("YYYY")}년 ${moment(data?.userSurgeryDetail?.reservatedAt).format("MM")}월 ${moment(data?.userSurgeryDetail?.reservatedAt).format("DD")}일 ${moment(data?.userSurgeryDetail?.reservatedAt).format("HH:mm")}으로 일정이 변경되었습니다.`;
         }
