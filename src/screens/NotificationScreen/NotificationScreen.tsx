@@ -36,6 +36,8 @@ const NotificationScreen = () => {
             setDataNotification((prevData: any) => [...prevData, ...result?.data?.data])
             setMetaNotification(result?.data?.metadata)
             setPage(result?.data?.metadata?.page)
+
+            api.readAllNotification(token);
         }).finally(() => {
             setLoading(false);
             setFirstLoad(false);
@@ -76,8 +78,9 @@ const NotificationScreen = () => {
         }
 
         if (data?.message?.includes("Surgery schedule changed")) {
+            const splitText = data?.message?.split(" ");
             title = `예약일정 변경`;
-            message = `${surgeryConst?.[data?.userSurgeryDetail?.type]?.title}(${data?.userSurgeryDetail?.sort}회차)이 ${moment(data?.userSurgeryDetail?.reservatedAt).format("YYYY")}년 ${moment(data?.userSurgeryDetail?.reservatedAt).format("MM")}월 ${moment(data?.userSurgeryDetail?.reservatedAt).format("DD")}일 ${moment(data?.userSurgeryDetail?.reservatedAt).format("HH:mm")}으로 일정이 변경되었습니다.`;
+            message = `${surgeryConst?.[data?.userSurgeryDetail?.type]?.title}(${data?.userSurgeryDetail?.sort}회차)이 ${moment(splitText?.[4]).format("YYYY")}년 ${moment(splitText?.[4]).format("MM")}월 ${moment(splitText?.[4]).format("DD")}일 ${moment(splitText?.[4]).format("HH:mm")}으로 일정이 변경되었습니다.`;
         }
 
         if (data?.message === "One day prior notif.") {
