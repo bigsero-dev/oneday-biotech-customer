@@ -13,19 +13,18 @@ import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
 import { wait } from "utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
-import { onGetNotification } from "stores/persist/notificationSlice";
+import { onGetNotification, onGetUnreadNotification } from "stores/persist/notificationSlice";
 import { StoreStateType } from "stores";
 import api from "configs/api";
 
 const ProfileScreen = () => {
 
-  const { isGetNotification } = useSelector((state: StoreStateType) => state.notification)
+  const { isGetNotification, countUnRead } = useSelector((state: StoreStateType) => state.notification)
 
   const [isRadioOn, setIsRadioOn] = useState(isGetNotification);
   const [openModal, setOpenModal] = useState(false);
   const { postLogout, userData, token } = useAuth();
   const dispatch = useDispatch();
-  const [metaNotification, setMetaNotification] = useState({} as any);
 
   const menuInformation = [
     {
@@ -87,7 +86,7 @@ const ProfileScreen = () => {
 
   const _getDataNotifications = async () => {
     await api.getCheckNotificationUser(token).then((result) => {
-      setMetaNotification(result?.data?.data)
+      dispatch(onGetUnreadNotification(result?.data?.data?.notReadCount));
     });
   }
 
@@ -183,7 +182,7 @@ const ProfileScreen = () => {
           style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
         >
           <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-          {metaNotification?.notReadCount > 0 && (
+          {countUnRead > 0 && (
             <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
 
             </View>

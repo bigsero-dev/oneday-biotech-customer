@@ -7,19 +7,21 @@ import icons from "configs/icons";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, FlatList, Image, SafeAreaView, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StoreStateType } from "stores";
+import { onGetUnreadNotification } from "stores/persist/notificationSlice";
 import { useAuth } from "utils/hooks/UseAuth";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
 import { convertDateHours, ObjectToURLSnake } from "utils/Utils";
 
 const NotificationScreen = () => {
+    const dispatch = useDispatch();
     const { height } = Dimensions.get('window');
     const { token } = useAuth();
     const [firstLoad, setFirstLoad] = useState(true);
     const [dataNotification, setDataNotification] = useState([] as any);
-    const [metaNotification, setMetaNotification] = useState({} as any);
+    const [_, setMetaNotification] = useState({} as any);
     const [page, setPage] = useState(1);
     const [isLoading, setLoading] = useState(false);
     const { isGetNotification } = useSelector((state: StoreStateType) => state.notification)
@@ -29,15 +31,17 @@ const NotificationScreen = () => {
 
         const params = {
             page: page,
-            pageSize: 10,
+            pageSize: 15,
         } as any;
         const queryParams = ObjectToURLSnake(params);
-        await api.getNotifications(token, queryParams).then((result) => {
+        await api.getNotifications(token, queryParams).then(async(result) => {
             setDataNotification((prevData: any) => [...prevData, ...result?.data?.data])
             setMetaNotification(result?.data?.metadata)
             setPage(result?.data?.metadata?.page)
 
-            api.readAllNotification(token);
+            await api.readAllNotification(token).then(() => {
+                dispatch(onGetUnreadNotification(0));
+            });
         }).finally(() => {
             setLoading(false);
             setFirstLoad(false);
@@ -183,11 +187,11 @@ const NotificationScreen = () => {
                                 <Text size={12} color="#999">{item?.createdAt ? convertDateHours(item?.createdAt) : ""}</Text>
                             </BaseCard>
                         )}
-                        onEndReached={() => {
-                            if (metaNotification?.lastPage > page) {
-                                _getDataNotifications(page + 1);
-                            }
-                        }}
+                        // onEndReached={() => {
+                        //     if (metaNotification?.lastPage > page) {
+                        //         _getDataNotifications(page + 1);
+                        //     }
+                        // }}
                         onEndReachedThreshold={0.5}
                     />
                 </View>
@@ -203,6 +207,21 @@ const NotificationScreen = () => {
                     <Text color="#999" size={12}>최대 15일 간의 내역만 조회 됩니다.</Text>
                 </View>
             )}
+
+            {dataNotification?.length > 0 ? (
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginVertical: 20
+                    }}
+                >
+                <Text size={12} color="#999999">최대 15일 간의 내역만 조회 됩니다.</Text>
+            </View>
+            ) : (
+                <></>
+            )}
+            
         </SafeAreaView>
     );
 }

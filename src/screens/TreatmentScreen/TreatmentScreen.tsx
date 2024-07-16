@@ -10,19 +10,24 @@ import NavigationService from "utils/NavigationService";
 import api from "configs/api";
 import { useAuth } from "utils/hooks/UseAuth";
 import { ObjectToURLSnake } from "utils/Utils";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreStateType } from "stores";
+import { onGetUnreadNotification } from "stores/persist/notificationSlice";
 
 const TreatmentScreen = () => {
     const [tab, setTab] = useState("치료중");
     const { token, userData } = useAuth();
+    const dispatch = useDispatch();
     const [dataOngoing, setDataOngoing] = useState([] as any);
     const [pageOngoing, setPageOngoing] = useState(1);
     const [dataCompleted, setDataCompleted] = useState([] as any);
     const [pageCOmpleted, setPageCompleted] = useState(1);
-    const [metaNotification, setMetaNotification] = useState({} as any);
+
+    const { countUnRead } = useSelector((state: StoreStateType) => state.notification)
 
     const _getDataNotifications = async () => {
         await api.getCheckNotificationUser(token).then((result) => {
-            setMetaNotification(result?.data?.data)
+            dispatch(onGetUnreadNotification(result?.data?.data?.notReadCount));
         });
     }
 
@@ -104,7 +109,7 @@ const TreatmentScreen = () => {
                     style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
                 >
                     <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-                    {metaNotification?.notReadCount > 0 && (
+                    {countUnRead > 0 && (
                         <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
 
                         </View>

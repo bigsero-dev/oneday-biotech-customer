@@ -9,17 +9,20 @@ import colors from "configs/colors";
 import Button from "components/Button";
 import NavigationService from "utils/NavigationService";
 import { useAuth } from "utils/hooks/UseAuth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StoreStateType } from "stores";
 import { TeethConfig } from "./TeethConfig";
 import api from "configs/api";
 import { convertDateHours, ConvertStepToText, ObjectToURLSnake } from "utils/Utils";
 import CardAppointment from "components/CardAppointment";
 import moment from "moment";
+import { onGetUnreadNotification } from "stores/persist/notificationSlice";
 
 const HomeScreen = () => {
     const { userData, token } = useAuth();
+    const dispatch = useDispatch();
     const { userHospital } = useSelector((state: StoreStateType) => state.persist);
+    const { countUnRead } = useSelector((state: StoreStateType) => state.notification)
     const [dataTeeth, _] = useState(TeethConfig);
     const [openModal, setOpenModel] = useState(false);
     const [tab, setTab] = useState("완료");
@@ -28,11 +31,10 @@ const HomeScreen = () => {
     const [teeths, setTeeths] = useState([]);
     const [reservationData, setReservationData] = useState([] as any);
     const [indexData, setIndexData] = useState(0);
-    const [metaNotification, setMetaNotification] = useState({} as any);
 
     const _getDataNotifications = async () => {
         await api.getCheckNotificationUser(token).then((result) => {
-            setMetaNotification(result?.data?.data)
+            dispatch(onGetUnreadNotification(result?.data?.data?.notReadCount));
         });
     }
 
@@ -180,7 +182,7 @@ const HomeScreen = () => {
                     style={{ width: 18, height: 20, justifyContent: "center", alignItems: "center" }}
                 >
                     <Image source={icons.bell} style={{ width: 18, height: 20 }} resizeMode="contain" />
-                    {metaNotification?.notReadCount > 0 && (
+                    {countUnRead > 0 && (
                         <View style={{ width: 7, height: 7, backgroundColor: "#e11818", borderRadius: 7 / 2, position: "absolute", top: 0, right: 0 }}>
 
                         </View>
