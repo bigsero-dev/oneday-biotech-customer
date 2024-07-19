@@ -6,21 +6,21 @@ import colors from "configs/colors";
 import icons from "configs/icons";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, FlatList, Image, SafeAreaView, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Dimensions, Image, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreStateType } from "stores";
 import { onGetUnreadNotification } from "stores/persist/notificationSlice";
 import { useAuth } from "utils/hooks/UseAuth";
 import NavigationService from "utils/NavigationService";
 import { scaledHorizontal, scaledVertical } from "utils/ScaledService";
-import { convertDateHours, ObjectToURLSnake } from "utils/Utils";
+import { convertDate, convertDateHours, ObjectToURLSnake } from "utils/Utils";
 
 const NotificationScreen = () => {
     const dispatch = useDispatch();
     const { height } = Dimensions.get('window');
     const { token } = useAuth();
     const [firstLoad, setFirstLoad] = useState(true);
-    const [dataNotification, setDataNotification] = useState([] as any);
+    const [dataNotification, setDataNotification] = useState({} as any);
     const [_, setMetaNotification] = useState({} as any);
     const [page, setPage] = useState(1);
     const [isLoading, setLoading] = useState(false);
@@ -34,8 +34,30 @@ const NotificationScreen = () => {
             pageSize: 15,
         } as any;
         const queryParams = ObjectToURLSnake(params);
-        await api.getNotifications(token, queryParams).then(async(result) => {
-            setDataNotification((prevData: any) => [...prevData, ...result?.data?.data])
+        await api.getNotifications(token, queryParams).then(async (result) => {
+
+            const groupedNotifications: { [key: string]: any[] } = {};
+            result?.data?.data?.map((value: any) => {
+                const notificationDate = new Date(value.createdAt);
+                let groupKey: string;
+
+                if (isToday(notificationDate)) {
+                    groupKey = '오늘';
+                } else {
+                    groupKey = notificationDate?.toISOString().split('T')[0] || ''; // Ambil tanggal ISO
+                    groupKey = convertDate(groupKey);
+                }
+
+                if (!groupedNotifications[groupKey]) {
+                    groupedNotifications[groupKey] = [];
+                }
+
+                groupedNotifications[groupKey]?.push(value);
+            })
+
+            console.log(groupedNotifications);
+            setDataNotification(groupedNotifications);
+            // setDataNotification((prevData: any) => [...prevData, ...result?.data?.data])
             setMetaNotification(result?.data?.metadata)
             setPage(result?.data?.metadata?.page)
 
@@ -109,6 +131,13 @@ const NotificationScreen = () => {
         await api.getNotificationDetail(token, id).then((result) => { });
     }
 
+    function isToday(someDate: any) {
+        const today = new Date();
+        return someDate.getDate() === today.getDate() &&
+            someDate.getMonth() === today.getMonth() &&
+            someDate.getFullYear() === today.getFullYear();
+    }
+
     useEffect(() => {
         if (isGetNotification && firstLoad) {
             _getDataNotifications(page);
@@ -155,13 +184,76 @@ const NotificationScreen = () => {
                 >
                     <ActivityIndicator size={"large"} color={"#0f1e3d"} />
                 </View>
-            ) : dataNotification?.length > 0 ? (
+            ) : dataNotification ? (
                 <View
                     style={{
                         flex: 1,
+                        paddingHorizontal: 20
                     }}
                 >
-                    <FlatList
+                    <ScrollView>
+                        {Object.keys(dataNotification).map((dataKey, key) => (
+                            <View key={key}>
+                                <Text size={15} color="#000000" style={{fontWeight: "bold"}}>{dataKey}</Text>
+                                <Space height={10} />
+                                {dataNotification[dataKey]?.map((notification: any, idx: any) => (
+                                    <BaseCard
+                                        onPress={() => _readNotification(notification?.id)}
+                                        key={notification?.id}
+                                        style={{
+                                            backgroundColor: colors.white,
+                                            paddingHorizontal: 15,
+                                            paddingVertical: 17,
+                                            marginHorizontal: 1,
+                                            marginBottom: 18
+                                        }}
+                                    >
+                                        <Text size={14} style={{ fontWeight: "bold", marginBottom: 8 }}>{_renderTextNotification(notification).title}</Text>
+                                        <Text size={13} color="#555" style={{ lineHeight: 22 }}>{_renderTextNotification(notification).message}</Text>
+                                        <Space height={10} />
+                                        <Text size={12} color="#999">{notification?.createdAt ? convertDateHours(notification?.createdAt) : ""}</Text>
+                                    </BaseCard>
+
+                                ))}
+                            </View>
+
+
+                        ))}
+                        {/* {Object.keys(dataNotification).map((dataKey) => (
+                            <>
+                                <Text size={15} color="#000000" >{dataKey}</Text>
+                                <Space height={10} />
+                                {dataNotification[dataKey].map((notification: any) => (
+                                    <BaseCard
+                                        onPress={() => _readNotification(notification?.id)}
+                                        key={notification?.id}
+                                        style={{
+                                            backgroundColor: colors.white,
+                                            paddingHorizontal: 15,
+                                            paddingVertical: 17,
+                                            marginHorizontal: 1,
+                                            marginBottom: 18
+                                        }}
+                                    >
+                                        <Text size={14} style={{ fontWeight: "bold", marginBottom: 8 }}>{_renderTextNotification(notification).title}</Text>
+                                        <Text size={13} color="#555" style={{ lineHeight: 22 }}>{_renderTextNotification(notification).message}</Text>
+                                        <Space height={10} />
+                                        <Text size={12} color="#999">{notification?.createdAt ? convertDateHours(notification?.createdAt) : ""}</Text>
+                                    </BaseCard>
+                                ))}
+                            </>
+                        ))} */}
+                        <View
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginVertical: 20
+                            }}
+                        >
+                            <Text size={12} color="#999999">최대 15일 간의 내역만 조회 됩니다.</Text>
+                        </View>
+                    </ScrollView>
+                    {/* <FlatList
                         data={dataNotification}
                         style={{
                             paddingHorizontal: 16,
@@ -193,7 +285,18 @@ const NotificationScreen = () => {
                         //     }
                         // }}
                         onEndReachedThreshold={0.5}
-                    />
+                        ListFooterComponent={() => (
+                            <View
+                                style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginVertical: 20
+                                }}
+                            >
+                                <Text size={12} color="#999999">최대 15일 간의 내역만 조회 됩니다.</Text>
+                            </View>
+                        )}
+                    /> */}
                 </View>
 
             ) : (
@@ -208,7 +311,7 @@ const NotificationScreen = () => {
                 </View>
             )}
 
-            {dataNotification?.length > 0 ? (
+            {/* {dataNotification?.length > 0 ? (
                 <View
                     style={{
                         justifyContent: "center",
@@ -216,12 +319,12 @@ const NotificationScreen = () => {
                         marginVertical: 20
                     }}
                 >
-                <Text size={12} color="#999999">최대 15일 간의 내역만 조회 됩니다.</Text>
-            </View>
+                    <Text size={12} color="#999999">최대 15일 간의 내역만 조회 됩니다.</Text>
+                </View>
             ) : (
                 <></>
-            )}
-            
+            )} */}
+
         </SafeAreaView>
     );
 }

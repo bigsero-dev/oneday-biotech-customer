@@ -92,7 +92,7 @@ android {
         release {
             storeFile file('your_key_name.keystore')
             storePassword 'shyfa111'
-            keyAlias 'your_key_alias'
+            keyAlias 'your-key-alias'
             keyPassword 'shyfa111'
         }
     }
